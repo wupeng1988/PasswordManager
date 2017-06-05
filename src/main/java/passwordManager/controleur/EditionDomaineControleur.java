@@ -1,0 +1,104 @@
+package passwordManager.controleur;
+
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import passwordManager.model.Domaine;
+
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+/**
+ * Nico on 05/06/2017.
+ */
+public class EditionDomaineControleur implements Initializable {
+    private AppControleur app;
+
+    @FXML Label nomLabel;
+    @FXML Label domaineLabel;
+
+    private Domaine toEdit;
+    private String iconeLocation;
+    private boolean exists;
+
+    @FXML TextField nom;
+    @FXML TextField domaine;
+    @FXML ImageView icone;
+    @FXML TextArea notes;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("Init domaine ctrl");
+    }
+
+    private void finEdition(boolean ok) {
+        if (ok) {
+            toEdit.setNom(nom.getText());
+            toEdit.setDomaine(domaine.getText());
+            toEdit.setIconeLocation(iconeLocation);
+            toEdit.setNotes(notes.getText());
+
+            if (!exists) {
+                app.donnees.addDomaine(toEdit);
+            }
+        }
+
+        app.finEdition();
+    }
+
+    @FXML
+    private void annulerEdition() {
+        finEdition(false);
+    }
+
+    @FXML
+    private void okEdition() {
+        finEdition(true);
+    }
+
+    void bindParent(AppControleur c) {
+        app = c;
+    }
+
+    void initDomaine(Domaine d) {
+        toEdit = d;
+        nom.setText(d.getNom());
+        nomLabel.setText(d.getNom());
+        domaine.setText(d.getDomaine());
+        domaineLabel.setText(d.getDomaine());
+        iconeLocation = d.getIconeLocation();
+        icone.setImage(app.im.getImage(iconeLocation));
+        notes.setText(d.getNotes());
+        exists = true;
+    }
+
+    @FXML
+    private void selectionIcone() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("."));
+        fileChooser.setTitle("Choisir une icone");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png")
+        );
+        File fileSelected = fileChooser.showOpenDialog(app.passwordManager.stage);
+        if (fileSelected != null) {
+            Image i = app.im.getImage(fileSelected.getAbsolutePath());
+            if (i != null) {
+                iconeLocation = fileSelected.getAbsolutePath();
+                icone.setImage(i);
+            }
+        }
+    }
+
+    void nouveauDomaine() {
+        toEdit = new Domaine("Nouveau domaine");
+        initDomaine(toEdit);
+        exists = false;
+    }
+}

@@ -1,0 +1,48 @@
+@font-face {
+    font-family: Raleway;
+    src: url(../fonts/Raleway-Regular.ttf);
+}
+
+@font-face {
+    font-family: Raleway;
+    font-weight: bold;
+    src: url(../fonts/Raleway-Bold.ttf);
+}
+
+.root {
+    -fx-font-family: Raleway;
+    -fx-font-size: 13;
+}
+
+TableView, ListView {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.editionPane {
+    -fx-background-color: rgba(0,0,0,0.5);
+}
+
+.editionBox {
+    -fx-background-color: rgba(255,255,255,1);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.listViewCell:hover {
+    -fx-cursor: hand;
+    //-fx-background-color: yellow;
+}
+
+.listViewCell > .nom {
+    -fx-font-weight: bold;
+}
+
+.listViewCell > .domaine {
+    -fx-font-style: italic;
+    -fx-text-fill: #5f5f5f;
+}
+
+.titre {
+    -fx-font-size: 42;
+}
