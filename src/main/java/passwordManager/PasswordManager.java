@@ -11,6 +11,9 @@ public class PasswordManager extends Application {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 400;
 
+    public final static String TITLE = "Password Manager";
+    public final static String SAVE_EXTENSION = ".psw";
+
     public Stage stage;
 
     @Override
@@ -30,9 +33,11 @@ public class PasswordManager extends Application {
         Scene s = new Scene(root, WIDTH, HEIGHT);
         s.getStylesheets().add(getClass().getResource("/stylesheets/style.css").toExternalForm());
 
-        stage.setTitle("Password Manager");
+        stage.setTitle(TITLE);
         stage.setScene(s);
         stage.show();
+
+        ((AppControleur)l.getController()).finishLoad();
     }
 
     public static void main(String[] args) {

@@ -19,15 +19,13 @@ public class EditionCompteControleur implements Initializable {
     private Compte toEdit;
     private boolean exists;
 
-    @FXML Label titre;
-    @FXML TextField utilisateur;
-    @FXML TextField motDePasse;
-    @FXML TextArea notes;
+    @FXML private Label titre;
+    @FXML private TextField utilisateur;
+    @FXML private TextField motDePasse;
+    @FXML private TextArea notes;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Init compte ctrl");
-    }
+    public void initialize(URL location, ResourceBundle resources) {}
 
     void bindParent(AppControleur c) {
         app = c;

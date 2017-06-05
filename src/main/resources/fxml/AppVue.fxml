@@ -25,6 +25,7 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Fichier">
                   <items>
+                        <MenuItem mnemonicParsing="false" onAction="#nouvelleSauvegarde" text="Nouveau" />
                         <MenuItem mnemonicParsing="false" onAction="#chargerDialog" text="Ouvrir" />
                         <MenuItem mnemonicParsing="false" onAction="#sauvegarderDialog" text="Sauvegarder" />
                     <MenuItem mnemonicParsing="false" onAction="#exit" text="Quitter" />

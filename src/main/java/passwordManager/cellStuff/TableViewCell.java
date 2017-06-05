@@ -8,10 +8,10 @@ import passwordManager.model.Compte;
 /**
  * Nico on 05/06/2017.
  */
-public class EditingCell extends TableCell<Compte, String> {
+public class TableViewCell extends TableCell<Compte, String> {
     private TextField textField;
 
-    public EditingCell() {}
+    public TableViewCell() {}
 
     @Override
     public void startEdit() {
@@ -28,7 +28,7 @@ public class EditingCell extends TableCell<Compte, String> {
     public void cancelEdit() {
         super.cancelEdit();
 
-        setText((String) getItem());
+        setText(getItem());
         setGraphic(null);
     }
 

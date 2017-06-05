@@ -11,7 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-import passwordManager.cellStuff.EditingCell;
+import passwordManager.cellStuff.TableViewCell;
 import passwordManager.cellStuff.ListViewCell;
 import passwordManager.ImageManager;
 import passwordManager.PasswordManager;
@@ -31,17 +31,18 @@ import java.util.ResourceBundle;
 public class AppControleur implements Initializable {
     PasswordManager passwordManager;
     ImageManager im = new ImageManager();
+    private File fileOpened;
 
-    @FXML Button bAjoutDomaine;
-    @FXML Button bAjoutCompte;
+    @FXML private Button bAjoutDomaine;
+    @FXML private Button bAjoutCompte;
 
-    @FXML Button bSuppressionDomaine;
-    @FXML Button bSuppressionCompte;
+    @FXML private Button bSuppressionDomaine;
+    @FXML private Button bSuppressionCompte;
 
-    @FXML Button bModificationDomaine;
-    @FXML Button bModificationCompte;
+    @FXML private Button bModificationDomaine;
+    @FXML private Button bModificationCompte;
 
-    @FXML AnchorPane root;
+    @FXML private AnchorPane root;
     Donnees donnees;
     Domaine domaineSelectionne;
     private EditionCompteControleur editionCompte;
@@ -49,15 +50,15 @@ public class AppControleur implements Initializable {
     private Parent editionCompteVue;
     private Parent editionDomaineVue;
 
-    @FXML TextField filter;
+    @FXML private TextField filter;
 
-    @FXML ScrollPane sp;
-    @FXML ListView<Domaine> list;
+    @FXML private ScrollPane sp;
+    @FXML private ListView<Domaine> list;
 
-    @FXML TableView<Compte> detailsTable;
-    @FXML TableColumn<Compte, String> detailsColumnNom;
-    @FXML TableColumn<Compte, String> detailsColumnMdp;
-    @FXML Label detailsTitre;
+    @FXML private TableView<Compte> detailsTable;
+    @FXML private TableColumn<Compte, String> detailsColumnNom;
+    @FXML private TableColumn<Compte, String> detailsColumnMdp;
+    @FXML private Label detailsTitre;
 
     public AppControleur() {}
 
@@ -68,11 +69,18 @@ public class AppControleur implements Initializable {
         initEditionVues();
         initBoutons();
 
-        charger(new File("dataRead.txt"));
+        charger(new File("dataRead" + PasswordManager.SAVE_EXTENSION), false);
 
         // List bind
         list.prefWidthProperty().bind(sp.widthProperty().subtract(2));
         list.prefHeightProperty().bind(sp.heightProperty().subtract(2));
+    }
+
+    @FXML
+    private void nouvelleSauvegarde() {
+        donnees = new Donnees();
+        initUi();
+        passwordManager.stage.setTitle(PasswordManager.TITLE);
     }
 
     @FXML
@@ -122,7 +130,7 @@ public class AppControleur implements Initializable {
     private void sauvegarderDialog() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choisir un emplacement de sauvegarde");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sauvegarde", "*.txt"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sauvegarde", "*" + PasswordManager.SAVE_EXTENSION));
         fileChooser.setInitialDirectory(new File("."));
 
         File selectedFile = fileChooser.showSaveDialog(passwordManager.stage);
@@ -134,21 +142,26 @@ public class AppControleur implements Initializable {
     private void chargerDialog() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choisir un fichier de sauvegarde");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sauvegarde", "*.txt"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sauvegarde", "*" + PasswordManager.SAVE_EXTENSION));
         fileChooser.setInitialDirectory(new File("."));
 
         File selectedFile = fileChooser.showOpenDialog(passwordManager.stage);
         if (selectedFile != null) {
-            charger(selectedFile);
+            charger(selectedFile, true);
         }
     }
 
     private void sauvegarder(File file) {
         Utils.writeSaveData(donnees, file.getAbsolutePath());
     }
-    private void charger(File file) {
-        donnees = Utils.readSavedData(file.getAbsolutePath());
+    private void charger(File file, boolean encrypted) {
+        donnees = Utils.readSavedData(file.getAbsolutePath(), encrypted);
 
+        initUi();
+        fileOpened = file;
+    }
+
+    void initUi() {
         // Filter (http://code.makery.ch/blog/javafx-8-tableview-sorting-filtering/)
         FilteredList<Domaine> filteredList = new FilteredList<>(donnees.getDomaines(), p -> true);
         filter.textProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(domaine -> {
@@ -233,7 +246,7 @@ public class AppControleur implements Initializable {
 
         detailsTable.setEditable(true);
         Callback<TableColumn<Compte, String>, TableCell<Compte, String>> cellFactory
-                = (TableColumn<Compte, String> p) -> new EditingCell();
+                = (TableColumn<Compte, String> p) -> new TableViewCell();
         detailsTable.getSelectionModel().selectedItemProperty().addListener((l, ov, nv) -> {
             if (nv != null) {
                 bModificationCompte.setDisable(false);
@@ -276,6 +289,11 @@ public class AppControleur implements Initializable {
 
     public void setMain(PasswordManager m) {
         passwordManager = m;
+    }
+
+    public void finishLoad() {
+        passwordManager.stage.setTitle(PasswordManager.TITLE + " - " + fileOpened.getAbsolutePath());
+        list.getSelectionModel().selectFirst();
     }
 
     @FXML

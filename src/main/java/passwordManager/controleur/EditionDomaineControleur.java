@@ -20,22 +20,20 @@ import java.util.ResourceBundle;
 public class EditionDomaineControleur implements Initializable {
     private AppControleur app;
 
-    @FXML Label nomLabel;
-    @FXML Label domaineLabel;
+    @FXML private Label nomLabel;
+    @FXML private Label domaineLabel;
 
     private Domaine toEdit;
     private String iconeLocation;
     private boolean exists;
 
-    @FXML TextField nom;
-    @FXML TextField domaine;
-    @FXML ImageView icone;
-    @FXML TextArea notes;
+    @FXML private TextField nom;
+    @FXML private TextField domaine;
+    @FXML private ImageView icone;
+    @FXML private TextArea notes;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Init domaine ctrl");
-    }
+    public void initialize(URL location, ResourceBundle resources) {}
 
     private void finEdition(boolean ok) {
         if (ok) {

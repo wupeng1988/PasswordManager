@@ -43,11 +43,9 @@ public class ListViewCell extends ListCell<Domaine> {
     private void configureNom() {
         nom.getStyleClass().add(CLASS_NOM);
     }
-
     private void configureDomaine() {
         domaine.getStyleClass().add(CLASS_DOMAINE);
     }
-
     private void configureIcone() {
         icone.setFitHeight(32);
         icone.setFitWidth(32);
@@ -64,6 +62,8 @@ public class ListViewCell extends ListCell<Domaine> {
         setText(null);
         if (d.getIconeLocation() != null && !d.getIconeLocation().equals("")) { // location est set
             icone.setImage(im.getImage(d.getIconeLocation()));
+        } else {
+            icone.setImage(null);
         }
 
         if (icone.getImage() == null)
