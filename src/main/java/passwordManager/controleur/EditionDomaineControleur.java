@@ -1,5 +1,6 @@
 package passwordManager.controleur;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -7,6 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 import passwordManager.model.Domaine;
 
@@ -33,7 +35,16 @@ public class EditionDomaineControleur implements Initializable {
     @FXML private TextArea notes;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {}
+    public void initialize(URL location, ResourceBundle resources) {
+        nom.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                okEdition();
+        });
+        domaine.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                okEdition();
+        });
+    }
 
     private void finEdition(boolean ok) {
         if (ok) {
@@ -74,6 +85,8 @@ public class EditionDomaineControleur implements Initializable {
         icone.setImage(app.im.getImage(iconeLocation));
         notes.setText(d.getNotes());
         exists = true;
+
+        Platform.runLater(nom::requestFocus);
     }
 
     @FXML

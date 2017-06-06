@@ -1,10 +1,12 @@
 package passwordManager.controleur;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import passwordManager.model.Compte;
 
 import java.net.URL;
@@ -25,7 +27,16 @@ public class EditionCompteControleur implements Initializable {
     @FXML private TextArea notes;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {}
+    public void initialize(URL location, ResourceBundle resources) {
+        utilisateur.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                okEdition();
+        });
+        motDePasse.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                okEdition();
+        });
+    }
 
     void bindParent(AppControleur c) {
         app = c;
@@ -55,12 +66,16 @@ public class EditionCompteControleur implements Initializable {
     }
 
     void initCompte(Compte c) {
+        int level = app.donnees.getEncrytionLevel();
+        boolean autorise = app.donnees.isAutorise();
         toEdit = c;
-        titre.setText(c.getUtilisateur());
-        utilisateur.setText(c.getUtilisateur());
-        motDePasse.setText(c.getMotDePasse());
-        notes.setText(c.getNotes());
+        titre.setText((level > 1 && !autorise ? "Non autorisé" : c.getUtilisateur()));
+        utilisateur.setText((level > 1 && !autorise ? "*********" : c.getUtilisateur()));
+        motDePasse.setText((level > 0 && !autorise ? "*********" : c.getMotDePasse()));
+        notes.setText((level > 1 && !autorise ? "*********" : c.getNotes()));
         exists = true;
+
+        Platform.runLater(utilisateur::requestFocus);
     }
 
     void nouveauCompte() {

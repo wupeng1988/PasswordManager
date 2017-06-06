@@ -5,6 +5,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import passwordManager.Utils;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * Nico on 01/06/2017.
@@ -25,18 +30,70 @@ public class Domaine {
                 compte -> new Observable[] { compte.utilisateurProperty(), compte.motDePasseProperty() }
         );
     }
+    public Domaine(Scanner scanner, int level) {
+        this("");
+
+        String line;
+        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
+            setNom(line);
+
+        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
+            setDomaine(line);
+
+        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
+            setIconeLocation(line);
+
+        int nbLignesNotes = 0;
+        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
+            nbLignesNotes = Integer.parseInt(line);
+
+        while (nbLignesNotes-- > 0) {
+            if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
+                setNotes(getNotes() + line + "\n");
+            else
+                break;
+        }
+
+        int nbComptes = 0;
+        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
+            nbComptes = Integer.parseInt(line);
+
+        while (nbComptes-- > 0)
+            if (level < 3)
+                addCompte(new Compte(scanner, level));
+            else
+                new Compte(scanner, level);
+    }
+
+    void write(BufferedWriter bufferedWriter) throws IOException {
+        bufferedWriter.write((getNom().equals("") ? "null" : getNom()) + "\n");
+        bufferedWriter.write((getDomaine().equals("") ? "null" : getDomaine()) + "\n");
+        bufferedWriter.write((getIconeLocation().equals("") ? "null" : getIconeLocation()) + "\n");
+
+        if (!Utils.ligneVide(getNotes().trim())) {
+            String notesSplited[] = getNotes().trim().split("\n");
+            bufferedWriter.write(notesSplited.length + "\n");
+            bufferedWriter.write(getNotes().trim() + "\n");
+        } else {
+            bufferedWriter.write("0\n");
+        }
+
+        bufferedWriter.write(getComptes().size() + "\n");
+        for (Compte c : getComptes())
+            c.write(bufferedWriter);
+    }
 
     public void addCompte(Compte c) {
         if (!this.comptes.contains(c)) this.comptes.add(c);
     }
 
-    StringProperty domaineProperty() {
+    public StringProperty domaineProperty() {
         return domaine;
     }
-    StringProperty nomProperty() {
+    public StringProperty nomProperty() {
         return nom;
     }
-    StringProperty notesProperty() {
+    public StringProperty notesProperty() {
         return notes;
     }
     StringProperty iconeLocationProperty() {

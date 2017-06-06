@@ -2,6 +2,11 @@ package passwordManager.model;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import passwordManager.Utils;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * Nico on 01/06/2017.
@@ -11,10 +16,45 @@ public class Compte {
     private StringProperty motDePasse;
     private StringProperty notes;
 
+    public Compte(Scanner scanner, int level) {
+        this("", "");
+
+        String line;
+        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line) && level < 2)
+            setUtilisateur(line.trim());
+
+        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line) && level < 1)
+            setMotDePasse(line.trim());
+
+        int nbLignesNotes = 0;
+        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
+            nbLignesNotes = Integer.parseInt(line.trim());
+
+        while (nbLignesNotes-- > 0) {
+            if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
+                setNotes(getNotes() + line.trim() + "\n");
+            else
+                break;
+        }
+    }
     public Compte(String utilisateur, String motDePasse) {
         this.utilisateur = new SimpleStringProperty(utilisateur);
         this.motDePasse = new SimpleStringProperty(motDePasse);
         this.notes = new SimpleStringProperty("");
+    }
+
+    void write(BufferedWriter bufferedWriter) throws IOException {
+        bufferedWriter.write("\t" + getUtilisateur() + "\n");
+        bufferedWriter.write("\t" + getMotDePasse() + "\n");
+
+        if (!Utils.ligneVide(getNotes().trim())) {
+            String notesSplited[] = getNotes().trim().split("\n");
+            bufferedWriter.write("\t" + notesSplited.length + "\n");
+            for (String s : notesSplited)
+                bufferedWriter.write("\t" + s + "\n");
+        } else {
+            bufferedWriter.write("\t0\n");
+        }
     }
 
     StringProperty utilisateurProperty() {

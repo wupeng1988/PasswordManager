@@ -1,6 +1,7 @@
 package passwordManager.cellStuff;
 
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Cursor;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
 import passwordManager.model.Compte;
@@ -47,7 +48,8 @@ public class TableViewCell extends TableCell<Compte, String> {
                 setText(null);
                 setGraphic(textField);
             } else {
-                setText(getString());
+                setText((getString().equals("") ? "***********" : getString()));
+                setCursor(Cursor.HAND);
                 setGraphic(null);
             }
         }

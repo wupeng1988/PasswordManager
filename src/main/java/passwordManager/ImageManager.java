@@ -21,11 +21,17 @@ public class ImageManager {
         Image i = cache.get(location);
         if (i == null) {
             try {
-                if (!resource)
-                    i = new Image(new File(location).toURI().toURL().toExternalForm());
-                else
+                File f;
+                if (!resource) {
+                    f = new File(location);
+                    if (f.exists() && f.isFile())
+                        i = new Image(f.toURI().toURL().toExternalForm());
+                } else {
                     i = new Image(getClass().getResourceAsStream("/images/" + location));
-                cache.put(location, i);
+                }
+
+                if (i != null)
+                    cache.put(location, i);
             } catch (Exception e) {
                 e.printStackTrace();
             }

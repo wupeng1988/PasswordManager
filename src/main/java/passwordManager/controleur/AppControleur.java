@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
@@ -33,6 +34,8 @@ public class AppControleur implements Initializable {
     ImageManager im = new ImageManager();
     private File fileOpened;
 
+    @FXML private Button bEcraserFiltre;
+
     @FXML private Button bAjoutDomaine;
     @FXML private Button bAjoutCompte;
 
@@ -43,12 +46,16 @@ public class AppControleur implements Initializable {
     @FXML private Button bModificationCompte;
 
     @FXML private AnchorPane root;
+    @FXML private AnchorPane detailsRoot;
     Donnees donnees;
     Domaine domaineSelectionne;
     private EditionCompteControleur editionCompte;
     private EditionDomaineControleur editionDomaine;
+    private FichierInfoControleur fichierInfo;
     private Parent editionCompteVue;
     private Parent editionDomaineVue;
+    private Parent detailsIdle;
+    private Parent fichierInfoVue;
 
     @FXML private TextField filter;
 
@@ -60,16 +67,24 @@ public class AppControleur implements Initializable {
     @FXML private TableColumn<Compte, String> detailsColumnMdp;
     @FXML private Label detailsTitre;
 
-    public AppControleur() {}
+    @FXML private Label domaineLabel;
+    @FXML private Label nbComptesLabel;
+    @FXML private Label notesLabel;
+
+    @FXML private ImageView icone;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initDetailsTable();
         initList();
         initEditionVues();
+        initIdle();
         initBoutons();
 
-        charger(new File("dataRead" + PasswordManager.SAVE_EXTENSION), false);
+        detailsRoot.getChildren().add(detailsIdle);
+
+        charger(new File("dataRead" + PasswordManager.SAVE_EXTENSION));
+        sauvegarder(new File("dataWrite" + PasswordManager.SAVE_EXTENSION));
 
         // List bind
         list.prefWidthProperty().bind(sp.widthProperty().subtract(2));
@@ -77,9 +92,19 @@ public class AppControleur implements Initializable {
     }
 
     @FXML
-    private void nouvelleSauvegarde() {
+    private void modifierFichierInfo() {
+        fichierInfo.initData(donnees);
+        root.getChildren().add(fichierInfoVue);
+    }
+
+    @FXML
+    public void nouvelleSauvegarde() {
+        fileOpened = null;
+        bModificationDomaine.setDisable(true);
+        bSuppressionDomaine.setDisable(true);
         donnees = new Donnees();
         initUi();
+        detailsRoot.getChildren().add(detailsIdle);
         passwordManager.stage.setTitle(PasswordManager.TITLE);
     }
 
@@ -127,7 +152,7 @@ public class AppControleur implements Initializable {
     }
 
     @FXML
-    private void sauvegarderDialog() {
+    public void sauvegarderDialog() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choisir un emplacement de sauvegarde");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sauvegarde", "*" + PasswordManager.SAVE_EXTENSION));
@@ -136,10 +161,12 @@ public class AppControleur implements Initializable {
         File selectedFile = fileChooser.showSaveDialog(passwordManager.stage);
         if (selectedFile != null) {
             sauvegarder(selectedFile);
+            fileOpened = selectedFile;
+            finishLoad();
         }
     }
     @FXML
-    private void chargerDialog() {
+    public void chargerDialog() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choisir un fichier de sauvegarde");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sauvegarde", "*" + PasswordManager.SAVE_EXTENSION));
@@ -147,15 +174,27 @@ public class AppControleur implements Initializable {
 
         File selectedFile = fileChooser.showOpenDialog(passwordManager.stage);
         if (selectedFile != null) {
-            charger(selectedFile, true);
+            charger(selectedFile);
         }
+    }
+
+    @FXML
+    public void sauvegarderSc() { // shortcut
+        if (fileOpened == null) sauvegarderDialog();
+
+        sauvegarder(fileOpened);
+    }
+
+    @FXML
+    private void ecraserFiltre() {
+        filter.setText("");
     }
 
     private void sauvegarder(File file) {
         Utils.writeSaveData(donnees, file.getAbsolutePath());
     }
-    private void charger(File file, boolean encrypted) {
-        donnees = Utils.readSavedData(file.getAbsolutePath(), encrypted);
+    private void charger(File file) {
+        donnees = Utils.readSavedData(file.getAbsolutePath());
 
         initUi();
         fileOpened = file;
@@ -187,14 +226,21 @@ public class AppControleur implements Initializable {
     }
 
     void finEdition() {
-        root.getChildren().removeAll(editionCompteVue, editionDomaineVue);
+        root.getChildren().removeAll(editionCompteVue, editionDomaineVue, fichierInfoVue);
     }
 
     private void updateDomaine(Domaine d) {
         if (d == null || d.equals(domaineSelectionne)) return;
 
+        detailsRoot.getChildren().remove(detailsIdle);
+
         detailsTable.setItems(d.getComptes());
-        detailsTitre.setText(d.getNom());
+        detailsTitre.textProperty().bind(d.nomProperty());
+        domaineLabel.textProperty().bind(d.domaineProperty());
+        nbComptesLabel.setText("" + d.getComptes().size());
+        notesLabel.textProperty().bind(d.notesProperty());
+
+        icone.setImage(im.getImage(d.getIconeLocation()));
 
         domaineSelectionne = d;
 
@@ -209,6 +255,7 @@ public class AppControleur implements Initializable {
     private void initEditionVues() {
         FXMLLoader l1 = new FXMLLoader(getClass().getResource("/fxml/EditionCompteVue.fxml"));
         FXMLLoader l2 = new FXMLLoader(getClass().getResource("/fxml/EditionDomaineVue.fxml"));
+        FXMLLoader l3 = new FXMLLoader(getClass().getResource("/fxml/FichierInfo.fxml"));
 
         try {
             editionCompteVue = l1.load();
@@ -217,8 +264,12 @@ public class AppControleur implements Initializable {
             editionDomaineVue = l2.load();
             editionDomaine = l2.getController();
 
+            fichierInfoVue = l3.load();
+            fichierInfo = l3.getController();
+
             editionCompte.bindParent(this);
             editionDomaine.bindParent(this);
+            fichierInfo.bindParent(this);
 
             AnchorPane.setTopAnchor(editionCompteVue, 0.0);
             AnchorPane.setRightAnchor(editionCompteVue, 0.0);
@@ -229,6 +280,11 @@ public class AppControleur implements Initializable {
             AnchorPane.setRightAnchor(editionDomaineVue, 0.0);
             AnchorPane.setBottomAnchor(editionDomaineVue, 0.0);
             AnchorPane.setLeftAnchor(editionDomaineVue, 0.0);
+
+            AnchorPane.setTopAnchor(fichierInfoVue, 0.0);
+            AnchorPane.setRightAnchor(fichierInfoVue, 0.0);
+            AnchorPane.setBottomAnchor(fichierInfoVue, 0.0);
+            AnchorPane.setLeftAnchor(fichierInfoVue, 0.0);
         } catch (IOException io) {
             io.printStackTrace();
         }
@@ -244,7 +300,7 @@ public class AppControleur implements Initializable {
         detailsColumnNom.setCellValueFactory(new PropertyValueFactory<>("utilisateur"));
         detailsColumnMdp.setCellValueFactory(new PropertyValueFactory<>("motDePasse"));
 
-        detailsTable.setEditable(true);
+        detailsTable.setEditable(false);
         Callback<TableColumn<Compte, String>, TableCell<Compte, String>> cellFactory
                 = (TableColumn<Compte, String> p) -> new TableViewCell();
         detailsTable.getSelectionModel().selectedItemProperty().addListener((l, ov, nv) -> {
@@ -285,6 +341,19 @@ public class AppControleur implements Initializable {
         bModificationCompte.setGraphic(im.constructImageViewFrom("file.png", 24, 24, true));
         bSuppressionDomaine.setGraphic(im.constructImageViewFrom("error.png", 24, 24, true));
         bSuppressionCompte.setGraphic(im.constructImageViewFrom("error.png", 24, 24, true));
+
+        bEcraserFiltre.setText(null);
+        bEcraserFiltre.setGraphic(im.constructImageViewFrom("error.png", 16, 16, true));
+    }
+    private void initIdle() {
+        FXMLLoader l = new FXMLLoader(getClass().getResource("/fxml/DetailsIdle.fxml"));
+        try {
+            detailsIdle = l.load();
+            AnchorPane.setTopAnchor(detailsIdle, 0.0);
+            AnchorPane.setRightAnchor(detailsIdle, 0.0);
+            AnchorPane.setBottomAnchor(detailsIdle, 0.0);
+            AnchorPane.setLeftAnchor(detailsIdle, 0.0);
+        } catch (IOException ignored) {}
     }
 
     public void setMain(PasswordManager m) {

@@ -14,9 +14,10 @@
     -fx-font-size: 13;
 }
 
-TableView, ListView {
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
+TableView:focused, ListView:focused {
+    -fx-background-color: -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0, 1, 2;
+    //-fx-background-radius: 5, 4, 3;
 }
 
 .editionPane {
@@ -45,4 +46,24 @@ TableView, ListView {
 
 .titre {
     -fx-font-size: 42;
+}
+
+#detailsIdle {
+    -fx-background-color: white;
+}
+
+#detailsIdle > .titre {
+    -fx-font-size: 28;
+}
+
+.boutonMod {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-cursor: hand;
+}
+
+.filtreTF {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-cursor: text;
 }
