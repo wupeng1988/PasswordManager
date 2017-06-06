@@ -36,7 +36,7 @@ public class FichierInfoControleur implements Initializable {
 
     @FXML
     private void okEdition() {
-        app.donnees.setEncrytionLevel(encryptionLevel.getSelectionModel().getSelectedItem());
+        app.donneesActives.setEncrytionLevel(encryptionLevel.getSelectionModel().getSelectedItem());
         app.finEdition();
     }
 

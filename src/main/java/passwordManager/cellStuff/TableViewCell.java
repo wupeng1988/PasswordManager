@@ -68,7 +68,7 @@ public class TableViewCell extends TableCell<Compte, String> {
     }
 
     private String getString() {
-        return getItem() == null ? "" : getItem().toString();
+        return getItem() == null ? "" : getItem();
     }
 }
 

@@ -40,6 +40,7 @@ public class PasswordManager extends Application {
         app.setMain(this);
 
         Scene s = new Scene(root, WIDTH, HEIGHT);
+        s.getStylesheets().add(getClass().getResource("/stylesheets/bootstrap3.css").toExternalForm());
         s.getStylesheets().add(getClass().getResource("/stylesheets/style.css").toExternalForm());
 
         stage.setTitle(TITLE);
@@ -47,7 +48,7 @@ public class PasswordManager extends Application {
         initShortcuts();
 
         stage.show();
-        app.finishLoad();
+        app.initPhase2();
     }
 
     private void initShortcuts() {

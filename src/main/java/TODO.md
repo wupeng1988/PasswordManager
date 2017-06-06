@@ -9,6 +9,8 @@
 * Explications & about popups
 * Fichier de config (auto-load, etc)
 * Nouveau fichier: clean ui
+* Drag and drop (changer ordre)
+* Clic droit -> menu
 
 ## En plus
 * Thèmes

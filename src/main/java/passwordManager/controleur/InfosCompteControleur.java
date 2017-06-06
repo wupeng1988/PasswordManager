@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 /**
  * Nico on 05/06/2017.
  */
-public class EditionCompteControleur implements Initializable {
+public class InfosCompteControleur implements Initializable {
     private AppControleur app;
 
     private Compte toEdit;
@@ -66,8 +66,8 @@ public class EditionCompteControleur implements Initializable {
     }
 
     void initCompte(Compte c) {
-        int level = app.donnees.getEncrytionLevel();
-        boolean autorise = app.donnees.isAutorise();
+        int level = app.donneesActives.getEncrytionLevel();
+        boolean autorise = app.donneesActives.isAutorise();
         toEdit = c;
         titre.setText((level > 1 && !autorise ? "Non autorisé" : c.getUtilisateur()));
         utilisateur.setText((level > 1 && !autorise ? "*********" : c.getUtilisateur()));

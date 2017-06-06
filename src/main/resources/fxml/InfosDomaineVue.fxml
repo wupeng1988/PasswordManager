@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="editionPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.EditionDomaineControleur">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="editionPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.InfosDomaineControleur">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="editionBox" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <bottom>

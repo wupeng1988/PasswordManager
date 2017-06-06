@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 /**
  * Nico on 05/06/2017.
  */
-public class EditionDomaineControleur implements Initializable {
+public class InfosDomaineControleur implements Initializable {
     private AppControleur app;
 
     @FXML private Label nomLabel;
@@ -54,7 +54,7 @@ public class EditionDomaineControleur implements Initializable {
             toEdit.setNotes(notes.getText());
 
             if (!exists) {
-                app.donnees.addDomaine(toEdit);
+                app.donneesActives.addDomaine(toEdit);
             }
         }
 
@@ -82,7 +82,7 @@ public class EditionDomaineControleur implements Initializable {
         domaine.setText(d.getDomaine());
         domaineLabel.setText(d.getDomaine());
         iconeLocation = d.getIconeLocation();
-        icone.setImage(app.im.getImage(iconeLocation));
+        icone.setImage(app.imageManager.getImage(iconeLocation));
         notes.setText(d.getNotes());
         exists = true;
 
@@ -99,7 +99,7 @@ public class EditionDomaineControleur implements Initializable {
         );
         File fileSelected = fileChooser.showOpenDialog(app.passwordManager.stage);
         if (fileSelected != null) {
-            Image i = app.im.getImage(fileSelected.getAbsolutePath());
+            Image i = app.imageManager.getImage(fileSelected.getAbsolutePath());
             if (i != null) {
                 iconeLocation = fileSelected.getAbsolutePath();
                 icone.setImage(i);

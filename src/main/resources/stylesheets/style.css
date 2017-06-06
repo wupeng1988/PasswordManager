@@ -14,6 +14,10 @@
     -fx-font-size: 13;
 }
 
+Button, .menu-item, .menu-button {
+    -fx-cursor: hand;
+}
+
 TableView:focused, ListView:focused {
     -fx-background-color: -fx-outer-border, -fx-inner-border, -fx-body-color;
     -fx-background-insets: 0, 1, 2;
@@ -32,7 +36,6 @@ TableView:focused, ListView:focused {
 
 .listViewCell:hover {
     -fx-cursor: hand;
-    //-fx-background-color: yellow;
 }
 
 .listViewCell > .nom {
@@ -59,7 +62,11 @@ TableView:focused, ListView:focused {
 .boutonMod {
     -fx-background-radius: 0;
     -fx-border-radius: 0;
-    -fx-cursor: hand;
+}
+
+.boutonMod:focused {
+    -fx-background-color: -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0, 1, 2;
 }
 
 .filtreTF {
