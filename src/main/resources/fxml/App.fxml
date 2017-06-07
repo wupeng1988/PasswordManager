@@ -22,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.AppControleur">
+<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.App">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -37,15 +37,16 @@
                         <MenuItem fx:id="miSauvegarderVers" mnemonicParsing="false" onAction="#sauvegarderDialog" text="Sauvegarder vers..." />
                         <MenuItem fx:id="miAutoriser" mnemonicParsing="false" onAction="#autoriser" text="Autoriser" />
                         <MenuItem fx:id="miInformations" mnemonicParsing="false" onAction="#modifierFichierInfo" text="Informations" />
+                        <MenuItem fx:id="miStatistiques" mnemonicParsing="false" onAction="#menuDetailsIdle" text="Statistiques" />
                     <MenuItem fx:id="miQuitter" mnemonicParsing="false" onAction="#exit" text="Quitter" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edition">
                   <items>
-                        <MenuItem fx:id="miAjouter" mnemonicParsing="false" text="Ajouter..." />
-                        <MenuItem fx:id="miModifier" mnemonicParsing="false" text="Modifier" />
-                    <MenuItem fx:id="miSupprimer" mnemonicParsing="false" text="Supprimer" />
-                        <MenuItem fx:id="miParametres" mnemonicParsing="false" text="Paramètres" />
+                        <MenuItem fx:id="miAjouter" mnemonicParsing="false" onAction="#ajouterAuFocus" text="Ajouter" />
+                        <MenuItem fx:id="miModifier" mnemonicParsing="false" onAction="#modifierAuFocus" text="Modifier" />
+                    <MenuItem fx:id="miSupprimer" mnemonicParsing="false" onAction="#supprimerAuFocus" text="Supprimer" />
+                        <MenuItem fx:id="miParametres" mnemonicParsing="false" onAction="#montrerParametres" text="Paramètres" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Aide">
@@ -109,47 +110,49 @@
                            <children>
                               <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <top>
-                                    <BorderPane BorderPane.alignment="CENTER_LEFT">
+                                    <BorderPane fx:id="detailsTitrePane" BorderPane.alignment="CENTER_LEFT">
                                        <left>
-                                          <Label fx:id="lDetailsTitre" styleClass="titre" text="Titre" BorderPane.alignment="TOP_LEFT">
+                                          <Label fx:id="lDetailsTitre" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="titre" text="Titre" BorderPane.alignment="TOP_LEFT">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
                                        </left>
                                        <right>
-                                          <ImageView fx:id="ivDetailsIcone" fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+                                          <ImageView fx:id="ivDetailsIcone" fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                                             <BorderPane.margin>
+                                                <Insets left="16.0" />
+                                             </BorderPane.margin></ImageView>
                                        </right>
                                     </BorderPane>
                                  </top>
                                  <center>
-                                    <GridPane BorderPane.alignment="CENTER">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                                       </rowConstraints>
+                                    <VBox spacing="10.0" BorderPane.alignment="CENTER">
                                        <children>
                                           <GridPane>
                                             <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" />
+                                              <ColumnConstraints hgrow="ALWAYS" />
+                                                <ColumnConstraints hgrow="ALWAYS" minWidth="250.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="20.0" vgrow="ALWAYS" />
+                                              <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <Label text="Domaine" />
-                                                <Label text="Nombre de comptes" GridPane.rowIndex="1" />
-                                                <Label fx:id="lDetailsDomaine" text="Bla" GridPane.columnIndex="1" />
-                                                <Label fx:id="lDetailsComptesTaille" text="Bla" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Label styleClass="lEmphase" text="Domaine" GridPane.valignment="TOP" />
+                                                <Label styleClass="lEmphase" text="Nombre de comptes" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                                                <Label fx:id="lDetailsDomaine" text="Bla" GridPane.columnIndex="1" GridPane.valignment="TOP" />
+                                                <Label fx:id="lDetailsComptesTaille" text="Bla" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                                                <Label styleClass="lEmphase" text="Notes" GridPane.columnIndex="2" GridPane.valignment="TOP" />
+                                                <ScrollPane maxHeight="200.0" minHeight="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                                                   <content>
+                                                      <Label fx:id="lDetailsNotes" text="Bla" />
+                                                   </content>
+                                                </ScrollPane>
                                              </children>
                                           </GridPane>
-                                          <HBox GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                                          <HBox VBox.vgrow="ALWAYS">
                                              <children>
                                                 <TableView fx:id="tvComptes" prefHeight="212.0" prefWidth="501.0" HBox.hgrow="ALWAYS">
                                                   <columns>
@@ -182,18 +185,8 @@
                                                 </BorderPane>
                                              </children>
                                           </HBox>
-                                          <VBox GridPane.columnIndex="1">
-                                             <children>
-                                                <Label text="Notes" />
-                                                <ScrollPane maxHeight="200.0">
-                                                   <content>
-                                                      <Label fx:id="lDetailsNotes" text="Bla" />
-                                                   </content>
-                                                </ScrollPane>
-                                             </children>
-                                          </VBox>
                                        </children>
-                                    </GridPane>
+                                    </VBox>
                                  </center>
                                  <bottom>
                                     <HBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">

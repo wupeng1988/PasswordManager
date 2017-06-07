@@ -28,7 +28,10 @@ public class Domaine {
         this.notes = new SimpleStringProperty("");
         this.iconeLocation = new SimpleStringProperty("");
         this.comptes = FXCollections.observableArrayList(
-                compte -> new Observable[] { compte.utilisateurProperty(), compte.motDePasseProperty() }
+                compte -> new Observable[] {
+                        compte.utilisateurProperty(),
+                        compte.motDePasseProperty()
+                }
         );
     }
     public Domaine(Scanner scanner, int level, Crypto crypto) {
@@ -123,18 +126,10 @@ public class Domaine {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Domaine domaine = (Domaine) o;
 
         return getNom().equals(domaine.getNom()) && getComptes().equals(domaine.getComptes());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getNom().hashCode();
-        result = 31 * result + getComptes().hashCode();
-        return result;
     }
 }

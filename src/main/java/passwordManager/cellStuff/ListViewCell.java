@@ -17,15 +17,15 @@ public class ListViewCell extends ListCell<Domaine> {
     private final static String CLASS_NOM = "nom";
     private final static String CLASS_DOMAINE = "domaine";
 
-    private ImageManager im;
+    private ImageManager imageManager;
 
     private GridPane gridPane = new GridPane();
     private ImageView icone = new ImageView();
     private Label nom = new Label();
     private Label domaine = new Label();
 
-    public ListViewCell(ImageManager im) {
-        this.im = im;
+    public ListViewCell(ImageManager imageManager) {
+        this.imageManager = imageManager;
 
         configureGridPane();
         configureIcone();
@@ -61,13 +61,13 @@ public class ListViewCell extends ListCell<Domaine> {
     private void ajoutContenu(Domaine d) {
         setText(null);
         if (d.getIconeLocation() != null && !d.getIconeLocation().equals("")) { // location est set
-            icone.setImage(im.getImage(d.getIconeLocation()));
+            icone.setImage(imageManager.getImage(d.getIconeLocation()));
         } else {
             icone.setImage(null);
         }
 
         if (icone.getImage() == null)
-            icone.setImage(im.getImage(ImageManager.ICONE_PLACEHOLDER, true));
+            icone.setImage(imageManager.getImage(ImageManager.ICONE_PLACEHOLDER, true));
 
         nom.setText(d.getNom());
         domaine.setText(d.getDomaine());

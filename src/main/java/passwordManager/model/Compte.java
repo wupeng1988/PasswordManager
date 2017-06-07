@@ -80,18 +80,10 @@ public class Compte {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Compte compte = (Compte) o;
 
         return getUtilisateur().equals(compte.getUtilisateur()) && getMotDePasse().equals(compte.getMotDePasse());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getUtilisateur().hashCode();
-        result = 31 * result + getMotDePasse().hashCode();
-        return result;
     }
 }

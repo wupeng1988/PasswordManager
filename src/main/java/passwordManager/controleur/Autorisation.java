@@ -3,6 +3,7 @@ package passwordManager.controleur;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import passwordManager.Crypto;
 
 import java.net.URL;
@@ -11,13 +12,19 @@ import java.util.ResourceBundle;
 /**
  * Nico on 07/06/2017.
  */
-public class AutorisationControleur implements Initializable {
-    private AppControleur app;
+public class Autorisation implements Initializable {
+    private App app;
 
-    @FXML private TextField motDePasse;
+    @FXML private TextField tfMotDePasse;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {}
+    public void initialize(URL location, ResourceBundle resources) {
+        tfMotDePasse.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                ok();
+            }
+        });
+    }
 
     private void autorisation(String mdp) {
         try {
@@ -34,7 +41,7 @@ public class AutorisationControleur implements Initializable {
 
     @FXML
     private void ok() {
-        autorisation(motDePasse.getText());
+        autorisation(tfMotDePasse.getText());
     }
 
     @FXML
@@ -42,7 +49,7 @@ public class AutorisationControleur implements Initializable {
         app.finEdition();
     }
 
-    void bindParent(AppControleur a) {
+    void bindParent(App a) {
         app = a;
     }
 }

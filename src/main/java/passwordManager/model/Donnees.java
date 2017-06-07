@@ -24,9 +24,14 @@ public class Donnees {
     public Donnees() {
         this(null);
     }
-    public Donnees(ArrayList<Domaine> aDomaines) {
+    private Donnees(ArrayList<Domaine> aDomaines) {
         domaines = FXCollections.observableArrayList(
-                domaine -> new Observable[] { domaine.nomProperty(), domaine.domaineProperty(), domaine.iconeLocationProperty() }
+                domaine -> new Observable[] {
+                        domaine.nomProperty(),
+                        domaine.domaineProperty(),
+                        domaine.iconeLocationProperty(),
+                        domaine.iconeLocationProperty()
+                }
         );
 
         if (aDomaines != null)
@@ -41,7 +46,7 @@ public class Donnees {
         Donnees donnees = new Donnees();
 
         String line;
-        while ((line = scanner.nextLine()) != null && (line.trim().length() == 0 || (line.trim().length() > 1 && line.substring(0, 2).equals("##")))) {} // Avancer jusqu'aux données utiles
+        while ((line = scanner.nextLine()) != null && (line.trim().length() == 0 || (line.trim().length() > 1 && line.substring(0, 2).equals("##")))); // Avancer jusqu'aux données utiles
 
         if (!Utils.ligneVide(line))
             donnees.encrytionLevel = Integer.parseInt(line);
@@ -92,5 +97,20 @@ public class Donnees {
     }
     public void addDomaine(Domaine d) {
         if (!domaines.contains(d)) domaines.add(d);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Donnees donnees = (Donnees) o;
+
+        if (getEncrytionLevel() != donnees.getEncrytionLevel()) return false;
+        if (isAutorise() != donnees.isAutorise()) return false;
+        if (!(donnees.getDomaines().size() == getDomaines().size())) return false;
+        for (Domaine d : getDomaines())
+            for (Domaine od : donnees.getDomaines())
+                if (!od.equals(d)) return false;
+        return getMotDePasse() != null ? getMotDePasse().equals(donnees.getMotDePasse()) : donnees.getMotDePasse() == null;
     }
 }

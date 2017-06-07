@@ -11,10 +11,10 @@
 
 .root {
     -fx-font-family: Raleway;
-    -fx-font-size: 13;
+    -fx-font-size: 14;
 }
 
-Button, ComboBox, .menu-item, .menu-button {
+Button, ComboBox, ToggleButton, DatePicker, ColorPicker, .menu-item, .menu-button {
     -fx-cursor: hand;
 }
 
@@ -22,6 +22,10 @@ TableView:focused, ListView:focused {
     -fx-background-color: -fx-outer-border, -fx-inner-border, -fx-body-color;
     -fx-background-insets: 0, 1, 2;
     //-fx-background-radius: 5, 4, 3;
+}
+
+.lEmphase {
+    -fx-font-weight: bold;
 }
 
 .editionPane {
@@ -51,11 +55,11 @@ TableView:focused, ListView:focused {
     -fx-font-size: 42;
 }
 
-#detailsIdle {
+#detailsIdleVue {
     -fx-background-color: white;
 }
 
-#detailsIdle > .titre {
+#detailsIdleVue > .titre {
     -fx-font-size: 28;
 }
 

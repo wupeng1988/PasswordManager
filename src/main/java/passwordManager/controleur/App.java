@@ -1,6 +1,7 @@
 package passwordManager.controleur;
 
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import passwordManager.Crypto;
@@ -29,12 +31,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 /**
  * Nico on 05/06/2017.
  */
-public class AppControleur implements Initializable {
+public class App implements Initializable {
     PasswordManager passwordManager;
     ImageManager imageManager = new ImageManager();
     File fichierOuvert = null;
@@ -43,17 +46,24 @@ public class AppControleur implements Initializable {
     Domaine domaineSelectionne = null;
     Compte compteSelectionne = null;
 
+    Random random = new Random();
+
     public boolean inOptions = false;
 
-    private InfosCompteControleur infosCompte;
-    private InfosDomaineControleur infosDomaine;
-    private FichierInfoControleur fichierInfo;
-    private AutorisationControleur autorisationControleur;
+    private InfosCompte infosCompteControleur;
+    private InfosDomaine infosDomaineControleur;
+    private FichierInfo fichierInfoControleur;
+    private Autorisation autorisationControleur;
+    private DetailsIdle detailsIdleControleur;
+    private Confirmation confirmationControleur;
+    private Parametres parametresControleur;
     private Parent infosCompteVue;
     private Parent infosDomaineVue;
-    private Parent detailsIdle;
+    private Parent detailsIdleVue;
     private Parent fichierInfoVue;
     private Parent autorisationVue;
+    private Parent confirmationVue;
+    private Parent parametresVue;
 
     @FXML private MenuItem miNouveau;
     @FXML private MenuItem miFermer;
@@ -62,6 +72,7 @@ public class AppControleur implements Initializable {
     @FXML private MenuItem miSauvegarderVers;
     @FXML private MenuItem miAutoriser;
     @FXML private MenuItem miInformations;
+    @FXML private MenuItem miStatistiques;
     @FXML private MenuItem miQuitter;
 
     @FXML private MenuItem miAjouter;
@@ -94,6 +105,7 @@ public class AppControleur implements Initializable {
     @FXML private AnchorPane root;
     @FXML private AnchorPane detailsRoot;
     @FXML private BorderPane bpEtat;
+    @FXML private BorderPane detailsTitrePane;
 
     @FXML private TextField tfFiltre;
 
@@ -115,6 +127,8 @@ public class AppControleur implements Initializable {
     // Phase 1: initUi
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        lDetailsTitre.maxWidthProperty().bind(detailsTitrePane.widthProperty().subtract(72));
+
         initPhase1();
     }
 
@@ -123,47 +137,48 @@ public class AppControleur implements Initializable {
         initList();
         initDetailsTable();
         initBoutons();
-        initIdle();
         initEtat();
-
-        miSauvegarder.setDisable(true);
-        miAutoriser.setDisable(true);
-
-        miAjouter.setDisable(true);
-        miModifier.setDisable(true);
-        miSupprimer.setDisable(true);
-
-        detailsRoot.getChildren().add(detailsIdle);
     }
 
     private void initInfosVue() {
-        FXMLLoader fxmlLoaderInfosCompte = new FXMLLoader(getClass().getResource("/fxml/InfosCompteVue.fxml"));
-        FXMLLoader fxmlLoaderInfosDomaine = new FXMLLoader(getClass().getResource("/fxml/InfosDomaineVue.fxml"));
-        FXMLLoader fxmlLoaderFichierInfo = new FXMLLoader(getClass().getResource("/fxml/FichierInfo.fxml"));
-        FXMLLoader fxmlLoaderAutorisation = new FXMLLoader(getClass().getResource("/fxml/AutorisationVue.fxml"));
+        FXMLLoader fxmlLoaderInfosCompte = new FXMLLoader(getClass().getResource(PasswordManager.FXML_INFOSCOMPTE));
+        FXMLLoader fxmlLoaderInfosDomaine = new FXMLLoader(getClass().getResource(PasswordManager.FXML_INFOSDOMAINE));
+        FXMLLoader fxmlLoaderFichierInfo = new FXMLLoader(getClass().getResource(PasswordManager.FXML_FICHIERINFO));
+        FXMLLoader fxmlLoaderAutorisation = new FXMLLoader(getClass().getResource(PasswordManager.FXML_AUTORISATION));
+        FXMLLoader fxmlLoaderDetailsIdle = new FXMLLoader(getClass().getResource(PasswordManager.FXML_DETAILSIDLE));
+        FXMLLoader fxmlLoaderConfimation = new FXMLLoader(getClass().getResource(PasswordManager.FXML_CONFIRMATION));
+        FXMLLoader fxmlLoaderParametres = new FXMLLoader(getClass().getResource(PasswordManager.FXML_PARAMETRES));
 
         try {
             infosCompteVue = fxmlLoaderInfosCompte.load();
-            infosCompte = fxmlLoaderInfosCompte.getController();
+            infosCompteControleur = fxmlLoaderInfosCompte.getController();
 
             infosDomaineVue = fxmlLoaderInfosDomaine.load();
-            infosDomaine = fxmlLoaderInfosDomaine.getController();
+            infosDomaineControleur = fxmlLoaderInfosDomaine.getController();
 
             fichierInfoVue = fxmlLoaderFichierInfo.load();
-            fichierInfo = fxmlLoaderFichierInfo.getController();
+            fichierInfoControleur = fxmlLoaderFichierInfo.getController();
 
             autorisationVue = fxmlLoaderAutorisation.load();
             autorisationControleur = fxmlLoaderAutorisation.getController();
 
-            infosCompte.bindParent(this);
-            infosDomaine.bindParent(this);
-            fichierInfo.bindParent(this);
-            autorisationControleur.bindParent(this);
+            detailsIdleVue = fxmlLoaderDetailsIdle.load();
+            detailsIdleControleur = fxmlLoaderDetailsIdle.getController();
 
-            setAnchor(infosCompteVue, .0, .0, .0, .0);
-            setAnchor(infosDomaineVue, .0, .0, .0, .0);
-            setAnchor(fichierInfoVue, .0, .0, .0, .0);
-            setAnchor(autorisationVue, .0, .0, .0, .0);
+            confirmationVue = fxmlLoaderConfimation.load();
+            confirmationControleur = fxmlLoaderConfimation.getController();
+
+            parametresVue = fxmlLoaderParametres.load();
+            parametresControleur = fxmlLoaderParametres.getController();
+
+            infosCompteControleur.bindParent(this);
+            infosDomaineControleur.bindParent(this);
+            fichierInfoControleur.bindParent(this);
+            autorisationControleur.bindParent(this);
+            confirmationControleur.bindParent(this);
+            parametresControleur.bindParent(this);
+
+            setAnchor(infosCompteVue, infosDomaineVue, fichierInfoVue, autorisationVue, detailsIdleVue, confirmationVue, parametresVue);
         } catch (IOException io) {
             io.printStackTrace();
         }
@@ -247,13 +262,6 @@ public class AppControleur implements Initializable {
         bEcraserFiltre.setText(null);
         bEcraserFiltre.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_REMOVE, 16, 16, true));
     }
-    private void initIdle() {
-        FXMLLoader l = new FXMLLoader(getClass().getResource("/fxml/DetailsIdle.fxml"));
-        try {
-            detailsIdle = l.load();
-            setAnchor(detailsIdle, .0, .0, .0, .0);
-        } catch (IOException ignored) {}
-    }
     private void initEtat() {
         lEtat.setText("Bienvenue!");
         bpEtat.getStyleClass().add("bpEtatA");
@@ -270,14 +278,22 @@ public class AppControleur implements Initializable {
         nouvelleSauvegarde();
     }
 
+    private boolean addIfNotPresent(Pane pane, Node n) {
+        if (pane.getChildren().contains(n)) return false;
+
+        pane.getChildren().add(n);
+        return true;
+    }
+
     private void updateControles() {
         miNouveau.setDisable(false);
         miFermer.setDisable(true);
         miOuvrir.setDisable(false);
         miSauvegarder.setDisable(true);
-        miSauvegarderVers.setDisable(false);
+        miSauvegarderVers.setDisable(true);
         miAutoriser.setDisable(true);
         miInformations.setDisable(false);
+        miStatistiques.setDisable(false);
         miQuitter.setDisable(false);
 
         miAjouter.setDisable(true);
@@ -303,11 +319,27 @@ public class AppControleur implements Initializable {
         bDescendreDomaine.setDisable(true);
         bDescendreCompte.setDisable(true);
 
+        if (tvComptes.isFocused() || tvComptes.getSelectionModel().getSelectedIndex() > -1) {
+            miAjouter.setDisable(false);
+            if (compteSelectionne != null) {
+                miModifier.setDisable(false);
+                miSupprimer.setDisable(false);
+            }
+        } else if (lvDomaines.isFocused() || lvDomaines.getSelectionModel().getSelectedIndex() > -1) {
+            miAjouter.setDisable(false);
+            if (domaineSelectionne != null) {
+                miModifier.setDisable(false);
+                miSupprimer.setDisable(false);
+            }
+        }
+
+        if (detailsRoot.getChildren().contains(detailsIdleVue)) {
+            miStatistiques.setDisable(true);
+        }
+
         if (donneesActives.isAutorise()) {
             bAjoutDomaine.setDisable(false);
             bAjoutCompte.setDisable(false);
-
-            miAjouter.setDisable(false);
         } else if (donneesActives.getEncrytionLevel() > 0) {
             miAutoriser.setDisable(false);
         }
@@ -328,8 +360,44 @@ public class AppControleur implements Initializable {
             bDescendreCompte.setDisable(!(domaineSelectionne.getComptes().indexOf(compteSelectionne) < domaineSelectionne.getComptes().size() - 1));
         }
 
-        if (fichierOuvert != null) {
-            miSauvegarder.setDisable(false);
+        if (donneesActives.isAutorise()) {
+            if (fichierOuvert != null) {
+                miSauvegarder.setDisable(false);
+            }
+
+            miSauvegarderVers.setDisable(false);
+        }
+    }
+    private void updateUi() {
+        if (lvDomaines.getItems().size() == 0) {
+            montrerDetailsIdle();
+        }
+
+        updateControles();
+    }
+
+    @FXML
+    private void ajouterAuFocus() {
+        if (tvComptes.isFocused()) {
+            ajoutCompte();
+        } else if (lvDomaines.isFocused()) {
+            ajoutDomaine();
+        }
+    }
+    @FXML
+    private void modifierAuFocus() {
+        if (tvComptes.isFocused()) {
+            modificationCompte();
+        } else if (lvDomaines.isFocused()) {
+            modificationDomaine();
+        }
+    }
+    @FXML
+    private void supprimerAuFocus() {
+        if (tvComptes.isFocused()) {
+            suppressionCompte();
+        } else if (lvDomaines.isFocused()) {
+            suppressionDomaine();
         }
     }
 
@@ -342,6 +410,48 @@ public class AppControleur implements Initializable {
 
         Collections.swap(donneesActives.getDomaines(), li - 1, li);
         lvDomaines.getSelectionModel().select(li - 1);
+    }
+
+    private void deselection(int level) { // level = 1 : déselection de domaine, 2 : déselection de domaine + compte
+        if (level > 0 && tvComptes.getSelectionModel().getSelectedItems() != null) {
+            tvComptes.getSelectionModel().clearSelection();
+            compteSelectionne = null;
+        }
+
+        if (level > 1 && lvDomaines.getSelectionModel().getSelectedItem() != null) {
+            lvDomaines.getSelectionModel().clearSelection();
+            domaineSelectionne = null;
+        }
+    }
+
+    void selectionDomaine(Domaine d) {
+        if (lvDomaines.getItems().contains(d)) {
+            lvDomaines.getSelectionModel().select(d);
+            domaineSelectionne = d;
+        }
+    }
+
+    void selectionCompte(Compte c) {
+        if (tvComptes.getItems().contains(c)) {
+            tvComptes.getSelectionModel().select(c);
+            compteSelectionne = c;
+        }
+    }
+
+    @FXML
+    private void menuDetailsIdle() {
+        montrerDetailsIdle();
+        updateUi();
+    }
+    private void montrerDetailsIdle() {
+        addIfNotPresent(detailsRoot, detailsIdleVue);
+        detailsIdleControleur.initDonnees(donneesActives);
+        deselection(2);
+    }
+
+    @FXML
+    private void montrerParametres() {
+        montrerOption(parametresVue);
     }
 
     @FXML
@@ -381,7 +491,7 @@ public class AppControleur implements Initializable {
     private void modifierFichierInfo() {
         if (donneesActives == null) return;
 
-        fichierInfo.initData(donneesActives);
+        fichierInfoControleur.initData(donneesActives);
         montrerOption(fichierInfoVue);
     }
 
@@ -405,8 +515,6 @@ public class AppControleur implements Initializable {
 
         initUi();
         setTitre();
-
-        if (!detailsRoot.getChildren().contains(detailsIdle)) detailsRoot.getChildren().add(detailsIdle);
     }
 
     @FXML
@@ -417,8 +525,8 @@ public class AppControleur implements Initializable {
             return;
         }
 
-        infosDomaine.initDomaine(domaineSelectionne);
         montrerOption(infosDomaineVue);
+        infosDomaineControleur.initDomaine(domaineSelectionne);
     }
     @FXML
     private void modificationCompte() {
@@ -428,32 +536,42 @@ public class AppControleur implements Initializable {
             return;
         }
 
-        infosCompte.initCompte(compteSelectionne);
         montrerOption(infosCompteVue);
+        infosCompteControleur.initCompte(compteSelectionne);
     }
 
     @FXML
     private void ajoutDomaine() {
-        infosDomaine.nouveauDomaine();
-        root.getChildren().add(infosDomaineVue);
+        montrerOption(infosDomaineVue);
+        infosDomaineControleur.nouveauDomaine();
     }
     @FXML
     private void ajoutCompte() {
-        infosCompte.nouveauCompte();
-        root.getChildren().add(infosCompteVue);
+        montrerOption(infosCompteVue);
+        infosCompteControleur.nouveauCompte();
     }
 
     @FXML
     private void suppressionDomaine() {
         if (domaineSelectionne == null) return;
 
-        donneesActives.getDomaines().remove(domaineSelectionne);
+        montrerOption(confirmationVue);
+        confirmationControleur.initObject(domaineSelectionne);
     }
     @FXML
     private void suppressionCompte() {
         if (compteSelectionne == null) return;
 
-        domaineSelectionne.getComptes().remove(compteSelectionne);
+        montrerOption(confirmationVue);
+        confirmationControleur.initObject(compteSelectionne);
+    }
+
+    void suppression(Object o) {
+        if (o instanceof Domaine) {
+            donneesActives.getDomaines().remove(domaineSelectionne);
+        } else if (o instanceof Compte) {
+            domaineSelectionne.getComptes().remove(compteSelectionne);
+        }
     }
 
     @FXML
@@ -532,8 +650,6 @@ public class AppControleur implements Initializable {
     }
 
     void initUi() {
-        updateControles();
-
         bpEtat.getStyleClass().clear();
         bpEtat.getStyleClass().add((donneesActives.getEncrytionLevel() > 0 && !donneesActives.isAutorise() ? "bpEtatNA" : "bpEtatA"));
         if (fichierOuvert != null)
@@ -542,7 +658,7 @@ public class AppControleur implements Initializable {
             lEtat.setText("Nouveau fichier");
         setTitre();
         Platform.runLater(lvDomaines::requestFocus);
-        if (!detailsRoot.getChildren().contains(detailsIdle)) detailsRoot.getChildren().add(detailsIdle);
+        montrerDetailsIdle();
 
         // Filter (http://code.makery.ch/blog/javafx-8-tableview-sorting-filtering/)
         FilteredList<Domaine> filteredList = new FilteredList<>(donneesActives.getDomaines(), p -> true);
@@ -566,10 +682,20 @@ public class AppControleur implements Initializable {
         //sortedList.comparatorProperty().bind(truc.comparatorProperty());
 
         lvDomaines.setItems(filteredList);
+        filteredList.addListener((InvalidationListener) observable -> updateUi());
+
+        updateUi();
     }
 
     void finEdition() {
-        root.getChildren().removeAll(infosCompteVue, infosDomaineVue, fichierInfoVue, autorisationVue);
+        root.getChildren().removeAll(
+                infosCompteVue,
+                infosDomaineVue,
+                fichierInfoVue,
+                autorisationVue,
+                confirmationVue,
+                parametresVue
+        );
         inOptions = false;
     }
 
@@ -579,7 +705,7 @@ public class AppControleur implements Initializable {
         domaineSelectionne = d;
         compteSelectionne = null;
 
-        detailsRoot.getChildren().remove(detailsIdle);
+        detailsRoot.getChildren().remove(detailsIdleVue);
 
         tvComptes.setItems(d.getComptes());
         lDetailsTitre.textProperty().bind(d.nomProperty());
@@ -589,14 +715,14 @@ public class AppControleur implements Initializable {
 
         ivDetailsIcone.setImage(imageManager.getImage(d.getIconeLocation()));
 
-        updateControles();
+        updateUi();
     }
     private void updateCompte(Compte c) {
         if (c == null || c.equals(compteSelectionne)) return;
 
         compteSelectionne = c;
 
-        updateControles();
+        updateUi();
     }
 
     public void setMain(PasswordManager m) {
@@ -614,6 +740,13 @@ public class AppControleur implements Initializable {
         Platform.exit();
     }
 
+    private void setAnchor(Node n) {
+        setAnchor(n, .0, .0, .0, .0);
+    }
+    private void setAnchor(Node ...n) {
+        for (Node ns : n)
+            setAnchor(ns);
+    }
     private void setAnchor(Node n, double t, double r, double b, double l) {
         AnchorPane.setTopAnchor(n, t);
         AnchorPane.setRightAnchor(n, r);

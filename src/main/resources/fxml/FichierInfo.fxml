@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="editionPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.FichierInfoControleur">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="editionPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.FichierInfo">
    <children>
       <BorderPane layoutX="182.0" layoutY="60.0" prefHeight="200.0" prefWidth="200.0" styleClass="editionBox" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <padding>
@@ -24,7 +24,7 @@
          <bottom>
             <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <buttons>
-                <Button fx:id="ok" mnemonicParsing="false" onAction="#okEdition" text="Ok" />
+                <Button fx:id="bOk" mnemonicParsing="false" onAction="#okEdition" text="Ok" />
                   <Button mnemonicParsing="false" onAction="#annulerEdition" text="Annuler" />
               </buttons>
             </ButtonBar>
@@ -42,11 +42,11 @@
               </rowConstraints>
                <children>
                   <Label text="Niveau d'encryption" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="encryptionLevel" prefWidth="1000.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="cbEncryptionLevel" prefWidth="1000.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Mot de passe" GridPane.rowIndex="2" />
-                  <TextField fx:id="motDePasse" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="tfMotDePasse" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label text="Autorisé" />
-                  <Label fx:id="autorise" text="Oui/Non" GridPane.columnIndex="1" />
+                  <Label fx:id="lAutorise" text="Oui/Non" GridPane.columnIndex="1" />
                </children>
             </GridPane>
          </center>
