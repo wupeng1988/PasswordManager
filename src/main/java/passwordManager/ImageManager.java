@@ -10,6 +10,13 @@ import java.util.HashMap;
  * Nico on 05/06/2017.
  */
 public class ImageManager {
+    public static final String ICONE_ADD = "add.png";
+    public static final String ICONE_REMOVE = "remove.png";
+    public static final String ICONE_INFO = "information.png";
+    public static final String ICONE_PLACEHOLDER = "question-sign.png";
+    public static final String ICONE_UP = "arrow-up.png";
+    public static final String ICONE_DOWN = "arrow-down.png";
+
     private HashMap<String, Image> cache = new HashMap<>();
 
     public ImageManager() {}

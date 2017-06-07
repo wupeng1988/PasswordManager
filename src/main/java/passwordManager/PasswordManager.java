@@ -53,14 +53,16 @@ public class PasswordManager extends Application {
 
     private void initShortcuts() {
         stage.getScene().setOnKeyPressed(event -> {
-            if (ctrlS.match(event)) {
-                app.sauvegarderSc();
-            } else if (ctrlShiftS.match(event)) {
-                app.sauvegarderDialog();
-            } else if (ctrlO.match(event)) {
-                app.chargerDialog();
-            } else if (ctrlN.match(event)) {
-                app.nouvelleSauvegarde();
+            if (!app.inOptions) {
+                if (ctrlS.match(event)) {
+                    app.sauvegarderSc();
+                } else if (ctrlShiftS.match(event)) {
+                    app.sauvegarderDialog();
+                } else if (ctrlO.match(event)) {
+                    app.chargerDialog();
+                } else if (ctrlN.match(event)) {
+                    app.nouvelleSauvegarde();
+                }
             }
         });
     }

@@ -3,6 +3,7 @@ package passwordManager.model;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import passwordManager.Crypto;
 import passwordManager.Utils;
 
 import java.io.BufferedWriter;
@@ -36,7 +37,7 @@ public class Donnees {
         motDePasse = "";
     }
 
-    public static Donnees read(Scanner scanner) {
+    public static Donnees read(Scanner scanner, Crypto crypto) {
         Donnees donnees = new Donnees();
 
         String line;
@@ -45,27 +46,25 @@ public class Donnees {
         if (!Utils.ligneVide(line))
             donnees.encrytionLevel = Integer.parseInt(line);
 
-        if (donnees.encrytionLevel > 0)
+        if (donnees.encrytionLevel > 0 && crypto == null)
             donnees.setAutorise(false);
 
-        if (donnees.encrytionLevel == 4)
+        if (donnees.encrytionLevel == 3 && crypto == null)
             return donnees;
 
-        int nbDomaines = 0;
-        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
-            nbDomaines = Integer.parseInt(line);
+        int nbDomaines = Integer.parseInt(Utils.decryptFinal(scanner.nextLine(), donnees.getEncrytionLevel(), 3, crypto));
 
         while (nbDomaines-- > 0)
-            donnees.addDomaine(new Domaine(scanner, donnees.getEncrytionLevel()));
+            donnees.addDomaine(new Domaine(scanner, donnees.getEncrytionLevel(), crypto));
 
         return donnees;
     }
-    public void write(BufferedWriter bufferedWriter) throws IOException {
+    public void write(BufferedWriter bufferedWriter, Crypto crypto) throws IOException {
         bufferedWriter.write(encrytionLevel + "\n");
-        bufferedWriter.write(getDomaines().size() + "\n");
+        bufferedWriter.write(Utils.encryptFinal(getDomaines().size(), encrytionLevel, 3, crypto) + "\n");
 
         for (Domaine d : getDomaines())
-            d.write(bufferedWriter);
+            d.write(bufferedWriter, encrytionLevel, crypto);
     }
 
     public void setMotDePasse(String motDePasse) {

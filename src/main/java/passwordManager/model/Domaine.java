@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import passwordManager.Crypto;
 import passwordManager.Utils;
 
 import java.io.BufferedWriter;
@@ -30,57 +31,48 @@ public class Domaine {
                 compte -> new Observable[] { compte.utilisateurProperty(), compte.motDePasseProperty() }
         );
     }
-    public Domaine(Scanner scanner, int level) {
+    public Domaine(Scanner scanner, int level, Crypto crypto) {
         this("");
 
-        String line;
-        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
-            setNom(line);
+        setNom(Utils.decryptFinal(scanner.nextLine(), level, 3, crypto));
+        setDomaine(Utils.decryptFinal(scanner.nextLine(), level, 3, crypto));
+        setIconeLocation(Utils.decryptFinal(scanner.nextLine(), level, 3, crypto));
 
-        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
-            setDomaine(line);
+        int nbLignesNotes = Integer.parseInt(Utils.decryptFinal(scanner.nextLine(), level, 4, crypto));
 
-        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
-            setIconeLocation(line);
+        while (nbLignesNotes-- > 0)
+            setNotes(getNotes() + Utils.decryptFinal(scanner.nextLine(), level, 3, crypto) + "\n");
 
-        int nbLignesNotes = 0;
-        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
-            nbLignesNotes = Integer.parseInt(line);
-
-        while (nbLignesNotes-- > 0) {
-            if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
-                setNotes(getNotes() + line + "\n");
-            else
-                break;
-        }
-
-        int nbComptes = 0;
-        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
-            nbComptes = Integer.parseInt(line);
+        int nbComptes = Integer.parseInt(Utils.decryptFinal(scanner.nextLine(), level, 4, crypto));
 
         while (nbComptes-- > 0)
-            if (level < 3)
-                addCompte(new Compte(scanner, level));
+            if (level < 3 || crypto != null)
+                addCompte(new Compte(scanner, level, crypto));
             else
-                new Compte(scanner, level);
+                new Compte(scanner, level, null);
     }
 
-    void write(BufferedWriter bufferedWriter) throws IOException {
-        bufferedWriter.write((getNom().equals("") ? "null" : getNom()) + "\n");
-        bufferedWriter.write((getDomaine().equals("") ? "null" : getDomaine()) + "\n");
-        bufferedWriter.write((getIconeLocation().equals("") ? "null" : getIconeLocation()) + "\n");
+    void write(BufferedWriter bufferedWriter, int level, Crypto crypto) throws IOException {
+        String nom = (getNom().equals("") ? "null" : getNom());
+        String domaine = (getDomaine().equals("") ? "null" : getDomaine());
+        String iconeLocation = (getIconeLocation().equals("") ? "null" : getIconeLocation());
+
+        bufferedWriter.write(Utils.encryptFinal(nom, level, 3, crypto) + "\n");
+        bufferedWriter.write(Utils.encryptFinal(domaine, level, 3, crypto) + "\n");
+        bufferedWriter.write(Utils.encryptFinal(iconeLocation, level, 3, crypto) + "\n");
 
         if (!Utils.ligneVide(getNotes().trim())) {
             String notesSplited[] = getNotes().trim().split("\n");
-            bufferedWriter.write(notesSplited.length + "\n");
-            bufferedWriter.write(getNotes().trim() + "\n");
+            bufferedWriter.write(Utils.encryptFinal(notesSplited.length, level, 4, crypto) + "\n");
+            for (String s : notesSplited)
+                bufferedWriter.write(Utils.encryptFinal(s, level, 3, crypto) + "\n");
         } else {
-            bufferedWriter.write("0\n");
+            bufferedWriter.write(Utils.encryptFinal(0, level, 4, crypto) + "\n");
         }
 
-        bufferedWriter.write(getComptes().size() + "\n");
+        bufferedWriter.write(Utils.encryptFinal(getComptes().size(), level, 4, crypto) + "\n");
         for (Compte c : getComptes())
-            c.write(bufferedWriter);
+            c.write(bufferedWriter, level, crypto);
     }
 
     public void addCompte(Compte c) {

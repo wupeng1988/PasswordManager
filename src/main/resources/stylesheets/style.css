@@ -14,7 +14,7 @@
     -fx-font-size: 13;
 }
 
-Button, .menu-item, .menu-button {
+Button, ComboBox, .menu-item, .menu-button {
     -fx-cursor: hand;
 }
 
@@ -73,4 +73,17 @@ TableView:focused, ListView:focused {
     -fx-background-radius: 0;
     -fx-border-radius: 0;
     -fx-cursor: text;
+}
+
+.bpEtatA {
+    -fx-background-color: #2fb254;
+}
+
+.bpEtatA > .label, .bpEtatNA > .label {
+    -fx-text-fill: beige;
+}
+
+.bpEtatNA {
+    -fx-background-color: #ac2925;
+    -fx-cursor: hand;
 }

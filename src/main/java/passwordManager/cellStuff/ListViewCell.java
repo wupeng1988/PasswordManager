@@ -67,7 +67,7 @@ public class ListViewCell extends ListCell<Domaine> {
         }
 
         if (icone.getImage() == null)
-            icone.setImage(im.getImage("question.png", true));
+            icone.setImage(im.getImage(ImageManager.ICONE_PLACEHOLDER, true));
 
         nom.setText(d.getNom());
         domaine.setText(d.getDomaine());

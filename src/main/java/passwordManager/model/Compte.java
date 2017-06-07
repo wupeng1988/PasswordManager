@@ -2,6 +2,7 @@ package passwordManager.model;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import passwordManager.Crypto;
 import passwordManager.Utils;
 
 import java.io.BufferedWriter;
@@ -16,26 +17,16 @@ public class Compte {
     private StringProperty motDePasse;
     private StringProperty notes;
 
-    public Compte(Scanner scanner, int level) {
+    public Compte(Scanner scanner, int level, Crypto crypto) {
         this("", "");
 
-        String line;
-        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line) && level < 2)
-            setUtilisateur(line.trim());
+        setUtilisateur(Utils.decryptFinal(scanner.nextLine(), level, 2, crypto));
+        setMotDePasse(Utils.decryptFinal(scanner.nextLine(), level, 1, crypto));
 
-        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line) && level < 1)
-            setMotDePasse(line.trim());
+        int nbLignesNotes = Integer.parseInt(Utils.decryptFinal(scanner.nextLine(), level, 4, crypto));
 
-        int nbLignesNotes = 0;
-        if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
-            nbLignesNotes = Integer.parseInt(line.trim());
-
-        while (nbLignesNotes-- > 0) {
-            if ((line = scanner.nextLine()) != null && !Utils.ligneVide(line))
-                setNotes(getNotes() + line.trim() + "\n");
-            else
-                break;
-        }
+        while (nbLignesNotes-- > 0)
+            setNotes(getNotes() + Utils.decryptFinal(scanner.nextLine(), level, 2, crypto) + "\n");
     }
     public Compte(String utilisateur, String motDePasse) {
         this.utilisateur = new SimpleStringProperty(utilisateur);
@@ -43,17 +34,17 @@ public class Compte {
         this.notes = new SimpleStringProperty("");
     }
 
-    void write(BufferedWriter bufferedWriter) throws IOException {
-        bufferedWriter.write("\t" + getUtilisateur() + "\n");
-        bufferedWriter.write("\t" + getMotDePasse() + "\n");
+    void write(BufferedWriter bufferedWriter, int level, Crypto crypto) throws IOException {
+        bufferedWriter.write("\t" + Utils.encryptFinal(getUtilisateur(), level, 2, crypto) + "\n");
+        bufferedWriter.write("\t" + Utils.encryptFinal(getMotDePasse(), level, 1, crypto) + "\n");
 
         if (!Utils.ligneVide(getNotes().trim())) {
             String notesSplited[] = getNotes().trim().split("\n");
-            bufferedWriter.write("\t" + notesSplited.length + "\n");
+            bufferedWriter.write("\t" + Utils.encryptFinal(notesSplited.length, level, 4, crypto) + "\n");
             for (String s : notesSplited)
-                bufferedWriter.write("\t" + s + "\n");
+                bufferedWriter.write("\t" + Utils.encryptFinal(s, level, 2, crypto) + "\n");
         } else {
-            bufferedWriter.write("\t0\n");
+            bufferedWriter.write("\t" + Utils.encryptFinal(0, level, 4, crypto) + "\n");
         }
     }
 
