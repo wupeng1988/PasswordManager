@@ -9,7 +9,7 @@
 * **00** Explications & about popups
 * **00** Fichier de config (auto-load, etc)
 * **OK** Nouveau fichier: clean ui
-* **00** Drag and drop (changer ordre)
+* **75** Drag and drop (changer ordre)
 * **00** Clic droit -> menu
 * **00** Undo & redo
 * **00** Monter domaine / compte jusqu'en haut / bas (avec 2 nouveaux boutons)

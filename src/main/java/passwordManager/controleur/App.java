@@ -23,6 +23,7 @@ import passwordManager.cellStuff.ListViewCell;
 import passwordManager.ImageManager;
 import passwordManager.PasswordManager;
 import passwordManager.Utils;
+import passwordManager.cellStuff.TableViewRow;
 import passwordManager.model.Compte;
 import passwordManager.model.Domaine;
 import passwordManager.model.Donnees;
@@ -187,7 +188,8 @@ public class App implements Initializable {
         lvDomaines.prefWidthProperty().bind(spDomaines.widthProperty().subtract(2));
         lvDomaines.prefHeightProperty().bind(spDomaines.heightProperty().subtract(2));
 
-        lvDomaines.setCellFactory(param -> new ListViewCell(imageManager));
+        App self = this;
+        lvDomaines.setCellFactory(param -> new ListViewCell(self));
         lvDomaines.getSelectionModel().selectedItemProperty().addListener((l, ov, nv) -> updateDomaine(nv));
         lvDomaines.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2 && domaineSelectionne != null) {
@@ -199,9 +201,10 @@ public class App implements Initializable {
         tvComptesUtilisateur.setCellValueFactory(new PropertyValueFactory<>("utilisateur"));
         tvComptesMotDePasse.setCellValueFactory(new PropertyValueFactory<>("motDePasse"));
 
+        tvComptes.setRowFactory(param -> new TableViewRow());
+
         tvComptes.setEditable(false);
-        Callback<TableColumn<Compte, String>, TableCell<Compte, String>> cellFactory
-                = (TableColumn<Compte, String> p) -> new TableViewCell();
+        Callback<TableColumn<Compte, String>, TableCell<Compte, String>> cellFactory = (TableColumn<Compte, String> p) -> new TableViewCell();
 
         tvComptesUtilisateur.setCellFactory(cellFactory);
         tvComptesUtilisateur.setOnEditCommit(
@@ -213,7 +216,7 @@ public class App implements Initializable {
                 (TableColumn.CellEditEvent<Compte, String> t) -> (
                         t.getTableView().getItems().get(t.getTablePosition().getRow())
                 ).setMotDePasse(t.getNewValue()));
-        tvComptesNumero.setCellValueFactory(p -> new ReadOnlyObjectWrapper((tvComptes.getItems().indexOf(p.getValue()) + 1) + ""));
+        tvComptesNumero.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>((tvComptes.getItems().indexOf(p.getValue()) + 1) + ""));
 
         tvComptes.getSelectionModel().selectedItemProperty().addListener((o, ov, nv) -> updateCompte(nv));
         tvComptes.setOnMouseClicked(e -> {
@@ -278,11 +281,10 @@ public class App implements Initializable {
         nouvelleSauvegarde();
     }
 
-    private boolean addIfNotPresent(Pane pane, Node n) {
-        if (pane.getChildren().contains(n)) return false;
+    private void addIfNotPresent(Pane pane, Node n) {
+        if (pane.getChildren().contains(n)) return;
 
         pane.getChildren().add(n);
-        return true;
     }
 
     private void updateControles() {
@@ -708,6 +710,8 @@ public class App implements Initializable {
         detailsRoot.getChildren().remove(detailsIdleVue);
 
         tvComptes.setItems(d.getComptes());
+        d.getComptes().addListener((InvalidationListener) observable -> updateUi());
+
         lDetailsTitre.textProperty().bind(d.nomProperty());
         lDetailsDomaine.textProperty().bind(d.domaineProperty());
         lDetailsComptesTaille.setText("" + d.getComptes().size());
@@ -733,6 +737,13 @@ public class App implements Initializable {
             passwordManager.stage.setTitle(PasswordManager.TITLE + " - " + fichierOuvert.getAbsolutePath());
         else
             passwordManager.stage.setTitle(PasswordManager.TITLE);
+    }
+
+    public ImageManager getImageManager() {
+        return imageManager;
+    }
+    public Donnees getDonneesActives() {
+        return donneesActives;
     }
 
     @FXML

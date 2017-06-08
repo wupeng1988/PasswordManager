@@ -5,18 +5,34 @@ import javafx.beans.property.StringProperty;
 import passwordManager.Crypto;
 import passwordManager.Utils;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 /**
  * Nico on 01/06/2017.
  */
-public class Compte {
+public class Compte implements Externalizable {
     private StringProperty utilisateur;
     private StringProperty motDePasse;
     private StringProperty notes;
 
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(getUtilisateur());
+        out.writeObject(getMotDePasse());
+        out.writeObject(getNotes());
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        setUtilisateur((String)in.readObject());
+        setMotDePasse((String)in.readObject());
+        setNotes((String)in.readObject());
+    }
+
+    public Compte() {
+        this("", "");
+    }
     public Compte(Scanner scanner, int level, Crypto crypto) {
         this("", "");
 
@@ -85,5 +101,13 @@ public class Compte {
         Compte compte = (Compte) o;
 
         return getUtilisateur().equals(compte.getUtilisateur()) && getMotDePasse().equals(compte.getMotDePasse());
+    }
+
+    @Override
+    public String toString() {
+        return "Compte{" +
+                "utilisateur=" + utilisateur +
+                ", motDePasse=" + motDePasse +
+                '}';
     }
 }

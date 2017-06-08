@@ -8,20 +8,41 @@ import javafx.collections.ObservableList;
 import passwordManager.Crypto;
 import passwordManager.Utils;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * Nico on 01/06/2017.
  */
-public class Domaine {
+public class Domaine implements Externalizable {
     private StringProperty nom;
     private StringProperty domaine;
     private StringProperty notes;
     private StringProperty iconeLocation;
     private ObservableList<Compte> comptes;
 
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(getNom());
+        out.writeObject(getDomaine());
+        out.writeObject(getNotes());
+        out.writeObject(getIconeLocation());
+        out.writeObject(new ArrayList<>(getComptes()));
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        setNom((String)in.readObject());
+        setDomaine((String)in.readObject());
+        setNotes((String)in.readObject());
+        setIconeLocation((String)in.readObject());
+        setComptes(FXCollections.observableArrayList((ArrayList<Compte>)in.readObject()));
+    }
+
+    public Domaine() {
+        this("");
+    }
     public Domaine(String nom) {
         this.nom = new SimpleStringProperty(nom);
         this.domaine = new SimpleStringProperty("");
@@ -107,6 +128,9 @@ public class Domaine {
     public void setNom(String nom) {
         this.nom.set(nom);
     }
+    public void setComptes(ObservableList<Compte> comptes) {
+        this.comptes = comptes;
+    }
 
     public String getNotes() {
         return notes.get();
@@ -131,5 +155,15 @@ public class Domaine {
         Domaine domaine = (Domaine) o;
 
         return getNom().equals(domaine.getNom()) && getComptes().equals(domaine.getComptes());
+    }
+
+    @Override
+    public String toString() {
+        return "Domaine{" +
+                "nom=" + nom +
+                ", domaine=" + domaine +
+                ", iconeLocation=" + iconeLocation +
+                ", comptes=" + comptes +
+                '}';
     }
 }
