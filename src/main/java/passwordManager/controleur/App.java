@@ -191,17 +191,13 @@ public class App implements Initializable {
         App self = this;
         lvDomaines.setCellFactory(param -> new ListViewCell(self));
         lvDomaines.getSelectionModel().selectedItemProperty().addListener((l, ov, nv) -> updateDomaine(nv));
-        lvDomaines.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 2 && domaineSelectionne != null) {
-                modificationDomaine();
-            }
-        });
     }
     private void initDetailsTable() {
         tvComptesUtilisateur.setCellValueFactory(new PropertyValueFactory<>("utilisateur"));
         tvComptesMotDePasse.setCellValueFactory(new PropertyValueFactory<>("motDePasse"));
 
-        tvComptes.setRowFactory(param -> new TableViewRow());
+        App self = this;
+        tvComptes.setRowFactory(param -> new TableViewRow(self));
 
         tvComptes.setEditable(false);
         Callback<TableColumn<Compte, String>, TableCell<Compte, String>> cellFactory = (TableColumn<Compte, String> p) -> new TableViewCell();
@@ -219,11 +215,6 @@ public class App implements Initializable {
         tvComptesNumero.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>((tvComptes.getItems().indexOf(p.getValue()) + 1) + ""));
 
         tvComptes.getSelectionModel().selectedItemProperty().addListener((o, ov, nv) -> updateCompte(nv));
-        tvComptes.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 2 && compteSelectionne != null) {
-                modificationCompte();
-            }
-        });
     }
     private void initBoutons() {
         // Retirer les textes mis sur Scene Builder
@@ -411,9 +402,21 @@ public class App implements Initializable {
         if (li == 0) return; // le domaine est déjà en première position
 
         Collections.swap(donneesActives.getDomaines(), li - 1, li);
-        lvDomaines.getSelectionModel().select(li - 1);
+        selection(1, li - 1);
     }
 
+    public void selection(int level, int item) {
+        switch (level) {
+            case 0:
+                if (domaineSelectionne != null && item < tvComptes.getItems().size())
+                    tvComptes.getSelectionModel().select(item);
+                break;
+            case 1:
+                if (donneesActives != null && item < lvDomaines.getItems().size())
+                    lvDomaines.getSelectionModel().select(item);
+                break;
+        }
+    }
     private void deselection(int level) { // level = 1 : déselection de domaine, 2 : déselection de domaine + compte
         if (level > 0 && tvComptes.getSelectionModel().getSelectedItems() != null) {
             tvComptes.getSelectionModel().clearSelection();
@@ -464,7 +467,7 @@ public class App implements Initializable {
         if (li == 0) return; // le compte est déjà en première position
 
         Collections.swap(domaineSelectionne.getComptes(), li - 1, li);
-        tvComptes.getSelectionModel().select(li - 1);
+        selection(0, li - 1);
     }
 
     @FXML
@@ -475,7 +478,7 @@ public class App implements Initializable {
         if (li == donneesActives.getDomaines().size() - 1) return; // le domaine est déjà en dernière position
 
         Collections.swap(donneesActives.getDomaines(), li + 1, li);
-        lvDomaines.getSelectionModel().select(li + 1);
+        selection(1, li + 1);
     }
 
     @FXML
@@ -486,7 +489,7 @@ public class App implements Initializable {
         if (li == domaineSelectionne.getComptes().size() - 1) return; // le compte est déjà en dernière position
 
         Collections.swap(domaineSelectionne.getComptes(), li + 1, li);
-        tvComptes.getSelectionModel().select(li + 1);
+        selection(0, li + 1);
     }
 
     @FXML
@@ -520,7 +523,7 @@ public class App implements Initializable {
     }
 
     @FXML
-    private void modificationDomaine() {
+    public void modificationDomaine() {
         if (domaineSelectionne == null) return;
         if (!donneesActives.isAutorise()) {
             autoriser();
@@ -531,7 +534,7 @@ public class App implements Initializable {
         infosDomaineControleur.initDomaine(domaineSelectionne);
     }
     @FXML
-    private void modificationCompte() {
+    public void modificationCompte() {
         if (compteSelectionne == null) return;
         if (!donneesActives.isAutorise()) {
             autoriser();
@@ -554,14 +557,14 @@ public class App implements Initializable {
     }
 
     @FXML
-    private void suppressionDomaine() {
+    public void suppressionDomaine() {
         if (domaineSelectionne == null) return;
 
         montrerOption(confirmationVue);
         confirmationControleur.initObject(domaineSelectionne);
     }
     @FXML
-    private void suppressionCompte() {
+    public void suppressionCompte() {
         if (compteSelectionne == null) return;
 
         montrerOption(confirmationVue);

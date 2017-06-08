@@ -40,6 +40,7 @@ public class TableViewCell extends TableCell<Compte, String> {
         if (empty) {
             setText(null);
             setGraphic(null);
+            setCursor(Cursor.DEFAULT);
         } else {
             if (isEditing()) {
                 if (textField != null) {

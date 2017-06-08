@@ -1,9 +1,12 @@
 package passwordManager.cellStuff;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
@@ -32,6 +35,10 @@ public class ListViewCell extends ListCell<Domaine> {
     private Label nom = new Label();
     private Label domaine = new Label();
 
+    private ContextMenu contextMenu = new ContextMenu();
+    private MenuItem modifierItem = new MenuItem();
+    private MenuItem supprimerItem = new MenuItem();
+
     public ListViewCell(App app) {
         this.app = app;
         this.imageManager = app.getImageManager();
@@ -40,8 +47,18 @@ public class ListViewCell extends ListCell<Domaine> {
         configureIcone();
         configureNom();
         configureDomaine();
+        configureDragNDrop();
+        configureContextMenu();
         ajoutControlsGridPane();
+    }
 
+    private void configureContextMenu() {
+        modifierItem.setOnAction(event -> app.modificationDomaine());
+        supprimerItem.setOnAction(event -> app.suppressionDomaine());
+        contextMenu.getItems().addAll(modifierItem, supprimerItem);
+    }
+
+    private void configureDragNDrop() {
         ListViewCell thisCell = this;
 
         setOnDragDetected(event -> {
@@ -96,6 +113,7 @@ public class ListViewCell extends ListCell<Domaine> {
                 int thisIdx = items.indexOf(getItem());
 
                 Collections.swap(app.getDonneesActives().getDomaines(), draggedIdx, thisIdx);
+                app.selection(1, thisIdx);
 
                 success = true;
             }
@@ -133,6 +151,15 @@ public class ListViewCell extends ListCell<Domaine> {
 
     private void ajoutContenu(Domaine d) {
         setText(null);
+        setContextMenu(contextMenu);
+        setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2)
+                app.modificationDomaine();
+        });
+
+        modifierItem.setText("Modifier " + getItem().getNom());
+        supprimerItem.setText("Supprimer " + getItem().getNom());
+
         if (d.getIconeLocation() != null && !d.getIconeLocation().equals("")) { // location est set
             icone.setImage(imageManager.getImage(d.getIconeLocation()));
         } else {
@@ -151,6 +178,8 @@ public class ListViewCell extends ListCell<Domaine> {
     private void clearContent() {
         setText(null);
         setGraphic(null);
+        setOnMouseClicked(null);
+        setContextMenu(null);
     }
 
     @Override
