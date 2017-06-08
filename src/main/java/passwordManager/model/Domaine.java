@@ -18,6 +18,7 @@ import java.util.Scanner;
 public class Domaine implements Externalizable {
     private StringProperty nom;
     private StringProperty domaine;
+    private StringProperty categorie;
     private StringProperty notes;
     private StringProperty iconeLocation;
     private ObservableList<Compte> comptes;
@@ -26,6 +27,7 @@ public class Domaine implements Externalizable {
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeObject(getNom());
         out.writeObject(getDomaine());
+        out.writeObject(getCategorie());
         out.writeObject(getNotes());
         out.writeObject(getIconeLocation());
         out.writeObject(new ArrayList<>(getComptes()));
@@ -33,21 +35,30 @@ public class Domaine implements Externalizable {
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        setNom((String)in.readObject());
-        setDomaine((String)in.readObject());
-        setNotes((String)in.readObject());
-        setIconeLocation((String)in.readObject());
-        setComptes(FXCollections.observableArrayList((ArrayList<Compte>)in.readObject()));
+        setNom((String) in.readObject());
+        setDomaine((String) in.readObject());
+        setDomaine((String) in.readObject());
+        setNotes((String) in.readObject());
+        setIconeLocation((String) in.readObject());
+        setComptes(FXCollections.observableArrayList((ArrayList<Compte>) in.readObject()));
     }
 
     public Domaine() {
         this("");
     }
+
     public Domaine(String nom) {
-        this.nom = new SimpleStringProperty(nom);
-        this.domaine = new SimpleStringProperty("");
-        this.notes = new SimpleStringProperty("");
-        this.iconeLocation = new SimpleStringProperty("");
+        this(nom, "", "");
+    }
+    public Domaine(String nom, String domaine) {
+        this(nom, domaine, "");
+    }
+    public Domaine(String nom, String domaine, String categorie) {
+        this.nom = new SimpleStringProperty(nom, "nom", nom);
+        this.domaine = new SimpleStringProperty(this, "domaine", domaine);
+        this.categorie = new SimpleStringProperty(this, "categorie", categorie);
+        this.notes = new SimpleStringProperty(this, "notes", "");
+        this.iconeLocation = new SimpleStringProperty(this, "iconeLocation", "");
         this.comptes = FXCollections.observableArrayList(
                 compte -> new Observable[] {
                         compte.utilisateurProperty(),
@@ -56,10 +67,11 @@ public class Domaine implements Externalizable {
         );
     }
     public Domaine(Scanner scanner, int level, Crypto crypto) {
-        this("");
+        this();
 
         setNom(Utils.decryptFinal(scanner.nextLine(), level, 3, crypto));
         setDomaine(Utils.decryptFinal(scanner.nextLine(), level, 3, crypto));
+        setCategorie(Utils.decryptFinal(scanner.nextLine(), level, 3, crypto));
         setIconeLocation(Utils.decryptFinal(scanner.nextLine(), level, 3, crypto));
 
         int nbLignesNotes = Integer.parseInt(Utils.decryptFinal(scanner.nextLine(), level, 4, crypto));
@@ -79,10 +91,12 @@ public class Domaine implements Externalizable {
     void write(BufferedWriter bufferedWriter, int level, Crypto crypto) throws IOException {
         String nom = (getNom().equals("") ? "null" : getNom());
         String domaine = (getDomaine().equals("") ? "null" : getDomaine());
+        String categorie = (getCategorie().equals("") ? "null" : getCategorie());
         String iconeLocation = (getIconeLocation().equals("") ? "null" : getIconeLocation());
 
         bufferedWriter.write(Utils.encryptFinal(nom, level, 3, crypto) + "\n");
         bufferedWriter.write(Utils.encryptFinal(domaine, level, 3, crypto) + "\n");
+        bufferedWriter.write(Utils.encryptFinal(categorie, level, 3, crypto) + "\n");
         bufferedWriter.write(Utils.encryptFinal(iconeLocation, level, 3, crypto) + "\n");
 
         if (!Utils.ligneVide(getNotes().trim())) {
@@ -115,7 +129,13 @@ public class Domaine implements Externalizable {
     StringProperty iconeLocationProperty() {
         return iconeLocation;
     }
+    public StringProperty categorieProperty() {
+        return categorie;
+    }
 
+    public void setCategorie(String categorie) {
+        this.categorie.set(categorie);
+    }
     public void setNotes(String notes) {
         this.notes.set(notes);
     }
@@ -132,6 +152,9 @@ public class Domaine implements Externalizable {
         this.comptes = comptes;
     }
 
+    public String getCategorie() {
+        return categorie.get();
+    }
     public String getNotes() {
         return notes.get();
     }

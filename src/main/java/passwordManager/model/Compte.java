@@ -1,33 +1,42 @@
 package passwordManager.model;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import passwordManager.Crypto;
 import passwordManager.Utils;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /**
  * Nico on 01/06/2017.
  */
 public class Compte implements Externalizable {
+    public final static String DATE_FORMAT = "yyyy/MM/dd";
+
     private StringProperty utilisateur;
     private StringProperty motDePasse;
     private StringProperty notes;
+    private ObjectProperty<LocalDate> dateCreation;
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeObject(getUtilisateur());
         out.writeObject(getMotDePasse());
         out.writeObject(getNotes());
+        out.writeObject(getDateCreation());
     }
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        setUtilisateur((String)in.readObject());
-        setMotDePasse((String)in.readObject());
-        setNotes((String)in.readObject());
+        setUtilisateur((String) in.readObject());
+        setMotDePasse((String) in.readObject());
+        setNotes((String) in.readObject());
+        setDateCreation((LocalDate) in.readObject());
     }
 
     public Compte() {
@@ -39,20 +48,25 @@ public class Compte implements Externalizable {
         setUtilisateur(Utils.decryptFinal(scanner.nextLine(), level, 2, crypto));
         setMotDePasse(Utils.decryptFinal(scanner.nextLine(), level, 1, crypto));
 
+        String date = Utils.decryptFinal(scanner.nextLine(), level, 1, crypto);
+        setDateCreation(date.equals("") ? null : LocalDate.parse(date, DateTimeFormatter.ofPattern(DATE_FORMAT)));
+
         int nbLignesNotes = Integer.parseInt(Utils.decryptFinal(scanner.nextLine(), level, 4, crypto));
 
         while (nbLignesNotes-- > 0)
             setNotes(getNotes() + Utils.decryptFinal(scanner.nextLine(), level, 2, crypto) + "\n");
     }
     public Compte(String utilisateur, String motDePasse) {
-        this.utilisateur = new SimpleStringProperty(utilisateur);
-        this.motDePasse = new SimpleStringProperty(motDePasse);
-        this.notes = new SimpleStringProperty("");
+        this.utilisateur = new SimpleStringProperty(this, "utilisateur", utilisateur);
+        this.motDePasse = new SimpleStringProperty(this, "motDePasse", motDePasse);
+        this.notes = new SimpleStringProperty(this, "notes", "");
+        this.dateCreation = new SimpleObjectProperty<>(this, "dateCreation", LocalDate.now());
     }
 
     void write(BufferedWriter bufferedWriter, int level, Crypto crypto) throws IOException {
         bufferedWriter.write("\t" + Utils.encryptFinal(getUtilisateur(), level, 2, crypto) + "\n");
         bufferedWriter.write("\t" + Utils.encryptFinal(getMotDePasse(), level, 1, crypto) + "\n");
+        bufferedWriter.write("\t" + Utils.encryptFinal(getDateCreationFormatted(), level, 1, crypto) + "\n");
 
         if (!Utils.ligneVide(getNotes().trim())) {
             String notesSplited[] = getNotes().trim().split("\n");
@@ -73,7 +87,16 @@ public class Compte implements Externalizable {
     StringProperty notesProperty() {
         return notes;
     }
+    ObjectProperty<LocalDate> dateCreationProperty() {
+        return dateCreation;
+    }
 
+    public void setDateCreationFormatted(String date) {
+        this.dateCreation.set(LocalDate.parse(date, DateTimeFormatter.ofPattern(DATE_FORMAT)));
+    }
+    public void setDateCreation(LocalDate dateCreation) {
+        this.dateCreation.set(dateCreation);
+    }
     public void setNotes(String notes) {
         this.notes.set(notes);
     }
@@ -84,6 +107,12 @@ public class Compte implements Externalizable {
         this.motDePasse.set(motDePasse);
     }
 
+    public String getDateCreationFormatted() {
+        return dateCreation.get().format(DateTimeFormatter.ofPattern(DATE_FORMAT));
+    }
+    public LocalDate getDateCreation() {
+        return dateCreation.get();
+    }
     public String getNotes() {
         return notes.get();
     }
@@ -100,7 +129,21 @@ public class Compte implements Externalizable {
 
         Compte compte = (Compte) o;
 
-        return getUtilisateur().equals(compte.getUtilisateur()) && getMotDePasse().equals(compte.getMotDePasse());
+        if (getUtilisateur() != null ? !getUtilisateur().equals(compte.getUtilisateur()) : compte.getUtilisateur() != null)
+            return false;
+        if (getMotDePasse() != null ? !getMotDePasse().equals(compte.getMotDePasse()) : compte.getMotDePasse() != null)
+            return false;
+        if (getNotes() != null ? !getNotes().equals(compte.getNotes()) : compte.getNotes() != null) return false;
+        return getDateCreation() != null ? getDateCreation().equals(compte.getDateCreation()) : compte.getDateCreation() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getUtilisateur() != null ? getUtilisateur().hashCode() : 0;
+        result = 31 * result + (getMotDePasse() != null ? getMotDePasse().hashCode() : 0);
+        result = 31 * result + (getNotes() != null ? getNotes().hashCode() : 0);
+        result = 31 * result + (getDateCreation() != null ? getDateCreation().hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -108,6 +151,8 @@ public class Compte implements Externalizable {
         return "Compte{" +
                 "utilisateur=" + utilisateur +
                 ", motDePasse=" + motDePasse +
+                ", notes=" + notes +
+                ", dateCreation=" + dateCreation +
                 '}';
     }
 }

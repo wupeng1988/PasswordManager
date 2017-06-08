@@ -16,11 +16,12 @@
 * **00** Tri des données
 * **75** Curseur
 * **00** Localisation (langues)
-* **00** Gestion d'icone (proposer une popup de choix)
+* **80** Gestion d'icone (proposer une popup de choix) + garder copie locale des icones
 * **90** Proposer création mot de passe/utilisateur aléatoirement
-* **00** Ajouter la date de création aux compte
+* **OK** Ajouter la date de création aux compte
 
 ## En plus
 * **00** Thèmes
 * **00** Stats (charts)
 * **00** Animations
+* **00** Dossiers pour les domaines (par catégorie? / manuel?)

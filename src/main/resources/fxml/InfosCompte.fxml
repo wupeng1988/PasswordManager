@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -27,25 +28,26 @@
          <center>
             <GridPane hgap="8.0" vgap="8.0" BorderPane.alignment="CENTER">
               <columnConstraints>
-                <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="120.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints fillWidth="false" hgrow="NEVER" minWidth="10.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label styleClass="lEmphase" text="Utilisateur" GridPane.halignment="RIGHT" />
                   <Label styleClass="lEmphase" text="Mot de passe" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                  <Label styleClass="lEmphase" text="Notes" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                  <Label styleClass="lEmphase" text="Notes" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></Label>
-                  <TextArea fx:id="taNotes" prefHeight="200.0" prefWidth="200.0" promptText="(Optionnel) Entrez les notes relatives à ce compte" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <TextField fx:id="tfUtilisateur" promptText="Utilisateur" GridPane.columnIndex="1" />
-                  <TextField fx:id="tfMotDePasse" promptText="Mot de passe" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextArea fx:id="taNotes" prefHeight="200.0" prefWidth="200.0" promptText="(Optionnel) Notes relatives à ce compte" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="tfUtilisateur" promptText="Utilisateur [4 &lt;= longueur &lt;= 18]" GridPane.columnIndex="1" />
+                  <TextField fx:id="tfMotDePasse" promptText="Mot de passe [4 &lt;= longueur &lt;= 18]" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <HBox maxHeight="0.0" spacing="10.0" GridPane.columnIndex="2" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER">
                      <children>
                         <Button fx:id="bAleaU" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#aleaU" prefHeight="30.0" prefWidth="30.0" text="A" HBox.hgrow="NEVER" />
@@ -64,6 +66,8 @@
                         <Insets />
                      </GridPane.margin>
                   </HBox>
+                  <Label styleClass="lEmphase" text="Date de création" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                  <DatePicker fx:id="dpDateCreation" disable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="10.0" top="10.0" />

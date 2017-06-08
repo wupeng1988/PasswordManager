@@ -32,18 +32,21 @@ public class PasswordManager extends Application {
     public final static String DOSSIER_CSS =        DOSSIER_RESSOURCES + "stylesheets/";
     public final static String DOSSIER_FONTS =      DOSSIER_RESSOURCES + "fonts/";
     public final static String DOSSIER_IMAGES =     DOSSIER_RESSOURCES + "images/";
-    public final static String DOSSIER_TEXTE =     DOSSIER_RESSOURCES + "text/";
+    public final static String DOSSIER_TEXTE =      DOSSIER_RESSOURCES + "text/";
 
-    public final static String FXML_DETAILSIDLE =   DOSSIER_FXML + "DetailsIdle.fxml";
-    public final static String FXML_AUTORISATION =  DOSSIER_FXML + "Autorisation.fxml";
-    public final static String FXML_FICHIERINFO =   DOSSIER_FXML + "FichierInfo.fxml";
-    public final static String FXML_INFOSCOMPTE =   DOSSIER_FXML + "InfosCompte.fxml";
-    public final static String FXML_INFOSDOMAINE =  DOSSIER_FXML + "InfosDomaine.fxml";
-    public final static String FXML_CONFIRMATION =  DOSSIER_FXML + "Confirmation.fxml";
-    public final static String FXML_PARAMETRES =    DOSSIER_FXML + "Parametres.fxml";
-    public final static String FXML_VUE_APP =       DOSSIER_FXML + "App.fxml";
+    public final static String FXML_DETAILSIDLE =       DOSSIER_FXML + "DetailsIdle.fxml";
+    public final static String FXML_AUTORISATION =      DOSSIER_FXML + "Autorisation.fxml";
+    public final static String FXML_FICHIERINFO =       DOSSIER_FXML + "FichierInfo.fxml";
+    public final static String FXML_INFOSCOMPTE =       DOSSIER_FXML + "InfosCompte.fxml";
+    public final static String FXML_INFOSDOMAINE =      DOSSIER_FXML + "InfosDomaine.fxml";
+    public final static String FXML_CONFIRMATION =      DOSSIER_FXML + "Confirmation.fxml";
+    public final static String FXML_PARAMETRES =        DOSSIER_FXML + "Parametres.fxml";
+    public final static String FXML_APP =               DOSSIER_FXML + "App.fxml";
+    public final static String FXML_IMAGESELECTION =    DOSSIER_FXML + "ImageSelection.fxml";
+    public final static String FXML_ABOUT =             DOSSIER_FXML + "About.fxml";
+    public final static String FXML_EXPLICATIONS =      DOSSIER_FXML + "Explications.fxml";
 
-    public final static String TEXT_NAMES =         DOSSIER_TEXTE + "names.txt";
+    public final static String TEXT_NAMES =             DOSSIER_TEXTE + "names.txt";
 
     public final static String CSS_BOOTSTRAP =          DOSSIER_CSS + "bootstrap3.css";
     public final static String CSS_PASSWORDMANAGER =    DOSSIER_CSS + "style.css";
@@ -61,7 +64,7 @@ public class PasswordManager extends Application {
     public void start(Stage primaryStage) throws Exception {
         stage = primaryStage;
 
-        FXMLLoader l = new FXMLLoader(getClass().getResource(FXML_VUE_APP));
+        FXMLLoader l = new FXMLLoader(getClass().getResource(FXML_APP));
         Parent root = l.load();
         app = l.getController();
         app.setMain(this);

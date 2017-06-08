@@ -7,6 +7,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -31,6 +32,8 @@ import passwordManager.model.Donnees;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -114,9 +117,10 @@ public class App implements Initializable {
     @FXML private ListView<Domaine> lvDomaines;
 
     @FXML private TableView<Compte> tvComptes;
+    @FXML private TableColumn<Compte, String> tvComptesNumero;
     @FXML private TableColumn<Compte, String> tvComptesUtilisateur;
     @FXML private TableColumn<Compte, String> tvComptesMotDePasse;
-    @FXML private TableColumn<Compte, String> tvComptesNumero;
+    @FXML private TableColumn<Compte, LocalDate> tvComptesDateCreation;
 
     @FXML private Label lDetailsTitre;
     @FXML private Label lDetailsDomaine;
@@ -195,6 +199,7 @@ public class App implements Initializable {
     private void initDetailsTable() {
         tvComptesUtilisateur.setCellValueFactory(new PropertyValueFactory<>("utilisateur"));
         tvComptesMotDePasse.setCellValueFactory(new PropertyValueFactory<>("motDePasse"));
+        tvComptesDateCreation.setCellValueFactory(new PropertyValueFactory<>("dateCreation"));
 
         App self = this;
         tvComptes.setRowFactory(param -> new TableViewRow(self));
@@ -202,6 +207,7 @@ public class App implements Initializable {
         tvComptes.setEditable(false);
         Callback<TableColumn<Compte, String>, TableCell<Compte, String>> cellFactory = (TableColumn<Compte, String> p) -> new TableViewCell();
 
+        tvComptesNumero.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>((tvComptes.getItems().indexOf(p.getValue()) + 1) + ""));
         tvComptesUtilisateur.setCellFactory(cellFactory);
         tvComptesUtilisateur.setOnEditCommit(
                 (TableColumn.CellEditEvent<Compte, String> t) -> (
@@ -212,7 +218,30 @@ public class App implements Initializable {
                 (TableColumn.CellEditEvent<Compte, String> t) -> (
                         t.getTableView().getItems().get(t.getTablePosition().getRow())
                 ).setMotDePasse(t.getNewValue()));
-        tvComptesNumero.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>((tvComptes.getItems().indexOf(p.getValue()) + 1) + ""));
+        tvComptesDateCreation.setCellFactory(column -> new TableCell<Compte, LocalDate>() {
+            @Override
+            protected void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setText(null);
+                    setCursor(Cursor.DEFAULT);
+                } else {
+                    // Format date.
+                    setText(item.format(DateTimeFormatter.ofPattern(Compte.DATE_FORMAT)));
+                    setCursor(Cursor.HAND);
+
+                    // Style all dates in March with a different color.
+                    /*if (item.getMonth() == Month.MARCH) {
+                        setTextFill(Color.CHOCOLATE);
+                        setStyle("-fx-background-color: yellow");
+                    } else {
+                        setTextFill(Color.BLACK);
+                        setStyle("");
+                    }*/
+                }
+            }
+        });
 
         tvComptes.getSelectionModel().selectedItemProperty().addListener((o, ov, nv) -> updateCompte(nv));
     }
@@ -312,20 +341,6 @@ public class App implements Initializable {
         bDescendreDomaine.setDisable(true);
         bDescendreCompte.setDisable(true);
 
-        if (tvComptes.isFocused() || tvComptes.getSelectionModel().getSelectedIndex() > -1) {
-            miAjouter.setDisable(false);
-            if (compteSelectionne != null) {
-                miModifier.setDisable(false);
-                miSupprimer.setDisable(false);
-            }
-        } else if (lvDomaines.isFocused() || lvDomaines.getSelectionModel().getSelectedIndex() > -1) {
-            miAjouter.setDisable(false);
-            if (domaineSelectionne != null) {
-                miModifier.setDisable(false);
-                miSupprimer.setDisable(false);
-            }
-        }
-
         if (detailsRoot.getChildren().contains(detailsIdleVue)) {
             miStatistiques.setDisable(true);
         }
@@ -333,32 +348,44 @@ public class App implements Initializable {
         if (donneesActives.isAutorise()) {
             bAjoutDomaine.setDisable(false);
             bAjoutCompte.setDisable(false);
-        } else if (donneesActives.getEncrytionLevel() > 0) {
-            miAutoriser.setDisable(false);
-        }
 
-        if (domaineSelectionne != null) {
-            bModificationDomaine.setDisable(false);
-            bSuppressionDomaine.setDisable(false);
+            if (tvComptes.isFocused() || tvComptes.getSelectionModel().getSelectedIndex() > -1) {
+                miAjouter.setDisable(false);
+                if (compteSelectionne != null) {
+                    miModifier.setDisable(false);
+                    miSupprimer.setDisable(false);
+                }
+            } else if (lvDomaines.isFocused() || lvDomaines.getSelectionModel().getSelectedIndex() > -1) {
+                miAjouter.setDisable(false);
+                if (domaineSelectionne != null) {
+                    miModifier.setDisable(false);
+                    miSupprimer.setDisable(false);
+                }
+            }
 
-            bMonterDomaine.setDisable(!(donneesActives.getDomaines().indexOf(domaineSelectionne) > 0));
-            bDescendreDomaine.setDisable(!(donneesActives.getDomaines().indexOf(domaineSelectionne) < donneesActives.getDomaines().size() - 1));
-        }
+            if (domaineSelectionne != null) {
+                bModificationDomaine.setDisable(false);
+                bSuppressionDomaine.setDisable(false);
 
-        if (compteSelectionne != null) {
-            bModificationCompte.setDisable(false);
-            bSuppressionCompte.setDisable(false);
+                bMonterDomaine.setDisable(!(donneesActives.getDomaines().indexOf(domaineSelectionne) > 0));
+                bDescendreDomaine.setDisable(!(donneesActives.getDomaines().indexOf(domaineSelectionne) < donneesActives.getDomaines().size() - 1));
+            }
 
-            bMonterCompte.setDisable(!(domaineSelectionne.getComptes().indexOf(compteSelectionne) > 0));
-            bDescendreCompte.setDisable(!(domaineSelectionne.getComptes().indexOf(compteSelectionne) < domaineSelectionne.getComptes().size() - 1));
-        }
+            if (compteSelectionne != null) {
+                bModificationCompte.setDisable(false);
+                bSuppressionCompte.setDisable(false);
 
-        if (donneesActives.isAutorise()) {
+                bMonterCompte.setDisable(!(domaineSelectionne.getComptes().indexOf(compteSelectionne) > 0));
+                bDescendreCompte.setDisable(!(domaineSelectionne.getComptes().indexOf(compteSelectionne) < domaineSelectionne.getComptes().size() - 1));
+            }
+
             if (fichierOuvert != null) {
                 miSauvegarder.setDisable(false);
             }
 
             miSauvegarderVers.setDisable(false);
+        } else if (donneesActives.getEncrytionLevel() > 0) {
+            miAutoriser.setDisable(false);
         }
     }
     private void updateUi() {
@@ -547,11 +574,21 @@ public class App implements Initializable {
 
     @FXML
     private void ajoutDomaine() {
+        if (!donneesActives.isAutorise()) {
+            autoriser();
+            return;
+        }
+
         montrerOption(infosDomaineVue);
         infosDomaineControleur.nouveauDomaine();
     }
     @FXML
     private void ajoutCompte() {
+        if (!donneesActives.isAutorise()) {
+            autoriser();
+            return;
+        }
+
         montrerOption(infosCompteVue);
         infosCompteControleur.nouveauCompte();
     }
@@ -559,6 +596,10 @@ public class App implements Initializable {
     @FXML
     public void suppressionDomaine() {
         if (domaineSelectionne == null) return;
+        if (!donneesActives.isAutorise()) {
+            autoriser();
+            return;
+        }
 
         montrerOption(confirmationVue);
         confirmationControleur.initObject(domaineSelectionne);
@@ -566,6 +607,10 @@ public class App implements Initializable {
     @FXML
     public void suppressionCompte() {
         if (compteSelectionne == null) return;
+        if (!donneesActives.isAutorise()) {
+            autoriser();
+            return;
+        }
 
         montrerOption(confirmationVue);
         confirmationControleur.initObject(compteSelectionne);

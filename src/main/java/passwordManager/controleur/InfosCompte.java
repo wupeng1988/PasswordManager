@@ -49,6 +49,8 @@ public class InfosCompte implements Initializable {
     @FXML private Button bCopyU;
     @FXML private Button bCopyM;
 
+    @FXML private DatePicker dpDateCreation;
+
     @FXML private Label lTitre;
     @FXML private TextField tfUtilisateur;
     @FXML private TextField tfMotDePasse;
@@ -56,9 +58,9 @@ public class InfosCompte implements Initializable {
 
     private ValidationSupport validationSupport = new ValidationSupport();
     private Validator<String> validator = (control, s) -> {
-        boolean condition = ((TextField)control).getText().length() < 6
+        boolean condition = ((TextField)control).getText().length() < 4
                 || ((TextField)control).getText().length() > 18;
-        return ValidationResult.fromErrorIf(control, "control < 6 ou > 18", condition);
+        return ValidationResult.fromErrorIf(control, "control < 4 ou > 18", condition);
     };
 
     @Override
@@ -178,6 +180,7 @@ public class InfosCompte implements Initializable {
         boolean autorise = app.donneesActives.isAutorise();
         toEdit = c;
         lTitre.setText((level > 1 && !autorise ? "Non autorisé" : c.getUtilisateur()));
+        dpDateCreation.setValue(c.getDateCreation());
         tfUtilisateur.setText((level > 1 && !autorise ? "*********" : c.getUtilisateur()));
         tfMotDePasse.setText((level > 0 && !autorise ? "*********" : c.getMotDePasse()));
         taNotes.setText((level > 1 && !autorise ? "*********" : c.getNotes()));

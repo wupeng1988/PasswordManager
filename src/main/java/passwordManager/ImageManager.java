@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -22,6 +23,7 @@ public class ImageManager {
     public static final String ICONE_EDITION =      PasswordManager.DOSSIER_IMAGES + "edition.png";
 
     private HashMap<String, Image> cache = new HashMap<>();
+    private ArrayList<String> userImages = new ArrayList<>();
 
     public ImageManager() {}
 
@@ -35,8 +37,10 @@ public class ImageManager {
                 File f;
                 if (!resource) {
                     f = new File(location);
-                    if (f.exists() && f.isFile())
+                    if (f.exists() && f.isFile()) {
                         i = new Image(f.toURI().toURL().toExternalForm());
+                        userImages.add(f.getAbsolutePath());
+                    }
                 } else {
                     i = new Image(getClass().getResourceAsStream(location));
                 }
@@ -58,5 +62,9 @@ public class ImageManager {
         iv.setFitWidth(width);
         iv.setFitHeight(height);
         return iv;
+    }
+
+    public ArrayList<String> getUserImages() {
+        return userImages;
     }
 }
