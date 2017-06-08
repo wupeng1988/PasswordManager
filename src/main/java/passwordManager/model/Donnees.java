@@ -18,6 +18,7 @@ public class Donnees {
     private int encrytionLevel;
     private ObservableList<Domaine> domaines;
 
+    private Historique historique;
     private String motDePasse;
     private boolean autorise;
 
@@ -40,6 +41,8 @@ public class Donnees {
         encrytionLevel = 0;
         autorise = true;
         motDePasse = "";
+
+        historique = new Historique(this);
     }
 
     public static Donnees read(Scanner scanner, Crypto crypto) {
@@ -82,6 +85,9 @@ public class Donnees {
         this.autorise = autorise;
     }
 
+    public Historique getHistorique() {
+        return historique;
+    }
     public String getMotDePasse() {
         return motDePasse;
     }

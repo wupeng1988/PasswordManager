@@ -8,6 +8,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -31,28 +32,34 @@
                 <Menu mnemonicParsing="false" text="Fichier">
                   <items>
                         <MenuItem fx:id="miNouveau" mnemonicParsing="false" onAction="#nouvelleSauvegarde" text="Nouveau" />
-                        <MenuItem fx:id="miFermer" mnemonicParsing="false" text="Fermer" />
                         <MenuItem fx:id="miOuvrir" mnemonicParsing="false" onAction="#chargerDialog" text="Ouvrir" />
                         <MenuItem fx:id="miSauvegarder" mnemonicParsing="false" onAction="#sauvegarderSc" text="Sauvegarder" />
                         <MenuItem fx:id="miSauvegarderVers" mnemonicParsing="false" onAction="#sauvegarderDialog" text="Sauvegarder vers..." />
+                        <MenuItem fx:id="miFermer" mnemonicParsing="false" text="Fermer" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="miAutoriser" mnemonicParsing="false" onAction="#autoriser" text="Autoriser" />
                         <MenuItem fx:id="miInformations" mnemonicParsing="false" onAction="#modifierFichierInfo" text="Informations" />
                         <MenuItem fx:id="miStatistiques" mnemonicParsing="false" onAction="#menuDetailsIdle" text="Statistiques" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                     <MenuItem fx:id="miQuitter" mnemonicParsing="false" onAction="#exit" text="Quitter" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edition">
                   <items>
+                        <MenuItem fx:id="miAnnuler" mnemonicParsing="false" onAction="#defaire" text="Annuler" />
+                        <MenuItem fx:id="miRefaire" mnemonicParsing="false" onAction="#refaire" text="Refaire" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="miAjouter" mnemonicParsing="false" onAction="#ajouterAuFocus" text="Ajouter" />
                         <MenuItem fx:id="miModifier" mnemonicParsing="false" onAction="#modifierAuFocus" text="Modifier" />
                     <MenuItem fx:id="miSupprimer" mnemonicParsing="false" onAction="#supprimerAuFocus" text="Supprimer" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="miParametres" mnemonicParsing="false" onAction="#montrerParametres" text="Paramètres" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Aide">
                   <items>
-                        <MenuItem fx:id="miExplications" mnemonicParsing="false" text="Explications" />
-                    <MenuItem fx:id="miAPropos" mnemonicParsing="false" text="A propos" />
+                        <MenuItem fx:id="miExplications" mnemonicParsing="false" onAction="#montrerExplications" text="Explications" />
+                    <MenuItem fx:id="miAPropos" mnemonicParsing="false" onAction="#montrerAbout" text="A propos" />
                   </items>
                 </Menu>
               </menus>

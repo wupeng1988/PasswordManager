@@ -1,7 +1,7 @@
 # PasswordManager
 My personal password manager in Javafx 8
 
-Only in french
+Only in french (for now)
 
 # Screenshots
 ![Capture](screenshots/capture.png)

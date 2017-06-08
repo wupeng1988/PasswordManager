@@ -18,6 +18,8 @@ import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
 import passwordManager.ImageManager;
 import passwordManager.PasswordManager;
+import passwordManager.model.ActionHistorique;
+import passwordManager.model.Applicable;
 import passwordManager.model.Domaine;
 
 import java.io.File;
@@ -110,6 +112,8 @@ public class InfosDomaine implements Initializable {
 
     private void finEdition(boolean ok) {
         if (ok) {
+            Applicable avant = toEdit.snap();
+
             toEdit.setNom(tfNom.getText());
             toEdit.setDomaine(tfDomaine.getText());
             toEdit.setCategorie(tfCategorie.getText());
@@ -119,6 +123,10 @@ public class InfosDomaine implements Initializable {
             if (!exists) {
                 app.donneesActives.addDomaine(toEdit);
                 app.selectionDomaine(toEdit);
+
+                app.donneesActives.getHistorique().ajoutAction(new ActionHistorique(null, toEdit.snap(), toEdit, ActionHistorique.Action.AJOUT, ActionHistorique.Type.DOMAINE));
+            } else {
+                app.donneesActives.getHistorique().ajoutAction(new ActionHistorique(avant, toEdit.snap(), toEdit, ActionHistorique.Action.MODIFICATION, ActionHistorique.Type.DOMAINE));
             }
         }
 

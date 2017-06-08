@@ -10,7 +10,7 @@ import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
 import passwordManager.ImageManager;
 import passwordManager.PasswordManager;
-import passwordManager.model.Compte;
+import passwordManager.model.*;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -25,6 +25,7 @@ public class InfosCompte implements Initializable {
     private App app;
 
     private Compte toEdit;
+    private Domaine wrapper;
     private boolean exists;
 
     private final static String MDP_ALPHABET_LETTRE_MAJ = "ABCDEFGHIJKLMNOPQRSTUVWYZ";
@@ -103,6 +104,8 @@ public class InfosCompte implements Initializable {
 
     private void finEdition(boolean ok) {
         if (ok) {
+            Applicable avant = toEdit.snap();
+
             toEdit.setUtilisateur(tfUtilisateur.getText());
             toEdit.setMotDePasse(tfMotDePasse.getText());
             toEdit.setNotes(taNotes.getText());
@@ -110,6 +113,9 @@ public class InfosCompte implements Initializable {
             if (!exists) {
                 app.domaineSelectionne.addCompte(toEdit);
                 app.selectionCompte(toEdit);
+                app.donneesActives.getHistorique().ajoutAction(new ActionHistorique(wrapper, toEdit.snap(), toEdit, ActionHistorique.Action.AJOUT, ActionHistorique.Type.COMPTE));
+            } else {
+                app.donneesActives.getHistorique().ajoutAction(new ActionHistorique(avant, toEdit.snap(), toEdit, ActionHistorique.Action.MODIFICATION, ActionHistorique.Type.COMPTE));
             }
         }
 
@@ -175,7 +181,9 @@ public class InfosCompte implements Initializable {
         return gen.toString();
     }
 
-    void initCompte(Compte c) {
+    void initCompte(Compte c, Domaine d) {
+        wrapper = d;
+
         int level = app.donneesActives.getEncrytionLevel();
         boolean autorise = app.donneesActives.isAutorise();
         toEdit = c;
@@ -192,8 +200,8 @@ public class InfosCompte implements Initializable {
         });
     }
 
-    void nouveauCompte() {
-        initCompte(new Compte("Nouveau compte", ""));
+    void nouveauCompte(Domaine d) {
+        initCompte(new Compte("Nouveau compte", ""), d);
         exists = false;
     }
 }

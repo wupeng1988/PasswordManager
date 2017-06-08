@@ -3,6 +3,8 @@ package passwordManager.controleur;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import passwordManager.model.ActionHistorique;
+import passwordManager.model.Applicable;
 import passwordManager.model.Compte;
 import passwordManager.model.Domaine;
 
@@ -15,7 +17,9 @@ import java.util.ResourceBundle;
 public class Confirmation implements Initializable {
     private App app;
 
-    private Object toDelete;
+    private Domaine wrapper;
+    private Applicable toDelete;
+    private int type;
 
     @FXML private Label lObjetType;
     @FXML private Label lNom;
@@ -25,6 +29,11 @@ public class Confirmation implements Initializable {
 
     @FXML
     private void ok() {
+        if (type == 0)
+            app.donneesActives.getHistorique().ajoutAction(new ActionHistorique(null, null, toDelete, ActionHistorique.Action.SUPPRESSION, ActionHistorique.Type.DOMAINE));
+        else
+            app.donneesActives.getHistorique().ajoutAction(new ActionHistorique(wrapper, null, toDelete, ActionHistorique.Action.SUPPRESSION, ActionHistorique.Type.COMPTE));
+
         app.suppression(toDelete);
         app.finEdition();
     }
@@ -33,27 +42,21 @@ public class Confirmation implements Initializable {
         app.finEdition();
     }
 
-    void initObject(Object o) { // o est soit un compte, soit un domaine
-        int oType = -1; // -1 = rien, 0 = compte et 1 = domaine
-        if (o instanceof Compte) oType = 0;
-        else if (o instanceof Domaine) oType = 1;
+    void initObject(Domaine d) {
+        toDelete = d;
+        type = 0;
 
-        if (oType < 0) return;
+        lObjetType.setText("Domaine");
+        lNom.setText(d.getNom());
+    }
+    void initObject(Compte c, Domaine d) { // o est soit un compte, soit un domaine
+        toDelete = c;
+        wrapper = d;
+        type = 1;
 
-        toDelete = o;
+        lObjetType.setText("Compte");
+        lNom.setText(c.getUtilisateur());
 
-        switch (oType) {
-            case 0:
-                lObjetType.setText("Compte");
-                lNom.setText(((Compte) o).getUtilisateur());
-                break;
-            case 1:
-                lObjetType.setText("Domaine");
-                lNom.setText(((Domaine) o).getNom());
-                break;
-            default:
-                break;
-        }
     }
 
     void bindParent(App a) {

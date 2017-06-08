@@ -15,7 +15,7 @@ import java.util.Scanner;
 /**
  * Nico on 01/06/2017.
  */
-public class Domaine implements Externalizable {
+public class Domaine implements Externalizable, Applicable {
     private StringProperty nom;
     private StringProperty domaine;
     private StringProperty categorie;
@@ -190,5 +190,26 @@ public class Domaine implements Externalizable {
                 ", iconeLocation=" + getIconeLocation() +
                 ", comptes=" + getComptes() +
                 '}';
+    }
+
+    @Override
+    public void appliquer(Applicable applicable) {
+        if (!(applicable instanceof Domaine)) return;
+
+        Domaine d = (Domaine) applicable;
+
+        setNom(d.getNom());
+        setDomaine(d.getDomaine());
+        setCategorie(d.getCategorie());
+        setNotes(d.getNotes());
+        setIconeLocation(d.getIconeLocation());
+    }
+
+    @Override
+    public Applicable snap() {
+        Domaine d = new Domaine(getNom(), getDomaine(), getCategorie());
+        d.setNotes(getNotes());
+        d.setIconeLocation(getIconeLocation());
+        return d;
     }
 }

@@ -3,8 +3,6 @@ package passwordManager.controleur;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +32,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -60,6 +59,8 @@ public class App implements Initializable {
     private DetailsIdle detailsIdleControleur;
     private Confirmation confirmationControleur;
     private Parametres parametresControleur;
+    private Explications explicationsControleur;
+    private About aboutControleur;
     private Parent infosCompteVue;
     private Parent infosDomaineVue;
     private Parent detailsIdleVue;
@@ -67,6 +68,8 @@ public class App implements Initializable {
     private Parent autorisationVue;
     private Parent confirmationVue;
     private Parent parametresVue;
+    private Parent explicationsVue;
+    private Parent aboutVue;
 
     @FXML private MenuItem miNouveau;
     @FXML private MenuItem miFermer;
@@ -78,6 +81,8 @@ public class App implements Initializable {
     @FXML private MenuItem miStatistiques;
     @FXML private MenuItem miQuitter;
 
+    @FXML private MenuItem miAnnuler;
+    @FXML private MenuItem miRefaire;
     @FXML private MenuItem miAjouter;
     @FXML private MenuItem miModifier;
     @FXML private MenuItem miSupprimer;
@@ -133,6 +138,8 @@ public class App implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         lDetailsTitre.maxWidthProperty().bind(detailsTitrePane.widthProperty().subtract(72));
+        lvDomaines.setPlaceholder(new Label("Aucun domaine"));
+        tvComptes.setPlaceholder(new Label("Aucun compte"));
 
         initPhase1();
     }
@@ -153,6 +160,8 @@ public class App implements Initializable {
         FXMLLoader fxmlLoaderDetailsIdle = new FXMLLoader(getClass().getResource(PasswordManager.FXML_DETAILSIDLE));
         FXMLLoader fxmlLoaderConfimation = new FXMLLoader(getClass().getResource(PasswordManager.FXML_CONFIRMATION));
         FXMLLoader fxmlLoaderParametres = new FXMLLoader(getClass().getResource(PasswordManager.FXML_PARAMETRES));
+        FXMLLoader fxmlLoaderExplications = new FXMLLoader(getClass().getResource(PasswordManager.FXML_EXPLICATIONS));
+        FXMLLoader fxmlLoaderAbout = new FXMLLoader(getClass().getResource(PasswordManager.FXML_ABOUT));
 
         try {
             infosCompteVue = fxmlLoaderInfosCompte.load();
@@ -176,14 +185,22 @@ public class App implements Initializable {
             parametresVue = fxmlLoaderParametres.load();
             parametresControleur = fxmlLoaderParametres.getController();
 
+            explicationsVue = fxmlLoaderExplications.load();
+            explicationsControleur = fxmlLoaderExplications.getController();
+
+            aboutVue = fxmlLoaderAbout.load();
+            aboutControleur = fxmlLoaderAbout.getController();
+
             infosCompteControleur.bindParent(this);
             infosDomaineControleur.bindParent(this);
             fichierInfoControleur.bindParent(this);
             autorisationControleur.bindParent(this);
             confirmationControleur.bindParent(this);
             parametresControleur.bindParent(this);
+            explicationsControleur.bindParent(this);
+            aboutControleur.bindParent(this);
 
-            setAnchor(infosCompteVue, infosDomaineVue, fichierInfoVue, autorisationVue, detailsIdleVue, confirmationVue, parametresVue);
+            setAnchor(infosCompteVue, infosDomaineVue, fichierInfoVue, autorisationVue, detailsIdleVue, confirmationVue, parametresVue, explicationsVue, aboutVue);
         } catch (IOException io) {
             io.printStackTrace();
         }
@@ -317,7 +334,6 @@ public class App implements Initializable {
         Preferences preferences = passwordManager.getPreferences();
 
         String lastFile = (String) preferences.getProperty(Preferences.PROP_DERNIER_FICHIER);
-        System.out.println(lastFile);
         if (lastFile == null || lastFile.equals(""))
             nouvelleSauvegarde();
         else {
@@ -345,6 +361,8 @@ public class App implements Initializable {
         miStatistiques.setDisable(false);
         miQuitter.setDisable(false);
 
+        miAnnuler.setDisable(true);
+        miRefaire.setDisable(true);
         miAjouter.setDisable(true);
         miModifier.setDisable(true);
         miSupprimer.setDisable(true);
@@ -375,6 +393,12 @@ public class App implements Initializable {
         if (donneesActives.isAutorise()) {
             bAjoutDomaine.setDisable(false);
             bAjoutCompte.setDisable(false);
+
+            if (donneesActives.getHistorique().retourArrierePossible())
+                miAnnuler.setDisable(false);
+
+            if (donneesActives.getHistorique().retourAvantPossible())
+                miRefaire.setDisable(false);
 
             if (tvComptes.isFocused() || tvComptes.getSelectionModel().getSelectedIndex() > -1) {
                 miAjouter.setDisable(false);
@@ -509,6 +533,15 @@ public class App implements Initializable {
     }
 
     @FXML
+    private void montrerExplications() {
+        root.getChildren().add(explicationsVue);
+    }
+    @FXML
+    private void montrerAbout() {
+        root.getChildren().add(aboutVue);
+    }
+
+    @FXML
     private void montrerParametres() {
         montrerOption(parametresVue);
         parametresControleur.initDonnees();
@@ -557,6 +590,8 @@ public class App implements Initializable {
 
     @FXML
     public void nouvelleSauvegarde() {
+        if (!checkSaveEnregistree()) return;
+
         donneesActives = new Donnees();
         fichierOuvert = null;
 
@@ -597,7 +632,7 @@ public class App implements Initializable {
         }
 
         montrerOption(infosCompteVue);
-        infosCompteControleur.initCompte(compteSelectionne);
+        infosCompteControleur.initCompte(compteSelectionne, domaineSelectionne);
     }
 
     @FXML
@@ -618,7 +653,7 @@ public class App implements Initializable {
         }
 
         montrerOption(infosCompteVue);
-        infosCompteControleur.nouveauCompte();
+        infosCompteControleur.nouveauCompte(domaineSelectionne);
     }
 
     @FXML
@@ -641,7 +676,7 @@ public class App implements Initializable {
         }
 
         montrerOption(confirmationVue);
-        confirmationControleur.initObject(compteSelectionne);
+        confirmationControleur.initObject(compteSelectionne, domaineSelectionne);
     }
 
     void suppression(Object o) {
@@ -653,7 +688,9 @@ public class App implements Initializable {
     }
 
     @FXML
-    public void sauvegarderDialog() {
+    public boolean sauvegarderDialog() {
+        boolean result = false;
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choisir un emplacement de sauvegarde");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sauvegarde", "*" + PasswordManager.SAVE_EXTENSION));
@@ -661,11 +698,13 @@ public class App implements Initializable {
 
         File selectedFile = fileChooser.showSaveDialog(passwordManager.getStage());
         if (selectedFile != null) {
-            sauvegarder(selectedFile);
+            result = sauvegarder(selectedFile);
             fichierOuvert = selectedFile;
             passwordManager.getPreferences().setProperty(Preferences.PROP_DERNIER_FICHIER, fichierOuvert.getAbsolutePath());
             initUi();
         }
+
+        return result;
     }
     @FXML
     public void chargerDialog() {
@@ -689,10 +728,9 @@ public class App implements Initializable {
     }
 
     @FXML
-    public void sauvegarderSc() { // shortcut
-        if (fichierOuvert == null) sauvegarderDialog();
-
-        sauvegarder(fichierOuvert);
+    public boolean sauvegarderSc() { // shortcut
+        if (fichierOuvert == null) return sauvegarderDialog();
+        return sauvegarder(fichierOuvert);
     }
 
     @FXML
@@ -705,19 +743,25 @@ public class App implements Initializable {
         inOptions = true;
     }
 
-    private void sauvegarder(File file) {
-        if (!donneesActives.isAutorise()) return;
+    private boolean sauvegarder(File file) {
+        if (!donneesActives.isAutorise() || file == null) return false;
 
         try {
             if (donneesActives.getEncrytionLevel() > 0 && donneesActives.getMotDePasse().length() > 5)
                 Utils.writeSaveData(donneesActives, file.getAbsolutePath(), new Crypto(donneesActives.getMotDePasse()));
             else
                 Utils.writeSaveData(donneesActives, file.getAbsolutePath(), null);
+            donneesActives.getHistorique().setSaved(true);
         } catch (Exception ex) {
             ex.printStackTrace();
+            return false;
         }
+
+        return true;
     }
     boolean charger(File file, Crypto crypto) {
+        if (!checkSaveEnregistree()) return false;
+
         donneesActives = Utils.readSavedData(file, crypto);
         if (donneesActives == null) { // erreur
             //nouvelleSauvegarde();
@@ -777,9 +821,20 @@ public class App implements Initializable {
                 fichierInfoVue,
                 autorisationVue,
                 confirmationVue,
-                parametresVue
+                parametresVue,
+                explicationsVue,
+                aboutVue
         );
         inOptions = false;
+    }
+
+    @FXML
+    public void defaire() {
+        donneesActives.getHistorique().retourArriere();
+    }
+    @FXML
+    public void refaire() {
+        donneesActives.getHistorique().retourAvant();
     }
 
     private void updateDomaine(Domaine d) {
@@ -826,6 +881,39 @@ public class App implements Initializable {
     }
     public Donnees getDonneesActives() {
         return donneesActives;
+    }
+
+    public boolean checkSaveEnregistree() {
+        if (getDonneesActives() == null || getDonneesActives().getHistorique().isSaved()) return true;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Sauvegarde non enregistrée!");
+        alert.setHeaderText("Vous allez quitter sans enregistrer vos changements!");
+        alert.setContentText("Que voulez-vous faire?");
+
+        ButtonType sv = new ButtonType("Sauvegarder vers");
+        ButtonType s = new ButtonType("Sauvegarder");
+        ButtonType q = new ButtonType("Quitter");
+        ButtonType a = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(sv, s, q, a);
+
+        boolean quit = true;
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent()) {
+            if (result.get() == sv) {
+                quit = sauvegarderDialog();
+            } else if (result.get() == s) {
+                quit = sauvegarderSc();
+            } else if (result.get() == q) {
+                // rien
+            } else {
+                quit = false;
+            }
+        } else
+            quit = false;
+
+        return quit;
     }
 
     @FXML

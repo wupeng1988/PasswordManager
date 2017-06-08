@@ -16,6 +16,8 @@ public class PasswordManager extends Application {
     private KeyCodeCombination ctrlShiftS = new KeyCodeCombination(KeyCode.S, KeyCodeCombination.CONTROL_ANY, KeyCodeCombination.SHIFT_ANY);
     private KeyCodeCombination ctrlO = new KeyCodeCombination(KeyCode.O, KeyCodeCombination.CONTROL_ANY);
     private KeyCodeCombination ctrlN = new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlShiftZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_ANY, KeyCodeCombination.SHIFT_ANY);
 
     private Clipboard clipboard = Clipboard.getSystemClipboard();
     private ClipboardContent clipboardContent = new ClipboardContent();
@@ -53,9 +55,14 @@ public class PasswordManager extends Application {
     private Stage stage;
     private App app;
 
+    private boolean beforeClose() {
+        return app.checkSaveEnregistree();
+    }
+
     @Override
     public void stop() throws Exception {
         System.out.println("Stopping...");
+
         preferences.write();
         super.stop();
     }
@@ -84,6 +91,11 @@ public class PasswordManager extends Application {
 
         stage.show();
         app.initPhase2();
+
+        s.getWindow().setOnCloseRequest(event -> {
+            if (!beforeClose())
+                event.consume();
+        });
     }
 
     public void clipboardPut(String s) {
@@ -109,6 +121,10 @@ public class PasswordManager extends Application {
                     app.chargerDialog();
                 } else if (ctrlN.match(event)) {
                     app.nouvelleSauvegarde();
+                } else if (ctrlZ.match(event)) {
+                    app.defaire();
+                } else if (ctrlShiftZ.match(event)) {
+                    app.refaire();
                 } else if (event.getCode() == KeyCode.DELETE) {
                     app.supprimerAuFocus();
                 }

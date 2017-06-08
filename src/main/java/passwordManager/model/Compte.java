@@ -15,7 +15,7 @@ import java.util.Scanner;
 /**
  * Nico on 01/06/2017.
  */
-public class Compte implements Externalizable {
+public class Compte implements Externalizable, Applicable {
     public final static String DATE_FORMAT = "yyyy/MM/dd";
 
     private StringProperty utilisateur;
@@ -155,5 +155,25 @@ public class Compte implements Externalizable {
                 ", notes=" + getNotes() +
                 ", dateCreation=" + getDateCreationFormatted() +
                 '}';
+    }
+
+    @Override
+    public void appliquer(Applicable applicable) {
+        if (!(applicable instanceof Compte)) return;
+
+        Compte c = (Compte) applicable;
+
+        setUtilisateur(c.getUtilisateur());
+        setMotDePasse(c.getMotDePasse());
+        setDateCreation(c.getDateCreation());
+        setNotes(c.getNotes());
+    }
+
+    @Override
+    public Applicable snap() {
+        Compte c = new Compte(getUtilisateur(), getMotDePasse());
+        c.setNotes(getNotes());
+        c.setDateCreation(getDateCreation());
+        return c;
     }
 }
