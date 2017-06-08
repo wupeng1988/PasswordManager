@@ -183,10 +183,12 @@ public class Domaine implements Externalizable {
     @Override
     public String toString() {
         return "Domaine{" +
-                "nom=" + nom +
-                ", domaine=" + domaine +
-                ", iconeLocation=" + iconeLocation +
-                ", comptes=" + comptes +
+                "nom=" + getNom() +
+                ", domaine=" + getDomaine() +
+                ", categorie=" + getCategorie() +
+                ", notes=" + getNotes() +
+                ", iconeLocation=" + getIconeLocation() +
+                ", comptes=" + getComptes() +
                 '}';
     }
 }

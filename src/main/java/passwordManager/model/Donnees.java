@@ -113,4 +113,14 @@ public class Donnees {
                 if (!od.equals(d)) return false;
         return getMotDePasse() != null ? getMotDePasse().equals(donnees.getMotDePasse()) : donnees.getMotDePasse() == null;
     }
+
+    @Override
+    public String toString() {
+        return "Donnees{" +
+                "encrytionLevel=" + getEncrytionLevel() +
+                ", domaines=" + getDomaines() +
+                ", motDePasse='" + getMotDePasse() + '\'' +
+                ", autorise=" + isAutorise() +
+                '}';
+    }
 }

@@ -1,7 +1,9 @@
 package passwordManager.controleur;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import passwordManager.Crypto;
@@ -16,6 +18,8 @@ public class Autorisation implements Initializable {
     private App app;
 
     @FXML private TextField tfMotDePasse;
+
+    @FXML private Label lStatut;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -36,7 +40,9 @@ public class Autorisation implements Initializable {
             app.initUi();
             app.finEdition();
         } catch (Exception e) {
-            System.out.println("MDP INCORRECT");
+            System.err.println("Mot de passe incorrect");
+            lStatut.setText("échec -> veuillez vérifier puis réessayer");
+            lStatut.setStyle("-fx-text-fill: red");
         }
     }
 
@@ -48,6 +54,10 @@ public class Autorisation implements Initializable {
     @FXML
     private void annuler() {
         app.finEdition();
+    }
+
+    void initDonnees() {
+        Platform.runLater(tfMotDePasse::requestFocus);
     }
 
     void bindParent(App a) {

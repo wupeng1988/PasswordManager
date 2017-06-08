@@ -55,9 +55,7 @@ public class Crypto {
             byte[] encryptedText = Base64.getDecoder().decode(encryptedString);
             byte[] plainText = cipher.doFinal(encryptedText);
             decryptedString = new String(plainText);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
         return decryptedString;
     }
 

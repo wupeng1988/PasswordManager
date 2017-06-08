@@ -18,6 +18,7 @@ public class Confirmation implements Initializable {
     private Object toDelete;
 
     @FXML private Label lObjetType;
+    @FXML private Label lNom;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {}
@@ -44,9 +45,11 @@ public class Confirmation implements Initializable {
         switch (oType) {
             case 0:
                 lObjetType.setText("Compte");
+                lNom.setText(((Compte) o).getUtilisateur());
                 break;
             case 1:
                 lObjetType.setText("Domaine");
+                lNom.setText(((Domaine) o).getNom());
                 break;
             default:
                 break;

@@ -7,7 +7,7 @@
 * **50** Validation des champs d'ajout et mod des éléments
 * **70** Réorganisation du code et des fichiers ressource
 * **00** Explications & about popups
-* **00** Fichier de config (auto-load, etc)
+* **50** Fichier de config (auto-load, etc)
 * **OK** Nouveau fichier: clean ui
 * **75** Drag and drop (changer ordre)
 * **75** Clic droit -> menu
@@ -19,6 +19,7 @@
 * **80** Gestion d'icone (proposer une popup de choix) + garder copie locale des icones
 * **90** Proposer création mot de passe/utilisateur aléatoirement
 * **OK** Ajouter la date de création aux compte
+* **00** Backups automatiques encryptés toutes les X minutes
 
 ## En plus
 * **00** Thèmes

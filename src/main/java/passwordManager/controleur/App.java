@@ -2,7 +2,9 @@ package passwordManager.controleur;
 
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,12 +20,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-import passwordManager.Crypto;
+import passwordManager.*;
 import passwordManager.cellStuff.TableViewCell;
 import passwordManager.cellStuff.ListViewCell;
-import passwordManager.ImageManager;
-import passwordManager.PasswordManager;
-import passwordManager.Utils;
 import passwordManager.cellStuff.TableViewRow;
 import passwordManager.model.Compte;
 import passwordManager.model.Domaine;
@@ -124,6 +123,7 @@ public class App implements Initializable {
 
     @FXML private Label lDetailsTitre;
     @FXML private Label lDetailsDomaine;
+    @FXML private Label lDetailsCategorie;
     @FXML private Label lDetailsComptesTaille;
     @FXML private Label lDetailsNotes;
 
@@ -207,7 +207,20 @@ public class App implements Initializable {
         tvComptes.setEditable(false);
         Callback<TableColumn<Compte, String>, TableCell<Compte, String>> cellFactory = (TableColumn<Compte, String> p) -> new TableViewCell();
 
-        tvComptesNumero.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>((tvComptes.getItems().indexOf(p.getValue()) + 1) + ""));
+        tvComptesNumero.setCellFactory(column -> new TableCell<Compte, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setCursor(Cursor.DEFAULT);
+                    setText(null);
+                } else {
+                    setCursor(Cursor.HAND);
+                    setText(String.valueOf(tvComptes.getItems().indexOf((Compte)getTableRow().getItem()) + 1));
+                }
+            }
+        });
         tvComptesUtilisateur.setCellFactory(cellFactory);
         tvComptesUtilisateur.setOnEditCommit(
                 (TableColumn.CellEditEvent<Compte, String> t) -> (
@@ -223,22 +236,27 @@ public class App implements Initializable {
             protected void updateItem(LocalDate item, boolean empty) {
                 super.updateItem(item, empty);
 
-                if (item == null || empty) {
+                if (empty) {
                     setText(null);
                     setCursor(Cursor.DEFAULT);
                 } else {
-                    // Format date.
-                    setText(item.format(DateTimeFormatter.ofPattern(Compte.DATE_FORMAT)));
-                    setCursor(Cursor.HAND);
-
-                    // Style all dates in March with a different color.
-                    /*if (item.getMonth() == Month.MARCH) {
-                        setTextFill(Color.CHOCOLATE);
-                        setStyle("-fx-background-color: yellow");
+                    if (item == null) {
+                        setText("????/??/??");
+                        setCursor(Cursor.HAND);
                     } else {
-                        setTextFill(Color.BLACK);
-                        setStyle("");
-                    }*/
+                        // Format date.
+                        setText(item.format(DateTimeFormatter.ofPattern(Compte.DATE_FORMAT)));
+                        setCursor(Cursor.HAND);
+
+                        // Style all dates in March with a different color.
+                        /*if (item.getMonth() == Month.MARCH) {
+                            setTextFill(Color.CHOCOLATE);
+                            setStyle("-fx-background-color: yellow");
+                        } else {
+                            setTextFill(Color.BLACK);
+                            setStyle("");
+                        }*/
+                    }
                 }
             }
         });
@@ -296,9 +314,18 @@ public class App implements Initializable {
     }
 
     public void initPhase2() { // Phase 2: application chargée, on peut la reconfigurer avec les paramètres de l'utilisateur
-        //charger(new File("dataRead" + PasswordManager.SAVE_EXTENSION), null);
-        //lvDomaines.getSelectionModel().selectFirst();
-        nouvelleSauvegarde();
+        Preferences preferences = passwordManager.getPreferences();
+
+        String lastFile = (String) preferences.getProperty(Preferences.PROP_DERNIER_FICHIER);
+        System.out.println(lastFile);
+        if (lastFile == null || lastFile.equals(""))
+            nouvelleSauvegarde();
+        else {
+            if (!charger(new File(lastFile), null))
+                nouvelleSauvegarde();
+
+            initUi();
+        }
     }
 
     private void addIfNotPresent(Pane pane, Node n) {
@@ -397,7 +424,7 @@ public class App implements Initializable {
     }
 
     @FXML
-    private void ajouterAuFocus() {
+    public void ajouterAuFocus() {
         if (tvComptes.isFocused()) {
             ajoutCompte();
         } else if (lvDomaines.isFocused()) {
@@ -405,7 +432,7 @@ public class App implements Initializable {
         }
     }
     @FXML
-    private void modifierAuFocus() {
+    public void modifierAuFocus() {
         if (tvComptes.isFocused()) {
             modificationCompte();
         } else if (lvDomaines.isFocused()) {
@@ -413,7 +440,7 @@ public class App implements Initializable {
         }
     }
     @FXML
-    private void supprimerAuFocus() {
+    public void supprimerAuFocus() {
         if (tvComptes.isFocused()) {
             suppressionCompte();
         } else if (lvDomaines.isFocused()) {
@@ -484,6 +511,7 @@ public class App implements Initializable {
     @FXML
     private void montrerParametres() {
         montrerOption(parametresVue);
+        parametresControleur.initDonnees();
     }
 
     @FXML
@@ -631,10 +659,11 @@ public class App implements Initializable {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sauvegarde", "*" + PasswordManager.SAVE_EXTENSION));
         fileChooser.setInitialDirectory(new File("."));
 
-        File selectedFile = fileChooser.showSaveDialog(passwordManager.stage);
+        File selectedFile = fileChooser.showSaveDialog(passwordManager.getStage());
         if (selectedFile != null) {
             sauvegarder(selectedFile);
             fichierOuvert = selectedFile;
+            passwordManager.getPreferences().setProperty(Preferences.PROP_DERNIER_FICHIER, fichierOuvert.getAbsolutePath());
             initUi();
         }
     }
@@ -645,9 +674,10 @@ public class App implements Initializable {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sauvegarde", "*" + PasswordManager.SAVE_EXTENSION));
         fileChooser.setInitialDirectory(new File("."));
 
-        File selectedFile = fileChooser.showOpenDialog(passwordManager.stage);
+        File selectedFile = fileChooser.showOpenDialog(passwordManager.getStage());
         if (selectedFile != null) {
-            charger(selectedFile, null);
+            if (!charger(selectedFile, null)) return;
+
             initUi();
         }
     }
@@ -655,6 +685,7 @@ public class App implements Initializable {
     @FXML
     private void autoriser() {
         montrerOption(autorisationVue);
+        autorisationControleur.initDonnees();
     }
 
     @FXML
@@ -678,7 +709,6 @@ public class App implements Initializable {
         if (!donneesActives.isAutorise()) return;
 
         try {
-            System.out.println("Saving");
             if (donneesActives.getEncrytionLevel() > 0 && donneesActives.getMotDePasse().length() > 5)
                 Utils.writeSaveData(donneesActives, file.getAbsolutePath(), new Crypto(donneesActives.getMotDePasse()));
             else
@@ -687,16 +717,19 @@ public class App implements Initializable {
             ex.printStackTrace();
         }
     }
-    void charger(File file, Crypto crypto) {
-        donneesActives = Utils.readSavedData(file.getAbsolutePath(), crypto);
+    boolean charger(File file, Crypto crypto) {
+        donneesActives = Utils.readSavedData(file, crypto);
         if (donneesActives == null) { // erreur
-            passwordManager.stage.setTitle(PasswordManager.TITLE);
+            //nouvelleSauvegarde();
             System.err.println("Erreur de lecture!");
-            return;
+            return false;
         }
 
         fichierOuvert = file;
+        passwordManager.getPreferences().setProperty(Preferences.PROP_DERNIER_FICHIER, fichierOuvert.getAbsolutePath());
         miSauvegarder.setDisable(false);
+
+        return true;
     }
 
     void initUi() {
@@ -762,7 +795,8 @@ public class App implements Initializable {
 
         lDetailsTitre.textProperty().bind(d.nomProperty());
         lDetailsDomaine.textProperty().bind(d.domaineProperty());
-        lDetailsComptesTaille.setText("" + d.getComptes().size());
+        lDetailsCategorie.textProperty().bind(d.categorieProperty());
+        lDetailsComptesTaille.textProperty().bind(Bindings.size(d.getComptes()).asString());
         lDetailsNotes.textProperty().bind(d.notesProperty());
 
         ivDetailsIcone.setImage(imageManager.getImage(d.getIconeLocation()));
@@ -782,9 +816,9 @@ public class App implements Initializable {
     }
     private void setTitre() {
         if (fichierOuvert != null)
-            passwordManager.stage.setTitle(PasswordManager.TITLE + " - " + fichierOuvert.getAbsolutePath());
+            passwordManager.getStage().setTitle(PasswordManager.TITLE + " - " + fichierOuvert.getAbsolutePath());
         else
-            passwordManager.stage.setTitle(PasswordManager.TITLE);
+            passwordManager.getStage().setTitle(PasswordManager.TITLE);
     }
 
     public ImageManager getImageManager() {

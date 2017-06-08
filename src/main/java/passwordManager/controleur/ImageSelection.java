@@ -94,7 +94,7 @@ public class ImageSelection implements Initializable {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Images", "*.png")
         );
-        File fileSelected = fileChooser.showOpenDialog(infosDomaine.app.passwordManager.stage);
+        File fileSelected = fileChooser.showOpenDialog(infosDomaine.app.passwordManager.getStage());
         if (fileSelected != null) {
             Image i = imageManager.getImage(fileSelected.getAbsolutePath());
             if (i != null) {

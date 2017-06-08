@@ -3,6 +3,7 @@ package passwordManager;
 import passwordManager.model.Donnees;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -19,10 +20,8 @@ public class Utils {
             e.printStackTrace();
         }
     }
-    public static Donnees readSavedData(String location, Crypto crypto) {
+    public static Donnees readSavedData(File f, Crypto crypto) {
         Donnees donnees = null;
-
-        File f = new File(location);
 
         if (!f.exists() || !f.isFile())
             return null;
@@ -63,5 +62,18 @@ public class Utils {
     }
     public static String encryptFinal(int data, int level, int levelRequis, Crypto crypto) {
         return encryptFinal(String.valueOf(data), level, levelRequis, crypto);
+    }
+
+    static ArrayList<String> getFichiersDansDossier(String chemin, String extension) {
+        return getFichiersDansDossier(new File(chemin), extension);
+    }
+    static ArrayList<String> getFichiersDansDossier(File dossier, String extension) {
+        ArrayList<String> fichiers = new ArrayList<>();
+
+        if (dossier.exists() && dossier.isDirectory())
+            for (File f : dossier.listFiles((dir, name) -> name.endsWith(extension)))
+                fichiers.add(f.getAbsolutePath());
+
+        return fichiers;
     }
 }

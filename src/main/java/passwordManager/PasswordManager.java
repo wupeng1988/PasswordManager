@@ -20,8 +20,7 @@ public class PasswordManager extends Application {
     private Clipboard clipboard = Clipboard.getSystemClipboard();
     private ClipboardContent clipboardContent = new ClipboardContent();
 
-    private static final int WIDTH =    800;
-    private static final int HEIGHT =   400;
+    private Preferences preferences = new Preferences();
 
     public final static String TITLE =          "Password Manager";
     public final static String SAVE_EXTENSION = ".psw";
@@ -51,12 +50,13 @@ public class PasswordManager extends Application {
     public final static String CSS_BOOTSTRAP =          DOSSIER_CSS + "bootstrap3.css";
     public final static String CSS_PASSWORDMANAGER =    DOSSIER_CSS + "style.css";
 
-    public Stage stage;
+    private Stage stage;
     private App app;
 
     @Override
     public void stop() throws Exception {
         System.out.println("Stopping...");
+        preferences.write();
         super.stop();
     }
 
@@ -69,7 +69,10 @@ public class PasswordManager extends Application {
         app = l.getController();
         app.setMain(this);
 
-        Scene s = new Scene(root, WIDTH, HEIGHT);
+        int width = Integer.parseInt((String) preferences.getProperty(Preferences.PROP_DEFAUT_LARGEUR));
+        int height = Integer.parseInt((String) preferences.getProperty(Preferences.PROP_DEFAUT_HAUTEUR));
+
+        Scene s = new Scene(root, width, height);
         s.getStylesheets().addAll(
                 getClass().getResource(CSS_BOOTSTRAP).toExternalForm(),
                 getClass().getResource(CSS_PASSWORDMANAGER).toExternalForm()
@@ -88,6 +91,13 @@ public class PasswordManager extends Application {
         clipboard.setContent(clipboardContent);
     }
 
+    public Preferences getPreferences() {
+        return preferences;
+    }
+    public Stage getStage() {
+        return stage;
+    }
+
     private void initShortcuts() {
         stage.getScene().setOnKeyPressed(event -> {
             if (!app.inOptions) {
@@ -99,6 +109,8 @@ public class PasswordManager extends Application {
                     app.chargerDialog();
                 } else if (ctrlN.match(event)) {
                     app.nouvelleSauvegarde();
+                } else if (event.getCode() == KeyCode.DELETE) {
+                    app.supprimerAuFocus();
                 }
             }
         });

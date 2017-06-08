@@ -23,6 +23,7 @@ import passwordManager.model.Domaine;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 /**
@@ -157,9 +158,18 @@ public class InfosDomaine implements Initializable {
         taNotes.setText(d.getNotes());
         exists = true;
 
-        ArrayList<String> completion = new ArrayList<>();
+        ArrayList<String> completion = new ArrayList<>(
+                Arrays.asList(
+                        "Réseaux Sociaux",
+                        "News",
+                        "High Tech",
+                        "Achats",
+                        "Divertissement",
+                        "Sport"
+                )
+        );
         for (Domaine dm : app.donneesActives.getDomaines())
-            completion.add(dm.getCategorie());
+            if (!completion.contains(dm.getCategorie())) completion.add(dm.getCategorie());
         TextFields.bindAutoCompletion(tfCategorie, completion);
 
         Platform.runLater(() -> {

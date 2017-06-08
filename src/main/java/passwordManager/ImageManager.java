@@ -22,10 +22,21 @@ public class ImageManager {
     public static final String ICONE_SHARE =        PasswordManager.DOSSIER_IMAGES + "share.png";
     public static final String ICONE_EDITION =      PasswordManager.DOSSIER_IMAGES + "edition.png";
 
+    private static final String CHEMIN_ICONES = "./icones";
+
     private HashMap<String, Image> cache = new HashMap<>();
     private ArrayList<String> userImages = new ArrayList<>();
 
-    public ImageManager() {}
+    public ImageManager() {
+        File f = new File(CHEMIN_ICONES);
+        if (!f.exists()) {
+            f.mkdir();
+            return;
+        }
+
+        ArrayList<String> arrayList = Utils.getFichiersDansDossier(CHEMIN_ICONES, ".png");
+        userImages.addAll(arrayList);
+    }
 
     public Image getImage(String location) {
         return getImage(location, false);

@@ -108,6 +108,7 @@ public class Compte implements Externalizable {
     }
 
     public String getDateCreationFormatted() {
+        if (dateCreation.get() == null) return "????/??/??";
         return dateCreation.get().format(DateTimeFormatter.ofPattern(DATE_FORMAT));
     }
     public LocalDate getDateCreation() {
@@ -149,10 +150,10 @@ public class Compte implements Externalizable {
     @Override
     public String toString() {
         return "Compte{" +
-                "utilisateur=" + utilisateur +
-                ", motDePasse=" + motDePasse +
-                ", notes=" + notes +
-                ", dateCreation=" + dateCreation +
+                "utilisateur=" + getUtilisateur() +
+                ", motDePasse=" + getMotDePasse() +
+                ", notes=" + getNotes() +
+                ", dateCreation=" + getDateCreationFormatted() +
                 '}';
     }
 }
