@@ -12,11 +12,11 @@ import javafx.stage.Stage;
 import passwordManager.controleur.App;
 
 public class PasswordManager extends Application {
-    private KeyCodeCombination ctrlS = new KeyCodeCombination(KeyCode.S, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlS =      new KeyCodeCombination(KeyCode.S, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlO =      new KeyCodeCombination(KeyCode.O, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlN =      new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlZ =      new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_ANY);
     private KeyCodeCombination ctrlShiftS = new KeyCodeCombination(KeyCode.S, KeyCodeCombination.CONTROL_ANY, KeyCodeCombination.SHIFT_ANY);
-    private KeyCodeCombination ctrlO = new KeyCodeCombination(KeyCode.O, KeyCodeCombination.CONTROL_ANY);
-    private KeyCodeCombination ctrlN = new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_ANY);
-    private KeyCodeCombination ctrlZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_ANY);
     private KeyCodeCombination ctrlShiftZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_ANY, KeyCodeCombination.SHIFT_ANY);
 
     private Clipboard clipboard = Clipboard.getSystemClipboard();
@@ -29,12 +29,13 @@ public class PasswordManager extends Application {
 
     private final static String DOSSIER_RESSOURCES = "/";
 
-    public final static String DOSSIER_FXML =       DOSSIER_RESSOURCES + "fxml/";
-    public final static String DOSSIER_CSS =        DOSSIER_RESSOURCES + "stylesheets/";
+    private final static String DOSSIER_FXML =      DOSSIER_RESSOURCES + "fxml/";
+    private final static String DOSSIER_CSS =       DOSSIER_RESSOURCES + "stylesheets/";
     public final static String DOSSIER_FONTS =      DOSSIER_RESSOURCES + "fonts/";
-    public final static String DOSSIER_IMAGES =     DOSSIER_RESSOURCES + "images/";
-    public final static String DOSSIER_TEXTE =      DOSSIER_RESSOURCES + "text/";
+    final static String DOSSIER_IMAGES =            DOSSIER_RESSOURCES + "images/";
+    private final static String DOSSIER_TEXTE =     DOSSIER_RESSOURCES + "text/";
 
+    private final static String FXML_APP =              DOSSIER_FXML + "App.fxml";
     public final static String FXML_DETAILSIDLE =       DOSSIER_FXML + "DetailsIdle.fxml";
     public final static String FXML_AUTORISATION =      DOSSIER_FXML + "Autorisation.fxml";
     public final static String FXML_FICHIERINFO =       DOSSIER_FXML + "FichierInfo.fxml";
@@ -42,15 +43,14 @@ public class PasswordManager extends Application {
     public final static String FXML_INFOSDOMAINE =      DOSSIER_FXML + "InfosDomaine.fxml";
     public final static String FXML_CONFIRMATION =      DOSSIER_FXML + "Confirmation.fxml";
     public final static String FXML_PARAMETRES =        DOSSIER_FXML + "Parametres.fxml";
-    public final static String FXML_APP =               DOSSIER_FXML + "App.fxml";
     public final static String FXML_IMAGESELECTION =    DOSSIER_FXML + "ImageSelection.fxml";
     public final static String FXML_ABOUT =             DOSSIER_FXML + "About.fxml";
     public final static String FXML_EXPLICATIONS =      DOSSIER_FXML + "Explications.fxml";
 
     public final static String TEXT_NAMES =             DOSSIER_TEXTE + "names.txt";
 
-    public final static String CSS_BOOTSTRAP =          DOSSIER_CSS + "bootstrap3.css";
-    public final static String CSS_PASSWORDMANAGER =    DOSSIER_CSS + "style.css";
+    private final static String CSS_BOOTSTRAP =         DOSSIER_CSS + "bootstrap3.css";
+    private final static String CSS_PASSWORDMANAGER =   DOSSIER_CSS + "style.css";
 
     private Stage stage;
     private App app;
@@ -61,8 +61,6 @@ public class PasswordManager extends Application {
 
     @Override
     public void stop() throws Exception {
-        System.out.println("Stopping...");
-
         preferences.write();
         super.stop();
     }

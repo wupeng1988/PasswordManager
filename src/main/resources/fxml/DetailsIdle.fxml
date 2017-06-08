@@ -30,9 +30,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Nombre de domaines enregistés" />
-                  <Label text="Nombre de comptes enregistrés" GridPane.rowIndex="1" />
-                  <Label text="Moyenne" GridPane.rowIndex="2" />
+                  <Label styleClass="lEmphase" text="Nombre de domaines enregistrés" />
+                  <Label styleClass="lEmphase" text="Nombre de comptes enregistrés" GridPane.rowIndex="1" />
+                  <Label styleClass="lEmphase" text="Moyenne" GridPane.rowIndex="2" />
                   <Label fx:id="lDomaineTaille" text="Label" GridPane.columnIndex="1" />
                   <Label fx:id="lCompteTaille" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label fx:id="lMoyenne" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />

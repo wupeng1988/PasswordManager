@@ -79,6 +79,11 @@ public class InfosCompte implements Initializable {
         bCopyU.setText(null);
         bCopyM.setText(null);
 
+        bAleaU.setTooltip(new Tooltip("Générer un nom d'utilisateur aléatoirement"));
+        bAleaM.setTooltip(new Tooltip("Générer un mot de passe aléatoirement"));
+        bCopyU.setTooltip(new Tooltip("Copier le nom d'utilisateur dans le presse-papier"));
+        bCopyM.setTooltip(new Tooltip("Copier le mot de passe dans le presse-papier"));
+
         tfUtilisateur.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER)
                 okEdition();

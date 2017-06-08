@@ -16,8 +16,8 @@ public class Preferences {
     private Properties properties = new Properties();
     private HashMap<String, Object> list = new HashMap<String, Object>() {{
         put(PROP_DERNIER_FICHIER, "");
-        put(PROP_DEFAUT_LARGEUR, "800");
-        put(PROP_DEFAUT_HAUTEUR, "400");
+        put(PROP_DEFAUT_LARGEUR, "1000");
+        put(PROP_DEFAUT_HAUTEUR, "500");
     }};
 
     Preferences() {

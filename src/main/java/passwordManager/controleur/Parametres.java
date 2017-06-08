@@ -3,8 +3,8 @@ package passwordManager.controleur;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import org.controlsfx.validation.ValidationResult;
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
@@ -30,6 +30,15 @@ public class Parametres implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bOk.disableProperty().bind(validationSupport.invalidProperty()); // à enlever quand paramètre implémentés
+
+        tfLargeurDefaut.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                ok();
+        });
+        tfHauteurDefaut.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                ok();
+        });
     }
 
     @FXML

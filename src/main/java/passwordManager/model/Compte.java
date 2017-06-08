@@ -94,7 +94,7 @@ public class Compte implements Externalizable, Applicable {
     public void setDateCreationFormatted(String date) {
         this.dateCreation.set(LocalDate.parse(date, DateTimeFormatter.ofPattern(DATE_FORMAT)));
     }
-    public void setDateCreation(LocalDate dateCreation) {
+    private void setDateCreation(LocalDate dateCreation) {
         this.dateCreation.set(dateCreation);
     }
     public void setNotes(String notes) {
@@ -107,7 +107,7 @@ public class Compte implements Externalizable, Applicable {
         this.motDePasse.set(motDePasse);
     }
 
-    public String getDateCreationFormatted() {
+    private String getDateCreationFormatted() {
         if (dateCreation.get() == null) return "????/??/??";
         return dateCreation.get().format(DateTimeFormatter.ofPattern(DATE_FORMAT));
     }

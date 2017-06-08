@@ -45,9 +45,9 @@
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></Label>
-                  <TextArea fx:id="taNotes" prefHeight="200.0" prefWidth="200.0" promptText="(Optionnel) Notes relatives à ce compte" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <TextField fx:id="tfUtilisateur" promptText="Utilisateur [4 &lt;= longueur &lt;= 18]" GridPane.columnIndex="1" />
                   <TextField fx:id="tfMotDePasse" promptText="Mot de passe [4 &lt;= longueur &lt;= 18]" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextArea fx:id="taNotes" prefHeight="200.0" prefWidth="200.0" promptText="(Optionnel) Notes relatives à ce compte" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <HBox maxHeight="0.0" spacing="10.0" GridPane.columnIndex="2" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER">
                      <children>
                         <Button fx:id="bAleaU" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#aleaU" prefHeight="30.0" prefWidth="30.0" text="A" HBox.hgrow="NEVER" />

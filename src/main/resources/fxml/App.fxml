@@ -96,8 +96,10 @@
                                  <left>
                                     <HBox BorderPane.alignment="CENTER">
                                        <children>
+                                          <Button fx:id="bMonterDomaineMax" mnemonicParsing="false" onAction="#monterDomaineMax" styleClass="boutonMod" text="DU" />
                                           <Button fx:id="bMonterDomaine" mnemonicParsing="false" onAction="#monterDomaine" styleClass="boutonMod" text="U" />
                                           <Button fx:id="bDescendreDomaine" mnemonicParsing="false" onAction="#descendreDomaine" styleClass="boutonMod" text="D" />
+                                          <Button fx:id="bDescendreDomaineMax" mnemonicParsing="false" onAction="#descendreDomaineMax" styleClass="boutonMod" text="DD" />
                                        </children>
                                     </HBox>
                                  </left>
@@ -179,8 +181,10 @@
                                                    <top>
                                                       <VBox BorderPane.alignment="CENTER">
                                                          <children>
+                                                            <Button fx:id="bMonterCompteMax" mnemonicParsing="false" onAction="#monterCompteMax" prefWidth="1000.0" styleClass="boutonMod" text="DU" />
                                                             <Button fx:id="bMonterCompte" mnemonicParsing="false" onAction="#monterCompte" prefWidth="1000.0" styleClass="boutonMod" text="U" />
                                                             <Button fx:id="bDescendreCompte" mnemonicParsing="false" onAction="#descendreCompte" prefWidth="1000.0" styleClass="boutonMod" text="D" />
+                                                            <Button fx:id="bDescendreCompteMax" mnemonicParsing="false" onAction="#descendreCompteMax" prefWidth="1000.0" styleClass="boutonMod" text="DD" />
                                                          </children>
                                                       </VBox>
                                                    </top>

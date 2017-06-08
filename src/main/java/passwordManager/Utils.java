@@ -67,7 +67,7 @@ public class Utils {
     static ArrayList<String> getFichiersDansDossier(String chemin, String extension) {
         return getFichiersDansDossier(new File(chemin), extension);
     }
-    static ArrayList<String> getFichiersDansDossier(File dossier, String extension) {
+    private static ArrayList<String> getFichiersDansDossier(File dossier, String extension) {
         ArrayList<String> fichiers = new ArrayList<>();
 
         if (dossier.exists() && dossier.isDirectory())

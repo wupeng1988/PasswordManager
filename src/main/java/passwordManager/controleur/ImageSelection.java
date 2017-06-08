@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -73,6 +74,16 @@ public class ImageSelection implements Initializable {
     void setApp(InfosDomaine infosDomaine, String l) {
         this.infosDomaine = infosDomaine;
         this.imageManager = infosDomaine.app.getImageManager();
+
+        bAjout.setText(null);
+        bSuppression.setText(null);
+
+        bAjout.setTooltip(new Tooltip("Icone depuis l'ordinateur..."));
+        bSuppression.setTooltip(new Tooltip("Déselectionner l'icone sélectionnée"));
+
+        bAjout.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_UPLOAD, 30, 30, true));
+        bSuppression.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_RECT_CLOSE, 30, 30, true));
+
         setIcone(l);
         init();
     }

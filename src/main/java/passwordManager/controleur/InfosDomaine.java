@@ -6,13 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
-import javafx.stage.FileChooser;
 import org.controlsfx.control.textfield.TextFields;
-import org.controlsfx.validation.ValidationMessage;
 import org.controlsfx.validation.ValidationResult;
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
@@ -22,7 +19,6 @@ import passwordManager.model.ActionHistorique;
 import passwordManager.model.Applicable;
 import passwordManager.model.Domaine;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,6 +69,13 @@ public class InfosDomaine implements Initializable {
         bCopN.setText(null);
         bSupN.setText(null);
 
+        bGenD.setTooltip(new Tooltip("Générer le nom de domaine le plus proche"));
+        bAccD.setTooltip(new Tooltip("Accéder à l'url (navigateur par défaut)"));
+        bModI.setTooltip(new Tooltip("Modifier l'icone associée"));
+        bSupI.setTooltip(new Tooltip("Supprimer l'icone associée"));
+        bCopN.setTooltip(new Tooltip("Copier le texte dans le presse-papier"));
+        bSupN.setTooltip(new Tooltip("Supprimer les notes contenues"));
+
         initImageSelection();
 
         tfNom.setOnKeyPressed(event -> {
@@ -80,6 +83,10 @@ public class InfosDomaine implements Initializable {
                 okEdition();
         });
         tfDomaine.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                okEdition();
+        });
+        tfCategorie.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER)
                 okEdition();
         });
@@ -188,7 +195,13 @@ public class InfosDomaine implements Initializable {
 
     @FXML
     private void genD() {
-        tfDomaine.setText("www." + tfNom.getText().toLowerCase().replace(" ", "") + ".com");
+        String gen = tfNom.getText()
+                .toLowerCase()
+                .trim()
+                .replace(" ", "")
+                .replace("'", "");
+
+        tfDomaine.setText("www." + gen + ".com");
     }
 
     @FXML

@@ -21,6 +21,10 @@ public class ImageManager {
     public static final String ICONE_REFRESH =      PasswordManager.DOSSIER_IMAGES + "refresh.png";
     public static final String ICONE_SHARE =        PasswordManager.DOSSIER_IMAGES + "share.png";
     public static final String ICONE_EDITION =      PasswordManager.DOSSIER_IMAGES + "edition.png";
+    public static final String ICONE_UPLOAD =       PasswordManager.DOSSIER_IMAGES + "upload.png";
+    public static final String ICONE_DOUBLE_UP =    PasswordManager.DOSSIER_IMAGES + "double-up.png";
+    public static final String ICONE_DOUBLE_DOWN =  PasswordManager.DOSSIER_IMAGES + "double-down.png";
+    public static final String ICONE_RECT_CLOSE =   PasswordManager.DOSSIER_IMAGES + "rect-close.png";
 
     private static final String CHEMIN_ICONES = "./icones";
 
@@ -30,7 +34,7 @@ public class ImageManager {
     public ImageManager() {
         File f = new File(CHEMIN_ICONES);
         if (!f.exists()) {
-            f.mkdir();
+            if (!f.mkdir()) System.err.println("mkdir failed! check write perm");
             return;
         }
 
@@ -43,6 +47,7 @@ public class ImageManager {
     }
     public Image getImage(String location, boolean resource) {
         Image i = cache.get(location);
+
         if (i == null) {
             try {
                 File f;
@@ -50,6 +55,7 @@ public class ImageManager {
                     f = new File(location);
                     if (f.exists() && f.isFile()) {
                         i = new Image(f.toURI().toURL().toExternalForm());
+                        if (i.getHeight() > 128 || i.getWidth() > 128) i = null;
                         userImages.add(f.getAbsolutePath());
                     }
                 } else {
@@ -62,6 +68,7 @@ public class ImageManager {
                 e.printStackTrace();
             }
         }
+
         return i;
     }
     public ImageView constructImageViewFrom(String location, int width, int height) {

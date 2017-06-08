@@ -148,7 +148,7 @@ public class Domaine implements Externalizable, Applicable {
     public void setNom(String nom) {
         this.nom.set(nom);
     }
-    public void setComptes(ObservableList<Compte> comptes) {
+    private void setComptes(ObservableList<Compte> comptes) {
         this.comptes = comptes;
     }
 
@@ -175,9 +175,28 @@ public class Domaine implements Externalizable, Applicable {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
 
-        Domaine domaine = (Domaine) o;
+        Domaine domaine1 = (Domaine) o;
 
-        return getNom().equals(domaine.getNom()) && getComptes().equals(domaine.getComptes());
+        if (getNom() != null ? !getNom().equals(domaine1.getNom()) : domaine1.getNom() != null) return false;
+        if (getDomaine() != null ? !getDomaine().equals(domaine1.getDomaine()) : domaine1.getDomaine() != null)
+            return false;
+        if (getCategorie() != null ? !getCategorie().equals(domaine1.getCategorie()) : domaine1.getCategorie() != null)
+            return false;
+        if (getNotes() != null ? !getNotes().equals(domaine1.getNotes()) : domaine1.getNotes() != null) return false;
+        if (getIconeLocation() != null ? !getIconeLocation().equals(domaine1.getIconeLocation()) : domaine1.getIconeLocation() != null)
+            return false;
+        return getComptes() != null ? getComptes().equals(domaine1.getComptes()) : domaine1.getComptes() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getNom() != null ? getNom().hashCode() : 0;
+        result = 31 * result + (getDomaine() != null ? getDomaine().hashCode() : 0);
+        result = 31 * result + (getCategorie() != null ? getCategorie().hashCode() : 0);
+        result = 31 * result + (getNotes() != null ? getNotes().hashCode() : 0);
+        result = 31 * result + (getIconeLocation() != null ? getIconeLocation().hashCode() : 0);
+        result = 31 * result + (getComptes() != null ? getComptes().hashCode() : 0);
+        return result;
     }
 
     @Override

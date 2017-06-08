@@ -108,6 +108,12 @@ public class App implements Initializable {
     @FXML private Button bDescendreDomaine;
     @FXML private Button bDescendreCompte;
 
+    @FXML private Button bMonterDomaineMax;
+    @FXML private Button bMonterCompteMax;
+
+    @FXML private Button bDescendreDomaineMax;
+    @FXML private Button bDescendreCompteMax;
+
     @FXML private Label lEtat;
 
     @FXML private AnchorPane root;
@@ -286,6 +292,10 @@ public class App implements Initializable {
         bMonterCompte.setText(null);
         bDescendreDomaine.setText(null);
         bDescendreCompte.setText(null);
+        bMonterDomaineMax.setText(null);
+        bMonterCompteMax.setText(null);
+        bDescendreDomaineMax.setText(null);
+        bDescendreCompteMax.setText(null);
         bAjoutDomaine.setText(null);
         bAjoutCompte.setText(null);
         bModificationDomaine.setText(null);
@@ -293,11 +303,31 @@ public class App implements Initializable {
         bSuppressionDomaine.setText(null);
         bSuppressionCompte.setText(null);
 
+        // Tootips
+        bMonterDomaine.setTooltip(new Tooltip("Monter le domaine sélectionné d'une place"));
+        bMonterCompte.setTooltip(new Tooltip("Monter le compte sélectionné d'une place"));
+        bDescendreDomaine.setTooltip(new Tooltip("Descendre le domaine sélectionné d'une place"));
+        bDescendreCompte.setTooltip(new Tooltip("Descendre le compte sélectionné d'une place"));
+        bMonterDomaineMax.setTooltip(new Tooltip("Monter le domaine sélectionné jusqu'en première place"));
+        bMonterCompteMax.setTooltip(new Tooltip("Monter le compte sélectionné jusqu'en première place"));
+        bDescendreDomaineMax.setTooltip(new Tooltip("Descendre le domaine sélectionné jusqu'en dernière place"));
+        bDescendreCompteMax.setTooltip(new Tooltip("Descendre le compte sélectionné jusqu'en dernière place"));
+        bAjoutDomaine.setTooltip(new Tooltip("Ajouter un nouveau domaine"));
+        bAjoutCompte.setTooltip(new Tooltip("Ajouter un nouveau compte"));
+        bModificationDomaine.setTooltip(new Tooltip("Modifier le domaine sélectionné"));
+        bModificationCompte.setTooltip(new Tooltip("Modifier le compte sélectionné"));
+        bSuppressionDomaine.setTooltip(new Tooltip("Supprimer le domaine sélectionné"));
+        bSuppressionCompte.setTooltip(new Tooltip("Supprimer le compte sélectionné"));
+
         // Gestion des activations de boutons
         bMonterDomaine.setDisable(true);
         bMonterCompte.setDisable(true);
         bDescendreDomaine.setDisable(true);
         bDescendreCompte.setDisable(true);
+        bMonterDomaineMax.setDisable(true);
+        bMonterCompteMax.setDisable(true);
+        bDescendreDomaineMax.setDisable(true);
+        bDescendreCompteMax.setDisable(true);
         bAjoutCompte.setDisable(true);
         bModificationDomaine.setDisable(true);
         bModificationCompte.setDisable(true);
@@ -309,6 +339,10 @@ public class App implements Initializable {
         bMonterCompte.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_UP, 16, 16, true));
         bDescendreDomaine.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_DOWN, 16, 16, true));
         bDescendreCompte.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_DOWN, 16, 16, true));
+        bMonterDomaineMax.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_DOUBLE_UP, 16, 16, true));
+        bMonterCompteMax.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_DOUBLE_UP, 16, 16, true));
+        bDescendreDomaineMax.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_DOUBLE_DOWN, 16, 16, true));
+        bDescendreCompteMax.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_DOUBLE_DOWN, 16, 16, true));
         bAjoutDomaine.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_ADD, 16, 16, true));
         bAjoutCompte.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_ADD, 16, 16, true));
         bModificationDomaine.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_INFO, 16, 16, true));
@@ -318,6 +352,7 @@ public class App implements Initializable {
 
         // Cas particulier: ecraserFiltre
         bEcraserFiltre.setText(null);
+        bEcraserFiltre.setTooltip(new Tooltip("Retirer le filtre"));
         bEcraserFiltre.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_REMOVE, 16, 16, true));
     }
     private void initEtat() {
@@ -419,7 +454,9 @@ public class App implements Initializable {
                 bSuppressionDomaine.setDisable(false);
 
                 bMonterDomaine.setDisable(!(donneesActives.getDomaines().indexOf(domaineSelectionne) > 0));
+                bMonterDomaineMax.setDisable(!(donneesActives.getDomaines().indexOf(domaineSelectionne) > 0));
                 bDescendreDomaine.setDisable(!(donneesActives.getDomaines().indexOf(domaineSelectionne) < donneesActives.getDomaines().size() - 1));
+                bDescendreDomaineMax.setDisable(!(donneesActives.getDomaines().indexOf(domaineSelectionne) < donneesActives.getDomaines().size() - 1));
             }
 
             if (compteSelectionne != null) {
@@ -427,7 +464,9 @@ public class App implements Initializable {
                 bSuppressionCompte.setDisable(false);
 
                 bMonterCompte.setDisable(!(domaineSelectionne.getComptes().indexOf(compteSelectionne) > 0));
+                bMonterCompteMax.setDisable(!(domaineSelectionne.getComptes().indexOf(compteSelectionne) > 0));
                 bDescendreCompte.setDisable(!(domaineSelectionne.getComptes().indexOf(compteSelectionne) < domaineSelectionne.getComptes().size() - 1));
+                bDescendreCompteMax.setDisable(!(domaineSelectionne.getComptes().indexOf(compteSelectionne) < domaineSelectionne.getComptes().size() - 1));
             }
 
             if (fichierOuvert != null) {
@@ -470,17 +509,6 @@ public class App implements Initializable {
         } else if (lvDomaines.isFocused()) {
             suppressionDomaine();
         }
-    }
-
-    @FXML
-    private void monterDomaine() {
-        if (donneesActives == null || domaineSelectionne == null) return;
-
-        int li = donneesActives.getDomaines().lastIndexOf(domaineSelectionne);
-        if (li == 0) return; // le domaine est déjà en première position
-
-        Collections.swap(donneesActives.getDomaines(), li - 1, li);
-        selection(1, li - 1);
     }
 
     public void selection(int level, int item) {
@@ -545,6 +573,63 @@ public class App implements Initializable {
     private void montrerParametres() {
         montrerOption(parametresVue);
         parametresControleur.initDonnees();
+    }
+
+    @FXML
+    private void monterDomaineMax() {
+        if (donneesActives == null || domaineSelectionne == null) return;
+
+        int li = donneesActives.getDomaines().lastIndexOf(domaineSelectionne);
+        if (li == 0) return; // le domaine est déjà en première position
+
+        Collections.swap(donneesActives.getDomaines(), 0, li);
+        selection(1, 0);
+    }
+
+    @FXML
+    private void monterCompteMax() {
+        if (donneesActives == null || domaineSelectionne == null || compteSelectionne == null) return;
+
+        int li = domaineSelectionne.getComptes().lastIndexOf(compteSelectionne);
+        if (li == 0) return; // le compte est déjà en première position
+
+        Collections.swap(domaineSelectionne.getComptes(), 0, li);
+        selection(0, 0);
+    }
+
+    @FXML
+    private void descendreDomaineMax() {
+        if (donneesActives == null || domaineSelectionne == null) return;
+
+        int litem = donneesActives.getDomaines().size() - 1;
+        int li = donneesActives.getDomaines().lastIndexOf(domaineSelectionne);
+        if (li == litem) return; // le domaine est déjà en dernière position
+
+        Collections.swap(donneesActives.getDomaines(), litem, li);
+        selection(1, litem);
+    }
+
+    @FXML
+    private void descendreCompteMax() {
+        if (donneesActives == null || domaineSelectionne == null || compteSelectionne == null) return;
+
+        int litem = domaineSelectionne.getComptes().size() - 1;
+        int li = domaineSelectionne.getComptes().lastIndexOf(compteSelectionne);
+        if (li == litem) return; // le compte est déjà en dernière position
+
+        Collections.swap(domaineSelectionne.getComptes(), litem, li);
+        selection(0, litem);
+    }
+
+    @FXML
+    private void monterDomaine() {
+        if (donneesActives == null || domaineSelectionne == null) return;
+
+        int li = donneesActives.getDomaines().lastIndexOf(domaineSelectionne);
+        if (li == 0) return; // le domaine est déjà en première position
+
+        Collections.swap(donneesActives.getDomaines(), li - 1, li);
+        selection(1, li - 1);
     }
 
     @FXML

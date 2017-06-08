@@ -2,6 +2,7 @@ package passwordManager.controleur;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -11,6 +12,8 @@ import java.util.ResourceBundle;
  */
 public class About implements Initializable {
     private App app;
+
+    @FXML private Button bOk;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {}
