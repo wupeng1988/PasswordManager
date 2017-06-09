@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="editionPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.FichierInfo">
    <children>
@@ -30,23 +31,45 @@
             </ButtonBar>
          </bottom>
          <center>
-            <GridPane BorderPane.alignment="CENTER">
+            <GridPane hgap="8.0" vgap="8.0" BorderPane.alignment="CENTER">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="55.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Niveau d'encryption" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="cbEncryptionLevel" prefWidth="1000.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label text="Mot de passe" GridPane.rowIndex="2" />
-                  <TextField fx:id="tfMotDePasse" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label text="Autorisé" />
+                  <Label styleClass="lEmphase" text="Niveau d'encryption" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <padding>
+                        <Insets top="4.0" />
+                     </padding></Label>
+                  <ComboBox fx:id="cbEncryptionLevel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                  <Label styleClass="lEmphase" text="Mot de passe" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                     <padding>
+                        <Insets top="4.0" />
+                     </padding></Label>
+                  <TextField fx:id="tfMotDePasse" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+                  <Label styleClass="lEmphase" text="Autorisé" GridPane.halignment="RIGHT" />
                   <Label fx:id="lAutorise" text="Oui/Non" GridPane.columnIndex="1" />
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <children>
+                        <Label text="Niveau d'encryption:" />
+                        <Label text="0 = aucune encryption, fichier en clair" />
+                        <Label text="1 = encryption minimale, seuls les mot de passe sont cryptés" wrapText="true" />
+                        <Label text="2 = encryption moyenne, toutes les information relatives aux comptes (utilisateur, mot de passe, notes...) sont cryptés" wrapText="true" />
+                        <Label text="3 = encryption maximale, tout le fichier est crypté" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <children>
+                        <Label text="Mot de passe:" />
+                        <Label text="Le mot de passe est utilisé pour encrypter le fichier de sauvegarde. Attention donc à ne pas le perde, sinon il sera impossible de récupérer le contenu du fichier en question." wrapText="true" />
+                     </children>
+                  </VBox>
                </children>
             </GridPane>
          </center>

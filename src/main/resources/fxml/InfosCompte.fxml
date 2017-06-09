@@ -2,8 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -18,15 +16,23 @@
     <children>
         <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="editionBox" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
             <bottom>
-                <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                    <buttons>
-                        <Button fx:id="bOk" mnemonicParsing="false" onAction="#okEdition" text="Ok" />
+            <HBox alignment="CENTER_RIGHT" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="bAlea" mnemonicParsing="false" onAction="#alea" text="Aléatoire">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Button>
+                        <Button fx:id="bOk" mnemonicParsing="false" onAction="#okEdition" prefWidth="75.0" text="Ok" />
                   <Button mnemonicParsing="false" onAction="#annulerEdition" text="Annuler" />
-                    </buttons>
-                </ButtonBar>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </HBox>
             </bottom>
          <center>
-            <GridPane hgap="8.0" vgap="8.0" BorderPane.alignment="CENTER">
+            <GridPane hgap="8.0" vgap="8.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="120.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -44,7 +50,8 @@
                   <Label styleClass="lEmphase" text="Notes" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets />
-                     </GridPane.margin></Label>
+                     </GridPane.margin>
+                  </Label>
                   <TextField fx:id="tfUtilisateur" promptText="Utilisateur [4 &lt;= longueur &lt;= 18]" GridPane.columnIndex="1" />
                   <TextField fx:id="tfMotDePasse" promptText="Mot de passe [4 &lt;= longueur &lt;= 18]" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextArea fx:id="taNotes" prefHeight="200.0" prefWidth="200.0" promptText="(Optionnel) Notes relatives à ce compte" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -67,7 +74,7 @@
                      </GridPane.margin>
                   </HBox>
                   <Label styleClass="lEmphase" text="Date de création" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                  <DatePicker fx:id="dpDateCreation" disable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="lDateCreation" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="10.0" top="10.0" />

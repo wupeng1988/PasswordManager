@@ -22,6 +22,7 @@ import passwordManager.*;
 import passwordManager.cellStuff.TableViewCell;
 import passwordManager.cellStuff.ListViewCell;
 import passwordManager.cellStuff.TableViewRow;
+import passwordManager.model.ActionHistorique;
 import passwordManager.model.Compte;
 import passwordManager.model.Domaine;
 import passwordManager.model.Donnees;
@@ -31,7 +32,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -40,15 +40,15 @@ import java.util.ResourceBundle;
  * Nico on 05/06/2017.
  */
 public class App implements Initializable {
-    PasswordManager passwordManager;
-    ImageManager imageManager = new ImageManager();
-    File fichierOuvert = null;
+    private PasswordManager passwordManager;
+    private ImageManager imageManager = new ImageManager();
+    private File fichierOuvert = null;
 
-    Donnees donneesActives = null;
-    Domaine domaineSelectionne = null;
-    Compte compteSelectionne = null;
+    private Donnees donneesActives = null;
+    private Domaine domaineSelectionne = null;
+    private Compte compteSelectionne = null;
 
-    Random random = new Random();
+    private Random random = new Random();
 
     public boolean inOptions = false;
 
@@ -368,8 +368,8 @@ public class App implements Initializable {
     public void initPhase2() { // Phase 2: application chargée, on peut la reconfigurer avec les paramètres de l'utilisateur
         Preferences preferences = passwordManager.getPreferences();
 
-        String lastFile = (String) preferences.getProperty(Preferences.PROP_DERNIER_FICHIER);
-        if (lastFile == null || lastFile.equals(""))
+        String lastFile = preferences.getPropriete(Preferences.PROP_DERNIER_FICHIER);
+        if (!Boolean.parseBoolean(preferences.getPropriete(Preferences.PROP_CHARGER_DERNIER_FICHIER)) || lastFile == null || lastFile.equals(""))
             nouvelleSauvegarde();
         else {
             if (!charger(new File(lastFile), null))
@@ -377,6 +377,8 @@ public class App implements Initializable {
 
             initUi();
         }
+
+        updateWithPreferences();
     }
 
     private void addIfNotPresent(Pane pane, Node n) {
@@ -420,6 +422,12 @@ public class App implements Initializable {
 
         bDescendreDomaine.setDisable(true);
         bDescendreCompte.setDisable(true);
+
+        bMonterDomaineMax.setDisable(true);
+        bMonterCompteMax.setDisable(true);
+
+        bDescendreDomaineMax.setDisable(true);
+        bDescendreCompteMax.setDisable(true);
 
         if (detailsRoot.getChildren().contains(detailsIdleVue)) {
             miStatistiques.setDisable(true);
@@ -511,7 +519,40 @@ public class App implements Initializable {
         }
     }
 
-    public void selection(int level, int item) {
+    @FXML
+    public void monterAuFocus() {
+        if (tvComptes.isFocused()) {
+            monterCompte();
+        } else if (lvDomaines.isFocused()) {
+            monterDomaine();
+        }
+    }
+    @FXML
+    public void descendreAuFocus() {
+        if (tvComptes.isFocused()) {
+            descendreCompte();
+        } else if (lvDomaines.isFocused()) {
+            descendreDomaine();
+        }
+    }
+    @FXML
+    public void monterMaxAuFocus() {
+        if (tvComptes.isFocused()) {
+            monterCompteMax();
+        } else if (lvDomaines.isFocused()) {
+            monterDomaineMax();
+        }
+    }
+    @FXML
+    public void descendreMaxAuFocus() {
+        if (tvComptes.isFocused()) {
+            descendreCompteMax();
+        } else if (lvDomaines.isFocused()) {
+            descendreDomaineMax();
+        }
+    }
+
+    private void selection(int level, int item) {
         switch (level) {
             case 0:
                 if (domaineSelectionne != null && item < tvComptes.getItems().size())
@@ -561,7 +602,7 @@ public class App implements Initializable {
     }
 
     @FXML
-    private void montrerExplications() {
+    public void montrerExplications() {
         root.getChildren().add(explicationsVue);
     }
     @FXML
@@ -570,7 +611,7 @@ public class App implements Initializable {
     }
 
     @FXML
-    private void montrerParametres() {
+    public void montrerParametres() {
         montrerOption(parametresVue);
         parametresControleur.initDonnees();
     }
@@ -582,7 +623,7 @@ public class App implements Initializable {
         int li = donneesActives.getDomaines().lastIndexOf(domaineSelectionne);
         if (li == 0) return; // le domaine est déjà en première position
 
-        Collections.swap(donneesActives.getDomaines(), 0, li);
+        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementDomaine(li, 0, getDonneesActives()));
         selection(1, 0);
     }
 
@@ -593,7 +634,7 @@ public class App implements Initializable {
         int li = domaineSelectionne.getComptes().lastIndexOf(compteSelectionne);
         if (li == 0) return; // le compte est déjà en première position
 
-        Collections.swap(domaineSelectionne.getComptes(), 0, li);
+        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementCompte(li, 0, getDomaineSelectionne()));
         selection(0, 0);
     }
 
@@ -605,7 +646,7 @@ public class App implements Initializable {
         int li = donneesActives.getDomaines().lastIndexOf(domaineSelectionne);
         if (li == litem) return; // le domaine est déjà en dernière position
 
-        Collections.swap(donneesActives.getDomaines(), litem, li);
+        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementDomaine(li, litem, getDonneesActives()));
         selection(1, litem);
     }
 
@@ -617,7 +658,7 @@ public class App implements Initializable {
         int li = domaineSelectionne.getComptes().lastIndexOf(compteSelectionne);
         if (li == litem) return; // le compte est déjà en dernière position
 
-        Collections.swap(domaineSelectionne.getComptes(), litem, li);
+        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementCompte(li, litem, getDomaineSelectionne()));
         selection(0, litem);
     }
 
@@ -628,7 +669,8 @@ public class App implements Initializable {
         int li = donneesActives.getDomaines().lastIndexOf(domaineSelectionne);
         if (li == 0) return; // le domaine est déjà en première position
 
-        Collections.swap(donneesActives.getDomaines(), li - 1, li);
+
+        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementDomaine(li, li - 1, getDonneesActives()));
         selection(1, li - 1);
     }
 
@@ -639,7 +681,7 @@ public class App implements Initializable {
         int li = domaineSelectionne.getComptes().lastIndexOf(compteSelectionne);
         if (li == 0) return; // le compte est déjà en première position
 
-        Collections.swap(domaineSelectionne.getComptes(), li - 1, li);
+        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementCompte(li, li - 1, getDomaineSelectionne()));
         selection(0, li - 1);
     }
 
@@ -650,7 +692,7 @@ public class App implements Initializable {
         int li = donneesActives.getDomaines().lastIndexOf(domaineSelectionne);
         if (li == donneesActives.getDomaines().size() - 1) return; // le domaine est déjà en dernière position
 
-        Collections.swap(donneesActives.getDomaines(), li + 1, li);
+        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementDomaine(li, li + 1, getDonneesActives()));
         selection(1, li + 1);
     }
 
@@ -661,7 +703,7 @@ public class App implements Initializable {
         int li = domaineSelectionne.getComptes().lastIndexOf(compteSelectionne);
         if (li == domaineSelectionne.getComptes().size() - 1) return; // le compte est déjà en dernière position
 
-        Collections.swap(domaineSelectionne.getComptes(), li + 1, li);
+        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementCompte(li, li + 1, getDomaineSelectionne()));
         selection(0, li + 1);
     }
 
@@ -717,7 +759,7 @@ public class App implements Initializable {
         }
 
         montrerOption(infosCompteVue);
-        infosCompteControleur.initCompte(compteSelectionne, domaineSelectionne);
+        infosCompteControleur.initCompte(compteSelectionne);
     }
 
     @FXML
@@ -738,7 +780,7 @@ public class App implements Initializable {
         }
 
         montrerOption(infosCompteVue);
-        infosCompteControleur.nouveauCompte(domaineSelectionne);
+        infosCompteControleur.nouveauCompte();
     }
 
     @FXML
@@ -764,14 +806,6 @@ public class App implements Initializable {
         confirmationControleur.initObject(compteSelectionne, domaineSelectionne);
     }
 
-    void suppression(Object o) {
-        if (o instanceof Domaine) {
-            donneesActives.getDomaines().remove(domaineSelectionne);
-        } else if (o instanceof Compte) {
-            domaineSelectionne.getComptes().remove(compteSelectionne);
-        }
-    }
-
     @FXML
     public boolean sauvegarderDialog() {
         boolean result = false;
@@ -785,7 +819,7 @@ public class App implements Initializable {
         if (selectedFile != null) {
             result = sauvegarder(selectedFile);
             fichierOuvert = selectedFile;
-            passwordManager.getPreferences().setProperty(Preferences.PROP_DERNIER_FICHIER, fichierOuvert.getAbsolutePath());
+            passwordManager.getPreferences().setPropriete(Preferences.PROP_DERNIER_FICHIER, fichierOuvert.getAbsolutePath());
             initUi();
         }
 
@@ -855,7 +889,7 @@ public class App implements Initializable {
         }
 
         fichierOuvert = file;
-        passwordManager.getPreferences().setProperty(Preferences.PROP_DERNIER_FICHIER, fichierOuvert.getAbsolutePath());
+        passwordManager.getPreferences().setPropriete(Preferences.PROP_DERNIER_FICHIER, fichierOuvert.getAbsolutePath());
         miSauvegarder.setDisable(false);
 
         return true;
@@ -967,6 +1001,21 @@ public class App implements Initializable {
     public Donnees getDonneesActives() {
         return donneesActives;
     }
+    public Domaine getDomaineSelectionne() {
+        return domaineSelectionne;
+    }
+    public Compte getCompteSelectionne() {
+        return compteSelectionne;
+    }
+    public PasswordManager getPasswordManager() {
+        return passwordManager;
+    }
+    File getFichierOuvert() {
+        return fichierOuvert;
+    }
+    Random getRandom() {
+        return random;
+    }
 
     public boolean checkSaveEnregistree() {
         if (getDonneesActives() == null || getDonneesActives().getHistorique().isSaved()) return true;
@@ -1006,18 +1055,21 @@ public class App implements Initializable {
         Platform.exit();
     }
 
+    void updateWithPreferences() {
+        Preferences preferences = passwordManager.getPreferences();
+
+        donneesActives.getHistorique().setMaxSize(Integer.parseInt(preferences.getPropriete(Preferences.PROP_MAX_HISTORIQUE)));
+    }
+
     private void setAnchor(Node n) {
-        setAnchor(n, .0, .0, .0, .0);
+        AnchorPane.setTopAnchor(n, .0);
+        AnchorPane.setRightAnchor(n, .0);
+        AnchorPane.setBottomAnchor(n, .0);
+        AnchorPane.setLeftAnchor(n, .0);
     }
     private void setAnchor(Node ...n) {
         for (Node ns : n)
             setAnchor(ns);
-    }
-    private void setAnchor(Node n, double t, double r, double b, double l) {
-        AnchorPane.setTopAnchor(n, t);
-        AnchorPane.setRightAnchor(n, r);
-        AnchorPane.setBottomAnchor(n, b);
-        AnchorPane.setLeftAnchor(n, l);
     }
 }
 

@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="editionPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.InfosDomaine">
@@ -35,11 +36,11 @@
                       <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
@@ -49,13 +50,23 @@
                         <TextField fx:id="tfNom" promptText="Nom du domaine [2 &lt;= longueur &lt;= 18]" GridPane.columnIndex="1" />
                         <TextField fx:id="tfDomaine" promptText="Domaine (adresse)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="tfCategorie" promptText="Catégorie" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextArea fx:id="taNotes" prefHeight="200.0" prefWidth="200.0" promptText="(Optionnel) Notes à propos du domaine" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label styleClass="lEmphase" text="Notes" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                        <Label styleClass="lEmphase" text="Icone" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                        <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <TextArea fx:id="taNotes" prefHeight="200.0" prefWidth="200.0" promptText="(Optionnel) Notes à propos du domaine" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                        <Label styleClass="lEmphase" text="Notes" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                        <BorderPane GridPane.columnIndex="3" GridPane.rowSpan="3">
                            <center>
-                              <ImageView fx:id="ivIcone" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+                              <ImageView fx:id="ivIcone" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" />
                            </center>
+                           <right>
+                              <VBox alignment="CENTER" spacing="8.0">
+                                 <children>
+                                    <Button fx:id="bModI" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#modI" prefHeight="30.0" prefWidth="30.0" text="M" />
+                                    <Button fx:id="bSupI" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#supI" prefHeight="30.0" prefWidth="30.0" text="S" />
+                                 </children>
+                              </VBox>
+                           </right>
+                           <top>
+                              <Label styleClass="lEmphase" text="Icone" BorderPane.alignment="CENTER" />
+                           </top>
                         </BorderPane>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <children>
@@ -63,13 +74,7 @@
                               <Button fx:id="bAccD" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#accD" prefHeight="30.0" prefWidth="30.0" text="A" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                           <children>
-                              <Button fx:id="bModI" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#modI" prefHeight="30.0" prefWidth="30.0" text="M" />
-                              <Button fx:id="bSupI" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#supI" prefHeight="30.0" prefWidth="30.0" text="S" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
                            <children>
                               <Button fx:id="bCopN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#copN" prefHeight="30.0" prefWidth="30.0" text="C" />
                               <Button fx:id="bSupN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#supN" prefHeight="30.0" prefWidth="30.0" text="S" />

@@ -31,17 +31,22 @@
                <top>
                   <VBox BorderPane.alignment="CENTER">
                      <children>
-                        <Label styleClass="lEmphase" text="Selection" />
-                        <ImageView fx:id="ivIcone" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="lEmphase" text="Selection" />
+                        <ImageView fx:id="ivIcone" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                           </VBox.margin></ImageView>
                      </children>
                   </VBox>
                </top>
                <center>
-                  <Button fx:id="bAjout" mnemonicParsing="false" onAction="#selectionIcone" styleClass="boutonMod" text="Ordi" BorderPane.alignment="CENTER" />
+                  <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="bAjout" mnemonicParsing="false" onAction="#selectionIcone" text="Ordi" />
+                        <Button fx:id="bSuppression" mnemonicParsing="false" onAction="#suppressionIcone" text="Del" />
+                     </children>
+                  </VBox>
                </center>
-               <bottom>
-                  <Button fx:id="bSuppression" mnemonicParsing="false" onAction="#suppressionIcone" styleClass="boutonMod" text="Del" BorderPane.alignment="CENTER" />
-               </bottom>
             </BorderPane>
          </right>
          <top>

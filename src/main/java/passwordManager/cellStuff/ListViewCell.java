@@ -1,6 +1,5 @@
 package passwordManager.cellStuff;
 
-import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.ContextMenu;
@@ -12,9 +11,9 @@ import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import passwordManager.ImageManager;
 import passwordManager.controleur.App;
+import passwordManager.model.ActionHistorique;
 import passwordManager.model.Domaine;
-
-import java.util.Collections;
+import passwordManager.model.Historique;
 
 /**
  * Nico on 05/06/2017.
@@ -109,11 +108,12 @@ public class ListViewCell extends ListCell<Domaine> {
 
             if (db.hasContent(customFormat)) {
                 ObservableList<Domaine> items = app.getDonneesActives().getDomaines();
-                int draggedIdx = items.indexOf(db.getContent(customFormat));
+                Domaine dragged = (Domaine) db.getContent(customFormat);
+                int draggedIdx = items.indexOf(dragged);
                 int thisIdx = items.indexOf(getItem());
 
-                Collections.swap(app.getDonneesActives().getDomaines(), draggedIdx, thisIdx);
-                app.selection(1, thisIdx);
+                Historique h = app.getDonneesActives().getHistorique();
+                h.ajoutAction(ActionHistorique.deplacementDomaine(draggedIdx, thisIdx, app.getDonneesActives()));
 
                 success = true;
             }

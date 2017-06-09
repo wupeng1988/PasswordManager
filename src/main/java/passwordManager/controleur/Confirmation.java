@@ -3,10 +3,9 @@ package passwordManager.controleur;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import passwordManager.model.ActionHistorique;
-import passwordManager.model.Applicable;
-import passwordManager.model.Compte;
-import passwordManager.model.Domaine;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
+import passwordManager.model.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,24 +16,42 @@ import java.util.ResourceBundle;
 public class Confirmation implements Initializable {
     private App app;
 
-    private Domaine wrapper;
+    private Object wrapper;
     private Applicable toDelete;
     private int type;
+
+    @FXML private AnchorPane root;
 
     @FXML private Label lObjetType;
     @FXML private Label lNom;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {}
+    public void initialize(URL location, ResourceBundle resources) {
+        root.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER)
+                ok();
+            else if (event.getCode() == KeyCode.ESCAPE)
+                annuler();
+        });
+    }
 
     @FXML
     private void ok() {
-        if (type == 0)
-            app.donneesActives.getHistorique().ajoutAction(new ActionHistorique(null, null, toDelete, ActionHistorique.Action.SUPPRESSION, ActionHistorique.Type.DOMAINE));
-        else
-            app.donneesActives.getHistorique().ajoutAction(new ActionHistorique(wrapper, null, toDelete, ActionHistorique.Action.SUPPRESSION, ActionHistorique.Type.COMPTE));
+        Historique h = app.getDonneesActives().getHistorique();
 
-        app.suppression(toDelete);
+        if (type == 0) {
+            Donnees d = (Donnees) wrapper;
+            Domaine dom = (Domaine) toDelete;
+            int place = d.getDomaines().indexOf(toDelete);
+            h.ajoutAction(ActionHistorique.suppressionDomaine(place, d, dom));
+        } else {
+            Domaine d = (Domaine) wrapper;
+            Compte c = (Compte) toDelete;
+            int place = d.getComptes().indexOf(toDelete);
+
+            h.ajoutAction(ActionHistorique.suppressionCompte(place, d, c));
+        }
+
         app.finEdition();
     }
     @FXML
@@ -44,6 +61,7 @@ public class Confirmation implements Initializable {
 
     void initObject(Domaine d) {
         toDelete = d;
+        wrapper = app.getDonneesActives();
         type = 0;
 
         lObjetType.setText("Domaine");
@@ -57,6 +75,7 @@ public class Confirmation implements Initializable {
         lObjetType.setText("Compte");
         lNom.setText(c.getUtilisateur());
 
+        root.requestFocus();
     }
 
     void bindParent(App a) {

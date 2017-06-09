@@ -34,9 +34,9 @@ public class Autorisation implements Initializable {
         try {
             Crypto crypto = new Crypto(mdp);
 
-            app.charger(app.fichierOuvert, crypto);
-            app.donneesActives.setAutorise(true);
-            app.donneesActives.setMotDePasse(mdp);
+            app.charger(app.getFichierOuvert(), crypto);
+            app.getDonneesActives().setAutorise(true);
+            app.getDonneesActives().setMotDePasse(mdp);
             app.initUi();
             app.finEdition();
         } catch (Exception e) {

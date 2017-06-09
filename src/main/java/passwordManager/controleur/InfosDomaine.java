@@ -16,8 +16,8 @@ import org.controlsfx.validation.Validator;
 import passwordManager.ImageManager;
 import passwordManager.PasswordManager;
 import passwordManager.model.ActionHistorique;
-import passwordManager.model.Applicable;
 import passwordManager.model.Domaine;
+import passwordManager.model.Historique;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -119,7 +119,8 @@ public class InfosDomaine implements Initializable {
 
     private void finEdition(boolean ok) {
         if (ok) {
-            Applicable avant = toEdit.snap();
+            Historique h = app.getDonneesActives().getHistorique();
+            Domaine avant = toEdit.snap();
 
             toEdit.setNom(tfNom.getText());
             toEdit.setDomaine(tfDomaine.getText());
@@ -128,12 +129,10 @@ public class InfosDomaine implements Initializable {
             toEdit.setNotes(taNotes.getText());
 
             if (!exists) {
-                app.donneesActives.addDomaine(toEdit);
+                h.ajoutAction(ActionHistorique.ajoutDomaine(-1, app.getDonneesActives(), toEdit));
                 app.selectionDomaine(toEdit);
-
-                app.donneesActives.getHistorique().ajoutAction(new ActionHistorique(null, toEdit.snap(), toEdit, ActionHistorique.Action.AJOUT, ActionHistorique.Type.DOMAINE));
             } else {
-                app.donneesActives.getHistorique().ajoutAction(new ActionHistorique(avant, toEdit.snap(), toEdit, ActionHistorique.Action.MODIFICATION, ActionHistorique.Type.DOMAINE));
+                h.ajoutAction(ActionHistorique.modificationDomaine(avant, toEdit));
             }
         }
 
@@ -153,12 +152,14 @@ public class InfosDomaine implements Initializable {
     void bindParent(App c) {
         app = c;
 
-        bGenD.setGraphic(app.imageManager.constructImageViewFrom(ImageManager.ICONE_REFRESH, 24, 24, true));
-        bAccD.setGraphic(app.imageManager.constructImageViewFrom(ImageManager.ICONE_SHARE, 24, 24, true));
-        bModI.setGraphic(app.imageManager.constructImageViewFrom(ImageManager.ICONE_EDITION, 24, 24, true));
-        bSupI.setGraphic(app.imageManager.constructImageViewFrom(ImageManager.ICONE_REMOVE, 24, 24, true));
-        bCopN.setGraphic(app.imageManager.constructImageViewFrom(ImageManager.ICONE_COPY, 24, 24, true));
-        bSupN.setGraphic(app.imageManager.constructImageViewFrom(ImageManager.ICONE_REMOVE, 24, 24, true));
+        ImageManager im = app.getImageManager();
+
+        bGenD.setGraphic(im.constructImageViewFrom(ImageManager.ICONE_REFRESH, 16, 16, true));
+        bAccD.setGraphic(im.constructImageViewFrom(ImageManager.ICONE_SHARE, 16, 16, true));
+        bModI.setGraphic(im.constructImageViewFrom(ImageManager.ICONE_EDITION, 16, 16, true));
+        bSupI.setGraphic(im.constructImageViewFrom(ImageManager.ICONE_REMOVE, 16, 16, true));
+        bCopN.setGraphic(im.constructImageViewFrom(ImageManager.ICONE_COPY, 16, 16, true));
+        bSupN.setGraphic(im.constructImageViewFrom(ImageManager.ICONE_REMOVE, 16, 16, true));
     }
 
     void initDomaine(Domaine d) {
@@ -169,7 +170,7 @@ public class InfosDomaine implements Initializable {
         tfCategorie.setText(d.getCategorie());
         domaineLabel.setText(d.getDomaine());
         iconeLocation = d.getIconeLocation();
-        ivIcone.setImage(app.imageManager.getImage(iconeLocation));
+        ivIcone.setImage(app.getImageManager().getImage(iconeLocation));
         taNotes.setText(d.getNotes());
         exists = true;
 
@@ -183,7 +184,7 @@ public class InfosDomaine implements Initializable {
                         "Sport"
                 )
         );
-        for (Domaine dm : app.donneesActives.getDomaines())
+        for (Domaine dm : app.getDonneesActives().getDomaines())
             if (!completion.contains(dm.getCategorie())) completion.add(dm.getCategorie());
         TextFields.bindAutoCompletion(tfCategorie, completion);
 
@@ -206,7 +207,7 @@ public class InfosDomaine implements Initializable {
 
     @FXML
     private void accD() {
-        app.passwordManager.getHostServices().showDocument("http://" + tfDomaine.getText());
+        app.getPasswordManager().getHostServices().showDocument("http://" + tfDomaine.getText());
     }
 
     @FXML
@@ -222,7 +223,7 @@ public class InfosDomaine implements Initializable {
 
     @FXML
     private void copN() {
-        app.passwordManager.clipboardPut(taNotes.getText());
+        app.getPasswordManager().clipboardPut(taNotes.getText());
     }
 
     @FXML

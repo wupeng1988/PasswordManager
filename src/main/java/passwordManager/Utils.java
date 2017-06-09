@@ -11,10 +11,14 @@ import java.util.Scanner;
  * Nico on 05/06/2017.
  */
 public class Utils {
-    public static void writeSaveData(Donnees donnees, String location, Crypto crypto) {
-        File f = new File(location);
+    private final static String CHARSET = "UTF-8";
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(f))) {
+    public static void writeSaveData(Donnees donnees, String location, Crypto crypto) {
+        try (BufferedWriter bw = new BufferedWriter(
+                new OutputStreamWriter(
+                    new FileOutputStream(location), CHARSET
+                )
+        )) {
             donnees.write(bw, crypto);
         } catch (IOException e) {
             e.printStackTrace();
@@ -26,7 +30,7 @@ public class Utils {
         if (!f.exists() || !f.isFile())
             return null;
 
-        try (Scanner s = new Scanner(f)) {
+        try (Scanner s = new Scanner(f, CHARSET)) {
             donnees = Donnees.read(s, crypto);
         }
         catch (NoSuchElementException ignored) {}
@@ -70,10 +74,18 @@ public class Utils {
     private static ArrayList<String> getFichiersDansDossier(File dossier, String extension) {
         ArrayList<String> fichiers = new ArrayList<>();
 
-        if (dossier.exists() && dossier.isDirectory())
-            for (File f : dossier.listFiles((dir, name) -> name.endsWith(extension)))
+        File[] files;
+        if (dossier.exists() && dossier.isDirectory() && (files = dossier.listFiles((dir, name) -> name.endsWith(extension))) != null)
+            for (File f : files)
                 fichiers.add(f.getAbsolutePath());
 
         return fichiers;
+    }
+
+    public static String toLocalPath(String path) {
+        String localPath = new File(".").getAbsolutePath();
+        localPath = localPath.substring(0 , localPath.length() - 1);
+
+        return path.replace(localPath, "." + File.separator).replace("/", File.separator);
     }
 }

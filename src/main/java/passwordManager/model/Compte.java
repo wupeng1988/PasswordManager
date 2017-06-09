@@ -107,7 +107,7 @@ public class Compte implements Externalizable, Applicable {
         this.motDePasse.set(motDePasse);
     }
 
-    private String getDateCreationFormatted() {
+    public String getDateCreationFormatted() {
         if (dateCreation.get() == null) return "????/??/??";
         return dateCreation.get().format(DateTimeFormatter.ofPattern(DATE_FORMAT));
     }
@@ -170,7 +170,7 @@ public class Compte implements Externalizable, Applicable {
     }
 
     @Override
-    public Applicable snap() {
+    public Compte snap() {
         Compte c = new Compte(getUtilisateur(), getMotDePasse());
         c.setNotes(getNotes());
         c.setDateCreation(getDateCreation());

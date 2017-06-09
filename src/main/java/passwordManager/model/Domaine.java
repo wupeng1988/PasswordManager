@@ -37,7 +37,7 @@ public class Domaine implements Externalizable, Applicable {
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         setNom((String) in.readObject());
         setDomaine((String) in.readObject());
-        setDomaine((String) in.readObject());
+        setCategorie((String) in.readObject());
         setNotes((String) in.readObject());
         setIconeLocation((String) in.readObject());
         setComptes(FXCollections.observableArrayList((ArrayList<Compte>) in.readObject()));
@@ -113,7 +113,7 @@ public class Domaine implements Externalizable, Applicable {
             c.write(bufferedWriter, level, crypto);
     }
 
-    public void addCompte(Compte c) {
+    private void addCompte(Compte c) {
         if (!this.comptes.contains(c)) this.comptes.add(c);
     }
 
@@ -225,7 +225,7 @@ public class Domaine implements Externalizable, Applicable {
     }
 
     @Override
-    public Applicable snap() {
+    public Domaine snap() {
         Domaine d = new Domaine(getNom(), getDomaine(), getCategorie());
         d.setNotes(getNotes());
         d.setIconeLocation(getIconeLocation());

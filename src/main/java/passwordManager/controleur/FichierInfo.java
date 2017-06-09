@@ -70,8 +70,8 @@ public class FichierInfo implements Initializable {
 
     @FXML
     private void okEdition() {
-        app.donneesActives.setEncrytionLevel(cbEncryptionLevel.getSelectionModel().getSelectedItem());
-        app.donneesActives.setMotDePasse(tfMotDePasse.getText());
+        app.getDonneesActives().setEncrytionLevel(cbEncryptionLevel.getSelectionModel().getSelectedItem());
+        app.getDonneesActives().setMotDePasse(tfMotDePasse.getText());
         app.finEdition();
     }
 

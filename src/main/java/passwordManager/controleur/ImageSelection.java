@@ -3,6 +3,7 @@ package passwordManager.controleur;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
@@ -69,6 +70,7 @@ public class ImageSelection implements Initializable {
         });
 
         root.setCenter(gridView);
+        BorderPane.setMargin(gridView, new Insets(4, 10, 4, 10));
     }
 
     void setApp(InfosDomaine infosDomaine, String l) {
@@ -81,8 +83,8 @@ public class ImageSelection implements Initializable {
         bAjout.setTooltip(new Tooltip("Icone depuis l'ordinateur..."));
         bSuppression.setTooltip(new Tooltip("Déselectionner l'icone sélectionnée"));
 
-        bAjout.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_UPLOAD, 30, 30, true));
-        bSuppression.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_RECT_CLOSE, 30, 30, true));
+        bAjout.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_UPLOAD, 32, 32, true));
+        bSuppression.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_RECT_CLOSE, 32, 32, true));
 
         setIcone(l);
         init();
@@ -105,7 +107,7 @@ public class ImageSelection implements Initializable {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Images", "*.png")
         );
-        File fileSelected = fileChooser.showOpenDialog(infosDomaine.app.passwordManager.getStage());
+        File fileSelected = fileChooser.showOpenDialog(infosDomaine.app.getPasswordManager().getStage());
         if (fileSelected != null) {
             Image i = imageManager.getImage(fileSelected.getAbsolutePath());
             if (i != null) {

@@ -101,7 +101,7 @@ public class Donnees {
     public ObservableList<Domaine> getDomaines() {
         return domaines;
     }
-    public void addDomaine(Domaine d) {
+    private void addDomaine(Domaine d) {
         if (!domaines.contains(d)) domaines.add(d);
     }
 

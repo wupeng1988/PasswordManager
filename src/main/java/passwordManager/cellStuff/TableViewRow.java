@@ -6,7 +6,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableRow;
 import javafx.scene.input.*;
 import passwordManager.controleur.App;
+import passwordManager.model.ActionHistorique;
 import passwordManager.model.Compte;
+import passwordManager.model.Historique;
 
 import java.util.Collections;
 
@@ -84,10 +86,12 @@ public class TableViewRow extends TableRow<Compte> {
 
             if (db.hasContent(customFormat)) {
                 ObservableList<Compte> items = getTableView().getItems();
-                int draggedIdx = items.indexOf(db.getContent(customFormat));
+                Compte dragged = (Compte) db.getContent(customFormat);
+                int draggedIdx = items.indexOf(dragged);
                 int thisIdx = items.indexOf(getItem());
 
-                Collections.swap(items, draggedIdx, thisIdx);
+                Historique h = app.getDonneesActives().getHistorique();
+                h.ajoutAction(ActionHistorique.deplacementCompte(draggedIdx, thisIdx, app.getDomaineSelectionne()));
 
                 success = true;
             }

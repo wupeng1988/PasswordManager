@@ -25,7 +25,6 @@ public class InfosCompte implements Initializable {
     private App app;
 
     private Compte toEdit;
-    private Domaine wrapper;
     private boolean exists;
 
     private final static String MDP_ALPHABET_LETTRE_MAJ = "ABCDEFGHIJKLMNOPQRSTUVWYZ";
@@ -45,12 +44,13 @@ public class InfosCompte implements Initializable {
 
     @FXML private Button bOk;
 
+    @FXML private Button bAlea;
     @FXML private Button bAleaU;
     @FXML private Button bAleaM;
     @FXML private Button bCopyU;
     @FXML private Button bCopyM;
 
-    @FXML private DatePicker dpDateCreation;
+    @FXML private Label lDateCreation;
 
     @FXML private Label lTitre;
     @FXML private TextField tfUtilisateur;
@@ -79,6 +79,7 @@ public class InfosCompte implements Initializable {
         bCopyU.setText(null);
         bCopyM.setText(null);
 
+        bAlea.setTooltip(new Tooltip("Tout générer aléatoirement"));
         bAleaU.setTooltip(new Tooltip("Générer un nom d'utilisateur aléatoirement"));
         bAleaM.setTooltip(new Tooltip("Générer un mot de passe aléatoirement"));
         bCopyU.setTooltip(new Tooltip("Copier le nom d'utilisateur dans le presse-papier"));
@@ -101,26 +102,29 @@ public class InfosCompte implements Initializable {
     void bindParent(App c) {
         app = c;
 
-        bAleaU.setGraphic(c.imageManager.constructImageViewFrom(ImageManager.ICONE_REFRESH, 24, 24, true));
-        bAleaM.setGraphic(c.imageManager.constructImageViewFrom(ImageManager.ICONE_REFRESH, 24, 24, true));
-        bCopyU.setGraphic(c.imageManager.constructImageViewFrom(ImageManager.ICONE_COPY, 24, 24, true));
-        bCopyM.setGraphic(c.imageManager.constructImageViewFrom(ImageManager.ICONE_COPY, 24, 24, true));
+        ImageManager im = app.getImageManager();
+
+        bAlea.setGraphic(im.constructImageViewFrom(ImageManager.ICONE_REFRESH, 16, 16, true));
+        bAleaU.setGraphic(im.constructImageViewFrom(ImageManager.ICONE_REFRESH, 16, 16, true));
+        bAleaM.setGraphic(im.constructImageViewFrom(ImageManager.ICONE_REFRESH, 16, 16, true));
+        bCopyU.setGraphic(im.constructImageViewFrom(ImageManager.ICONE_COPY, 16, 16, true));
+        bCopyM.setGraphic(im.constructImageViewFrom(ImageManager.ICONE_COPY, 16, 16, true));
     }
 
     private void finEdition(boolean ok) {
         if (ok) {
-            Applicable avant = toEdit.snap();
+            Historique h = app.getDonneesActives().getHistorique();
+            Compte avant = toEdit.snap();
 
             toEdit.setUtilisateur(tfUtilisateur.getText());
             toEdit.setMotDePasse(tfMotDePasse.getText());
             toEdit.setNotes(taNotes.getText());
 
             if (!exists) {
-                app.domaineSelectionne.addCompte(toEdit);
+                h.ajoutAction(ActionHistorique.ajoutCompte(-1, app.getDomaineSelectionne(), toEdit));
                 app.selectionCompte(toEdit);
-                app.donneesActives.getHistorique().ajoutAction(new ActionHistorique(wrapper, toEdit.snap(), toEdit, ActionHistorique.Action.AJOUT, ActionHistorique.Type.COMPTE));
             } else {
-                app.donneesActives.getHistorique().ajoutAction(new ActionHistorique(avant, toEdit.snap(), toEdit, ActionHistorique.Action.MODIFICATION, ActionHistorique.Type.COMPTE));
+                h.ajoutAction(ActionHistorique.modificationCompte(avant, toEdit));
             }
         }
 
@@ -137,6 +141,12 @@ public class InfosCompte implements Initializable {
     }
 
     @FXML
+    private void alea() {
+        aleaU();
+        aleaM();
+    }
+
+    @FXML
     private void aleaU() {
         tfUtilisateur.setText(genNomAlea());
     }
@@ -147,15 +157,15 @@ public class InfosCompte implements Initializable {
 
     @FXML
     private void copyU() {
-        app.passwordManager.clipboardPut(tfUtilisateur.getText());
+        app.getPasswordManager().clipboardPut(tfUtilisateur.getText());
     }
     @FXML
     private void copyM() {
-        app.passwordManager.clipboardPut(tfMotDePasse.getText());
+        app.getPasswordManager().clipboardPut(tfMotDePasse.getText());
     }
 
     private String genNomAlea() {
-        Random r = app.random;
+        Random r = app.getRandom();
 
         char sep = MDP_ALPHABET_SEPARATEUR.charAt(r.nextInt(MDP_ALPHABET_SEPARATEUR.length()));
 
@@ -172,7 +182,7 @@ public class InfosCompte implements Initializable {
         return gen.toString();
     }
     private String genMdpAlea() {
-        Random r = app.random;
+        Random r = app.getRandom();
 
         int lengthVar = 6;
         int lengthMin = 6;
@@ -186,14 +196,12 @@ public class InfosCompte implements Initializable {
         return gen.toString();
     }
 
-    void initCompte(Compte c, Domaine d) {
-        wrapper = d;
-
-        int level = app.donneesActives.getEncrytionLevel();
-        boolean autorise = app.donneesActives.isAutorise();
+    void initCompte(Compte c) {
+        int level = app.getDonneesActives().getEncrytionLevel();
+        boolean autorise = app.getDonneesActives().isAutorise();
         toEdit = c;
         lTitre.setText((level > 1 && !autorise ? "Non autorisé" : c.getUtilisateur()));
-        dpDateCreation.setValue(c.getDateCreation());
+        lDateCreation.setText(c.getDateCreationFormatted());
         tfUtilisateur.setText((level > 1 && !autorise ? "*********" : c.getUtilisateur()));
         tfMotDePasse.setText((level > 0 && !autorise ? "*********" : c.getMotDePasse()));
         taNotes.setText((level > 1 && !autorise ? "*********" : c.getNotes()));
@@ -205,8 +213,8 @@ public class InfosCompte implements Initializable {
         });
     }
 
-    void nouveauCompte(Domaine d) {
-        initCompte(new Compte("Nouveau compte", ""), d);
+    void nouveauCompte() {
+        initCompte(new Compte("Nouveau compte", ""));
         exists = false;
     }
 }

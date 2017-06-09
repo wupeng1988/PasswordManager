@@ -10,6 +10,8 @@ public class Historique {
 
     private boolean saved = true;
 
+    private int maxSize = 20;
+
     private ArrayList<ActionHistorique> historique = new ArrayList<>();
     private int index = -1;
 
@@ -22,7 +24,17 @@ public class Historique {
 
         ecraserFin();
         historique.add(actionHistorique);
-        index++;
+        actionHistorique.executer();
+
+        if (!verifierMax()) index++;
+    }
+    private boolean verifierMax() {
+        while (historique.size() > maxSize) {
+            historique.remove(0);
+            return true;
+        }
+
+        return false;
     }
 
     private void ecraserFin() {
@@ -42,60 +54,23 @@ public class Historique {
         if (!retourArrierePossible()) return;
 
         ActionHistorique a = historique.get(index--);
-        switch (a.action) {
-            case MODIFICATION:
-                a.ref.appliquer((Applicable) a.avant);
-                break;
-            case AJOUT:
-                suppression(a);
-                break;
-            case SUPPRESSION:
-                ajout(a);
-                break;
-        }
+        a.deExecuter();
     }
     public void retourAvant() {
         if (!retourAvantPossible()) return;
 
         ActionHistorique a = historique.get(++index);
-        switch (a.action) {
-            case MODIFICATION:
-                a.ref.appliquer((Applicable) a.apres);
-                break;
-            case AJOUT:
-                ajout(a);
-                break;
-            case SUPPRESSION:
-                suppression(a);
-                break;
-        }
-    }
-
-    private void suppression(ActionHistorique a) {
-        switch (a.type) {
-            case COMPTE:
-                ((Domaine) a.avant).getComptes().remove((Compte) a.ref);
-                break;
-            case DOMAINE:
-                donnees.getDomaines().remove((Domaine) a.ref);
-                break;
-        }
-    }
-    private void ajout(ActionHistorique a) {
-        switch (a.type) {
-            case COMPTE:
-                ((Domaine) a.avant).getComptes().add((Compte) a.ref);
-                break;
-            case DOMAINE:
-                donnees.getDomaines().add((Domaine) a.ref);
-                break;
-        }
+        a.executer();
     }
 
     public void setSaved(boolean saved) {
         this.saved = saved;
     }
     public boolean isSaved() {
-        return saved;
+        return index == -1 || saved;
+    }
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
+        verifierMax();
     }
 }
