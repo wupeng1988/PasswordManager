@@ -1,11 +1,12 @@
 package passwordManager.model;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * Nico on 08/06/2017.
  */
-public class Historique {
+public class Historique extends Observable {
     private Donnees donnees;
 
     private boolean saved = true;
@@ -14,6 +15,7 @@ public class Historique {
 
     private ArrayList<ActionHistorique> historique = new ArrayList<>();
     private int index = -1;
+    private int nbActions = 0;
 
     Historique(Donnees donnees) {
         this.donnees = donnees;
@@ -27,6 +29,11 @@ public class Historique {
         actionHistorique.executer();
 
         if (!verifierMax()) index++;
+
+        nbActions++;
+
+        setChanged();
+        notifyObservers(nbActions);
     }
     private boolean verifierMax() {
         while (historique.size() > maxSize) {
@@ -55,12 +62,16 @@ public class Historique {
 
         ActionHistorique a = historique.get(index--);
         a.deExecuter();
+
+        nbActions--;
     }
     public void retourAvant() {
         if (!retourAvantPossible()) return;
 
         ActionHistorique a = historique.get(++index);
         a.executer();
+
+        nbActions++;
     }
 
     public void setSaved(boolean saved) {

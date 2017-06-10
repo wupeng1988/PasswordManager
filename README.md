@@ -15,6 +15,7 @@ Features:
 * Undo & redo
 * Drag and drop, move domains and accounts up and down freely
 * Support for adding notes to domains and accounts
+* Automatic backup
 
 [FR]
 
@@ -31,6 +32,7 @@ Fonctionnalités:
 * Defaire & refaire
 * Glisser-déposer, déplacement des domaines et des comptes librement
 * Support pour l'ajout de notes aux domaines et aux comptes
+* Sauvegardes automatiques
 
 # Todo
 -> TODO.md
@@ -44,6 +46,10 @@ Fonctionnalités:
 ![Account edition](screenshots/edition_compte.png)
 ## Icon selection
 ![Icon selection](screenshots/selection_image.png)
+## Settings
+![Settings](screenshots/parametres.png)
+## Infos save
+![Infos save](screenshots/infosSave.png)
 
 # Credits
 Icons from [FlatIcon](http://www.flaticon.com),

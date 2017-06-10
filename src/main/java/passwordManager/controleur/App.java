@@ -42,6 +42,7 @@ import java.util.ResourceBundle;
 public class App implements Initializable {
     private PasswordManager passwordManager;
     private ImageManager imageManager = new ImageManager();
+    private Backup backup;
     private File fichierOuvert = null;
 
     private Donnees donneesActives = null;
@@ -367,6 +368,10 @@ public class App implements Initializable {
 
     public void initPhase2() { // Phase 2: application chargée, on peut la reconfigurer avec les paramètres de l'utilisateur
         Preferences preferences = passwordManager.getPreferences();
+        backup = new Backup(
+                preferences.getPropriete(Preferences.PROP_DOSSIER_BACKUP_AUTO),
+                Integer.parseInt(preferences.getPropriete(Preferences.PROP_BACKUP_AUTO))
+        );
 
         String lastFile = preferences.getPropriete(Preferences.PROP_DERNIER_FICHIER);
         if (!Boolean.parseBoolean(preferences.getPropriete(Preferences.PROP_CHARGER_DERNIER_FICHIER)) || lastFile == null || lastFile.equals(""))
@@ -494,24 +499,21 @@ public class App implements Initializable {
         updateControles();
     }
 
-    @FXML
-    public void ajouterAuFocus() {
+    @FXML public void ajouterAuFocus() {
         if (tvComptes.isFocused()) {
             ajoutCompte();
         } else if (lvDomaines.isFocused()) {
             ajoutDomaine();
         }
     }
-    @FXML
-    public void modifierAuFocus() {
+    @FXML public void modifierAuFocus() {
         if (tvComptes.isFocused()) {
             modificationCompte();
         } else if (lvDomaines.isFocused()) {
             modificationDomaine();
         }
     }
-    @FXML
-    public void supprimerAuFocus() {
+    @FXML public void supprimerAuFocus() {
         if (tvComptes.isFocused()) {
             suppressionCompte();
         } else if (lvDomaines.isFocused()) {
@@ -519,32 +521,28 @@ public class App implements Initializable {
         }
     }
 
-    @FXML
-    public void monterAuFocus() {
+    @FXML public void monterAuFocus() {
         if (tvComptes.isFocused()) {
             monterCompte();
         } else if (lvDomaines.isFocused()) {
             monterDomaine();
         }
     }
-    @FXML
-    public void descendreAuFocus() {
+    @FXML public void descendreAuFocus() {
         if (tvComptes.isFocused()) {
             descendreCompte();
         } else if (lvDomaines.isFocused()) {
             descendreDomaine();
         }
     }
-    @FXML
-    public void monterMaxAuFocus() {
+    @FXML public void monterMaxAuFocus() {
         if (tvComptes.isFocused()) {
             monterCompteMax();
         } else if (lvDomaines.isFocused()) {
             monterDomaineMax();
         }
     }
-    @FXML
-    public void descendreMaxAuFocus() {
+    @FXML public void descendreMaxAuFocus() {
         if (tvComptes.isFocused()) {
             descendreCompteMax();
         } else if (lvDomaines.isFocused()) {
@@ -582,7 +580,6 @@ public class App implements Initializable {
             domaineSelectionne = d;
         }
     }
-
     void selectionCompte(Compte c) {
         if (tvComptes.getItems().contains(c)) {
             tvComptes.getSelectionModel().select(c);
@@ -590,8 +587,7 @@ public class App implements Initializable {
         }
     }
 
-    @FXML
-    private void menuDetailsIdle() {
+    @FXML private void menuDetailsIdle() {
         montrerDetailsIdle();
         updateUi();
     }
@@ -601,23 +597,19 @@ public class App implements Initializable {
         deselection(2);
     }
 
-    @FXML
-    public void montrerExplications() {
+    @FXML public void montrerExplications() {
         root.getChildren().add(explicationsVue);
     }
-    @FXML
-    private void montrerAbout() {
+    @FXML private void montrerAbout() {
         root.getChildren().add(aboutVue);
     }
 
-    @FXML
-    public void montrerParametres() {
+    @FXML public void montrerParametres() {
         montrerOption(parametresVue);
         parametresControleur.initDonnees();
     }
 
-    @FXML
-    private void monterDomaineMax() {
+    @FXML private void monterDomaineMax() {
         if (donneesActives == null || domaineSelectionne == null) return;
 
         int li = donneesActives.getDomaines().lastIndexOf(domaineSelectionne);
@@ -626,9 +618,7 @@ public class App implements Initializable {
         getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementDomaine(li, 0, getDonneesActives()));
         selection(1, 0);
     }
-
-    @FXML
-    private void monterCompteMax() {
+    @FXML private void monterCompteMax() {
         if (donneesActives == null || domaineSelectionne == null || compteSelectionne == null) return;
 
         int li = domaineSelectionne.getComptes().lastIndexOf(compteSelectionne);
@@ -637,9 +627,7 @@ public class App implements Initializable {
         getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementCompte(li, 0, getDomaineSelectionne()));
         selection(0, 0);
     }
-
-    @FXML
-    private void descendreDomaineMax() {
+    @FXML private void descendreDomaineMax() {
         if (donneesActives == null || domaineSelectionne == null) return;
 
         int litem = donneesActives.getDomaines().size() - 1;
@@ -649,9 +637,7 @@ public class App implements Initializable {
         getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementDomaine(li, litem, getDonneesActives()));
         selection(1, litem);
     }
-
-    @FXML
-    private void descendreCompteMax() {
+    @FXML private void descendreCompteMax() {
         if (donneesActives == null || domaineSelectionne == null || compteSelectionne == null) return;
 
         int litem = domaineSelectionne.getComptes().size() - 1;
@@ -662,8 +648,7 @@ public class App implements Initializable {
         selection(0, litem);
     }
 
-    @FXML
-    private void monterDomaine() {
+    @FXML private void monterDomaine() {
         if (donneesActives == null || domaineSelectionne == null) return;
 
         int li = donneesActives.getDomaines().lastIndexOf(domaineSelectionne);
@@ -673,9 +658,7 @@ public class App implements Initializable {
         getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementDomaine(li, li - 1, getDonneesActives()));
         selection(1, li - 1);
     }
-
-    @FXML
-    private void monterCompte() {
+    @FXML private void monterCompte() {
         if (donneesActives == null || domaineSelectionne == null || compteSelectionne == null) return;
 
         int li = domaineSelectionne.getComptes().lastIndexOf(compteSelectionne);
@@ -684,9 +667,7 @@ public class App implements Initializable {
         getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementCompte(li, li - 1, getDomaineSelectionne()));
         selection(0, li - 1);
     }
-
-    @FXML
-    private void descendreDomaine() {
+    @FXML private void descendreDomaine() {
         if (donneesActives == null || domaineSelectionne == null) return;
 
         int li = donneesActives.getDomaines().lastIndexOf(domaineSelectionne);
@@ -695,9 +676,7 @@ public class App implements Initializable {
         getDonneesActives().getHistorique().ajoutAction(ActionHistorique.deplacementDomaine(li, li + 1, getDonneesActives()));
         selection(1, li + 1);
     }
-
-    @FXML
-    private void descendreCompte() {
+    @FXML private void descendreCompte() {
         if (donneesActives == null || domaineSelectionne == null || compteSelectionne == null) return;
 
         int li = domaineSelectionne.getComptes().lastIndexOf(compteSelectionne);
@@ -707,19 +686,17 @@ public class App implements Initializable {
         selection(0, li + 1);
     }
 
-    @FXML
-    private void modifierFichierInfo() {
+    @FXML private void modifierFichierInfo() {
         if (donneesActives == null) return;
 
         fichierInfoControleur.initData(donneesActives);
         montrerOption(fichierInfoVue);
     }
 
-    @FXML
-    public void nouvelleSauvegarde() {
+    @FXML public void nouvelleSauvegarde() {
         if (!checkSaveEnregistree()) return;
 
-        donneesActives = new Donnees();
+        nouvellesDonnees(new Donnees());
         fichierOuvert = null;
 
         tfFiltre.setText("");
@@ -739,8 +716,7 @@ public class App implements Initializable {
         setTitre();
     }
 
-    @FXML
-    public void modificationDomaine() {
+    @FXML public void modificationDomaine() {
         if (domaineSelectionne == null) return;
         if (!donneesActives.isAutorise()) {
             autoriser();
@@ -750,8 +726,7 @@ public class App implements Initializable {
         montrerOption(infosDomaineVue);
         infosDomaineControleur.initDomaine(domaineSelectionne);
     }
-    @FXML
-    public void modificationCompte() {
+    @FXML public void modificationCompte() {
         if (compteSelectionne == null) return;
         if (!donneesActives.isAutorise()) {
             autoriser();
@@ -762,8 +737,7 @@ public class App implements Initializable {
         infosCompteControleur.initCompte(compteSelectionne);
     }
 
-    @FXML
-    private void ajoutDomaine() {
+    @FXML private void ajoutDomaine() {
         if (!donneesActives.isAutorise()) {
             autoriser();
             return;
@@ -772,8 +746,7 @@ public class App implements Initializable {
         montrerOption(infosDomaineVue);
         infosDomaineControleur.nouveauDomaine();
     }
-    @FXML
-    private void ajoutCompte() {
+    @FXML private void ajoutCompte() {
         if (!donneesActives.isAutorise()) {
             autoriser();
             return;
@@ -783,8 +756,7 @@ public class App implements Initializable {
         infosCompteControleur.nouveauCompte();
     }
 
-    @FXML
-    public void suppressionDomaine() {
+    @FXML public void suppressionDomaine() {
         if (domaineSelectionne == null) return;
         if (!donneesActives.isAutorise()) {
             autoriser();
@@ -794,8 +766,7 @@ public class App implements Initializable {
         montrerOption(confirmationVue);
         confirmationControleur.initObject(domaineSelectionne);
     }
-    @FXML
-    public void suppressionCompte() {
+    @FXML public void suppressionCompte() {
         if (compteSelectionne == null) return;
         if (!donneesActives.isAutorise()) {
             autoriser();
@@ -806,8 +777,7 @@ public class App implements Initializable {
         confirmationControleur.initObject(compteSelectionne, domaineSelectionne);
     }
 
-    @FXML
-    public boolean sauvegarderDialog() {
+    @FXML public boolean sauvegarderDialog() {
         boolean result = false;
 
         FileChooser fileChooser = new FileChooser();
@@ -825,8 +795,7 @@ public class App implements Initializable {
 
         return result;
     }
-    @FXML
-    public void chargerDialog() {
+    @FXML public void chargerDialog() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choisir un fichier de sauvegarde");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sauvegarde", "*" + PasswordManager.SAVE_EXTENSION));
@@ -840,20 +809,17 @@ public class App implements Initializable {
         }
     }
 
-    @FXML
-    private void autoriser() {
+    @FXML private void autoriser() {
         montrerOption(autorisationVue);
         autorisationControleur.initDonnees();
     }
 
-    @FXML
-    public boolean sauvegarderSc() { // shortcut
+    @FXML public boolean sauvegarderSc() { // shortcut
         if (fichierOuvert == null) return sauvegarderDialog();
         return sauvegarder(fichierOuvert);
     }
 
-    @FXML
-    private void ecraserFiltre() {
+    @FXML private void ecraserFiltre() {
         tfFiltre.setText("");
     }
 
@@ -881,7 +847,7 @@ public class App implements Initializable {
     boolean charger(File file, Crypto crypto) {
         if (!checkSaveEnregistree()) return false;
 
-        donneesActives = Utils.readSavedData(file, crypto);
+        nouvellesDonnees(Utils.readSavedData(file, crypto));
         if (donneesActives == null) { // erreur
             //nouvelleSauvegarde();
             System.err.println("Erreur de lecture!");
@@ -916,12 +882,12 @@ public class App implements Initializable {
             String lowerCaseFilter = newValue.toLowerCase();
 
             if (domaine.getNom().toLowerCase().contains(lowerCaseFilter)) {
-                return true; // Filter matches first name.
+                return true;
             } else if (domaine.getDomaine().toLowerCase().contains(lowerCaseFilter)) {
-                return true; // Filter matches last name.
+                return true;
             }
 
-            return false; // Does not match.
+            return false;
         }));
 
         //SortedList<Domaine> sortedList = new SortedList<Domaine>(filteredList);
@@ -947,12 +913,10 @@ public class App implements Initializable {
         inOptions = false;
     }
 
-    @FXML
-    public void defaire() {
+    @FXML public void defaire() {
         donneesActives.getHistorique().retourArriere();
     }
-    @FXML
-    public void refaire() {
+    @FXML public void refaire() {
         donneesActives.getHistorique().retourAvant();
     }
 
@@ -1017,6 +981,11 @@ public class App implements Initializable {
         return random;
     }
 
+    private void nouvellesDonnees(Donnees donnees) {
+        donneesActives = donnees;
+        backup.setDonnees(donneesActives);
+    }
+
     public boolean checkSaveEnregistree() {
         if (getDonneesActives() == null || getDonneesActives().getHistorique().isSaved()) return true;
 
@@ -1050,8 +1019,7 @@ public class App implements Initializable {
         return quit;
     }
 
-    @FXML
-    private void exit() {
+    @FXML private void exit() {
         Platform.exit();
     }
 
@@ -1059,6 +1027,8 @@ public class App implements Initializable {
         Preferences preferences = passwordManager.getPreferences();
 
         donneesActives.getHistorique().setMaxSize(Integer.parseInt(preferences.getPropriete(Preferences.PROP_MAX_HISTORIQUE)));
+        backup.setChemin(preferences.getPropriete(Preferences.PROP_DOSSIER_BACKUP_AUTO));
+        backup.setInterval(Integer.parseInt(preferences.getPropriete(Preferences.PROP_BACKUP_AUTO)));
     }
 
     private void setAnchor(Node n) {
