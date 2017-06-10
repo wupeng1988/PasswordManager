@@ -212,8 +212,8 @@ public class App implements Initializable {
         }
     }
     private void initList() {
-        lvDomaines.prefWidthProperty().bind(spDomaines.widthProperty().subtract(2));
-        lvDomaines.prefHeightProperty().bind(spDomaines.heightProperty().subtract(2));
+        lvDomaines.prefWidthProperty().bind(spDomaines.widthProperty());
+        lvDomaines.prefHeightProperty().bind(spDomaines.heightProperty());
 
         App self = this;
         lvDomaines.setCellFactory(param -> new ListViewCell(self));

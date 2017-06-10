@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -70,25 +71,34 @@
                <children>
                   <BorderPane fx:id="bpEtat" prefHeight="24.0">
                      <center>
-                        <Label fx:id="lEtat" text="Autorisé" BorderPane.alignment="CENTER" />
+                        <Label id="lEtat" fx:id="lEtat" text="Autorisé" BorderPane.alignment="CENTER" />
                      </center>
                   </BorderPane>
                   <SplitPane dividerPositions="0.3007518796992481" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                     <items>
                         <BorderPane prefHeight="373.0" prefWidth="105.0">
                            <center>
-                              <ScrollPane fx:id="spDomaines" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                              <ScrollPane id="spSelection" fx:id="spDomaines" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <content>
-                                    <ListView fx:id="lvDomaines" prefHeight="306.0" prefWidth="178.0" />
+                                    <ListView id="lvSelection" fx:id="lvDomaines" prefHeight="306.0" prefWidth="178.0" />
                                  </content>
+                                 <padding>
+                                    <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0" />
+                                 </padding>
                               </ScrollPane>
                            </center>
                            <bottom>
                               <HBox BorderPane.alignment="CENTER">
                                  <children>
-                                    <TextField fx:id="tfFiltre" promptText="Rechercher..." styleClass="filtreTF" HBox.hgrow="ALWAYS" />
-                                    <Button fx:id="bEcraserFiltre" mnemonicParsing="false" onAction="#ecraserFiltre" styleClass="boutonMod" text="X" />
+                                    <TextField id="tfSelectionFiltre" fx:id="tfFiltre" promptText="Rechercher..." HBox.hgrow="ALWAYS">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin></TextField>
+                                    <Button fx:id="bEcraserFiltre" mnemonicParsing="false" onAction="#ecraserFiltre" styleClass="bSelectionAction" text="X" />
                                  </children>
+                                 <padding>
+                                    <Insets bottom="-1.0" left="-1.0" right="-1.0" />
+                                 </padding>
                               </HBox>
                            </bottom>
                            <top>
@@ -96,32 +106,35 @@
                                  <left>
                                     <HBox BorderPane.alignment="CENTER">
                                        <children>
-                                          <Button fx:id="bMonterDomaineMax" mnemonicParsing="false" onAction="#monterDomaineMax" styleClass="boutonMod" text="DU" />
-                                          <Button fx:id="bMonterDomaine" mnemonicParsing="false" onAction="#monterDomaine" styleClass="boutonMod" text="U" />
-                                          <Button fx:id="bDescendreDomaine" mnemonicParsing="false" onAction="#descendreDomaine" styleClass="boutonMod" text="D" />
-                                          <Button fx:id="bDescendreDomaineMax" mnemonicParsing="false" onAction="#descendreDomaineMax" styleClass="boutonMod" text="DD" />
+                                          <Button fx:id="bMonterDomaineMax" mnemonicParsing="false" onAction="#monterDomaineMax" styleClass="bSelectionAction" text="DU" />
+                                          <Button fx:id="bMonterDomaine" mnemonicParsing="false" onAction="#monterDomaine" styleClass="bSelectionAction" text="U" />
+                                          <Button fx:id="bDescendreDomaine" mnemonicParsing="false" onAction="#descendreDomaine" styleClass="bSelectionAction" text="D" />
+                                          <Button fx:id="bDescendreDomaineMax" mnemonicParsing="false" onAction="#descendreDomaineMax" styleClass="bSelectionAction" text="DD" />
                                        </children>
                                     </HBox>
                                  </left>
                                  <right>
                                     <HBox BorderPane.alignment="CENTER">
                                        <children>
-                                          <Button fx:id="bAjoutDomaine" mnemonicParsing="false" onAction="#ajoutDomaine" styleClass="boutonMod" text="+" />
-                                          <Button fx:id="bModificationDomaine" mnemonicParsing="false" onAction="#modificationDomaine" styleClass="boutonMod" text="*" />
-                                          <Button fx:id="bSuppressionDomaine" mnemonicParsing="false" onAction="#suppressionDomaine" styleClass="boutonMod" text="-" />
+                                          <Button fx:id="bAjoutDomaine" mnemonicParsing="false" onAction="#ajoutDomaine" styleClass="bSelectionAction" text="+" />
+                                          <Button fx:id="bModificationDomaine" mnemonicParsing="false" onAction="#modificationDomaine" styleClass="bSelectionAction" text="*" />
+                                          <Button fx:id="bSuppressionDomaine" mnemonicParsing="false" onAction="#suppressionDomaine" styleClass="bSelectionAction" text="-" />
                                        </children>
                                     </HBox>
                                  </right>
                               </BorderPane>
                            </top>
+                           <padding>
+                              <Insets bottom="-1.0" />
+                           </padding>
                         </BorderPane>
                       <AnchorPane fx:id="detailsRoot" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
-                              <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <BorderPane id="bpDetails" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <top>
                                     <BorderPane fx:id="detailsTitrePane" BorderPane.alignment="CENTER_LEFT">
                                        <left>
-                                          <Label fx:id="lDetailsTitre" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="titre" text="Titre" BorderPane.alignment="TOP_LEFT">
+                                          <Label id="lDetailsTitre" fx:id="lDetailsTitre" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="lTitre" text="Titre" BorderPane.alignment="TOP_LEFT">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
@@ -150,28 +163,44 @@
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <Label styleClass="lEmphase" text="Domaine" GridPane.valignment="TOP" />
-                                                <Label styleClass="lEmphase" text="Nombre de comptes" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+                                                <Label text="Domaine" GridPane.valignment="TOP">
+                                                   <styleClass>
+                                                      <String fx:value="lBold" />
+                                                      <String fx:value="lDetailsIndication" />
+                                                   </styleClass></Label>
+                                                <Label text="Nombre de comptes" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                                                   <styleClass>
+                                                      <String fx:value="lBold" />
+                                                      <String fx:value="lDetailsIndication" />
+                                                   </styleClass></Label>
                                                 <Label fx:id="lDetailsDomaine" text="Bla" GridPane.columnIndex="1" GridPane.valignment="TOP" />
                                                 <Label fx:id="lDetailsComptesTaille" text="Bla" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-                                                <Label styleClass="lEmphase" text="Notes" GridPane.columnIndex="2" GridPane.valignment="TOP" />
+                                                <Label text="Notes" GridPane.columnIndex="2" GridPane.valignment="TOP">
+                                                   <styleClass>
+                                                      <String fx:value="lBold" />
+                                                      <String fx:value="lDetailsIndication" />
+                                                   </styleClass></Label>
                                                 <ScrollPane maxHeight="200.0" minHeight="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.valignment="TOP">
                                                    <content>
                                                       <Label fx:id="lDetailsNotes" text="Bla" />
                                                    </content>
                                                 </ScrollPane>
-                                                <Label styleClass="lEmphase" text="Catégorie" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                                                <Label text="Catégorie" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                                                   <styleClass>
+                                                      <String fx:value="lBold" />
+                                                      <String fx:value="lDetailsIndication" />
+                                                   </styleClass></Label>
                                                 <Label fx:id="lDetailsCategorie" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
                                              </children>
                                           </GridPane>
                                           <HBox VBox.vgrow="ALWAYS">
                                              <children>
-                                                <TableView fx:id="tvComptes" prefHeight="212.0" prefWidth="501.0" HBox.hgrow="ALWAYS">
+                                                <TableView id="tvDetails" fx:id="tvComptes" prefHeight="212.0" prefWidth="501.0" HBox.hgrow="ALWAYS">
                                                   <columns>
-                                                      <TableColumn fx:id="tvComptesNumero" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" text="#" />
-                                                    <TableColumn fx:id="tvComptesUtilisateur" prefWidth="280.0" text="Utilisateur" />
-                                                    <TableColumn fx:id="tvComptesMotDePasse" prefWidth="75.0" text="Mot de passe" />
-                                                      <TableColumn fx:id="tvComptesDateCreation" prefWidth="75.0" text="Date de création" />
+                                                      <TableColumn id="tcDetailsColumnNumber" fx:id="tvComptesNumero" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" text="#" />
+                                                    <TableColumn id="tcDetailsColumnUtilisateur" fx:id="tvComptesUtilisateur" prefWidth="280.0" text="Utilisateur" />
+                                                    <TableColumn id="tcDetailsColumnMotDePasse" fx:id="tvComptesMotDePasse" prefWidth="75.0" text="Mot de passe" />
+                                                      <TableColumn id="tcDetailsColumnDateCreation" fx:id="tvComptesDateCreation" prefWidth="75.0" text="Date de création" />
                                                   </columns>
                                                    <columnResizePolicy>
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -181,19 +210,19 @@
                                                    <top>
                                                       <VBox BorderPane.alignment="CENTER">
                                                          <children>
-                                                            <Button fx:id="bMonterCompteMax" mnemonicParsing="false" onAction="#monterCompteMax" prefWidth="1000.0" styleClass="boutonMod" text="DU" />
-                                                            <Button fx:id="bMonterCompte" mnemonicParsing="false" onAction="#monterCompte" prefWidth="1000.0" styleClass="boutonMod" text="U" />
-                                                            <Button fx:id="bDescendreCompte" mnemonicParsing="false" onAction="#descendreCompte" prefWidth="1000.0" styleClass="boutonMod" text="D" />
-                                                            <Button fx:id="bDescendreCompteMax" mnemonicParsing="false" onAction="#descendreCompteMax" prefWidth="1000.0" styleClass="boutonMod" text="DD" />
+                                                            <Button fx:id="bMonterCompteMax" mnemonicParsing="false" onAction="#monterCompteMax" prefWidth="1000.0" styleClass="bDetailsAction" text="DU" />
+                                                            <Button fx:id="bMonterCompte" mnemonicParsing="false" onAction="#monterCompte" prefWidth="1000.0" styleClass="bDetailsAction" text="U" />
+                                                            <Button fx:id="bDescendreCompte" mnemonicParsing="false" onAction="#descendreCompte" prefWidth="1000.0" styleClass="bDetailsAction" text="D" />
+                                                            <Button fx:id="bDescendreCompteMax" mnemonicParsing="false" onAction="#descendreCompteMax" prefWidth="1000.0" styleClass="bDetailsAction" text="DD" />
                                                          </children>
                                                       </VBox>
                                                    </top>
                                                    <bottom>
                                                       <VBox BorderPane.alignment="CENTER">
                                                          <children>
-                                                            <Button fx:id="bAjoutCompte" mnemonicParsing="false" onAction="#ajoutCompte" prefWidth="1000.0" styleClass="boutonMod" text="+" />
-                                                            <Button fx:id="bModificationCompte" mnemonicParsing="false" onAction="#modificationCompte" prefWidth="1000.0" styleClass="boutonMod" text="*" />
-                                                            <Button fx:id="bSuppressionCompte" mnemonicParsing="false" onAction="#suppressionCompte" prefWidth="1000.0" styleClass="boutonMod" text="-" />
+                                                            <Button fx:id="bAjoutCompte" mnemonicParsing="false" onAction="#ajoutCompte" prefWidth="1000.0" styleClass="bDetailsAction" text="+" />
+                                                            <Button fx:id="bModificationCompte" mnemonicParsing="false" onAction="#modificationCompte" prefWidth="1000.0" styleClass="bDetailsAction" text="*" />
+                                                            <Button fx:id="bSuppressionCompte" mnemonicParsing="false" onAction="#suppressionCompte" prefWidth="1000.0" styleClass="bDetailsAction" text="-" />
                                                          </children>
                                                       </VBox>
                                                    </bottom>
@@ -221,6 +250,9 @@
                </children>
             </VBox>
          </center>
+         <padding>
+            <Insets bottom="-1.0" left="-1.0" right="-1.0" />
+         </padding>
       </BorderPane>
    </children>
 </AnchorPane>
