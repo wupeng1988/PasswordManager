@@ -3,7 +3,7 @@
 * **OK** Autorisation de l'affichage des mdp (master password)
 * **OK** Cryptage fichier sauvegarde
 * **90** Raccourcis clavier (CTRL-S, CTRL-Z, ...)
-* **60** Agencement des contrôles
+* **75** Agencement des contrôles
 * **75** Validation des champs d'ajout et mod des éléments
 * **75** Réorganisation du code et des fichiers ressource
 * **20** Explications & about popups
@@ -21,11 +21,10 @@
 * **OK** Ajouter la date de création aux compte
 * **00** Backups automatiques encryptés toutes les X minutes
 * **00** Fonction "fermer": fermer un fichier crypté, l'ouvrir en mode non authentifié
-* **00** Améliorer le rendu visuel global
+* **25** Améliorer le rendu visuel global
 * **00** Sélection multiple
 
 ## En plus
-* **00** Thèmes
 * **00** Stats (charts)
 * **00** Animations
 * **00** Dossiers pour les domaines (par catégorie? / manuel?)

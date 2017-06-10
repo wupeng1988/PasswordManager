@@ -45,9 +45,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label styleClass="lEmphase" text="Utilisateur" GridPane.halignment="RIGHT" />
-                  <Label styleClass="lEmphase" text="Mot de passe" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                  <Label styleClass="lEmphase" text="Notes" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                  <Label styleClass="lBold" text="Utilisateur" GridPane.halignment="RIGHT" />
+                  <Label styleClass="lBold" text="Mot de passe" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                  <Label styleClass="lBold" text="Notes" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -73,7 +73,7 @@
                         <Insets />
                      </GridPane.margin>
                   </HBox>
-                  <Label styleClass="lEmphase" text="Date de création" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                  <Label styleClass="lBold" text="Date de création" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                   <Label fx:id="lDateCreation" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
                <BorderPane.margin>
@@ -82,7 +82,7 @@
             </GridPane>
          </center>
          <top>
-            <Label fx:id="lTitre" styleClass="titre" text="Compte" BorderPane.alignment="CENTER_LEFT" />
+            <Label fx:id="lTitre" styleClass="lTitre" text="Compte" BorderPane.alignment="CENTER_LEFT" />
          </top>
          <opaqueInsets>
             <Insets />

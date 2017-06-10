@@ -62,7 +62,7 @@ TableView:focused, ListView:focused {
 .list-cell:selected > .listViewCell > .domaine {
     -fx-text-fill: white;
 }
-.list-cell:selected, .table-row-cell:selected {
+#lvSelection .list-cell:selected, .table-row-cell:selected {
     -fx-background-color: #7fbcff;
 }
 .list-cell:hover > .listViewCell > .nom {

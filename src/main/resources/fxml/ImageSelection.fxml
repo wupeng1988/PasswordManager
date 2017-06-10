@@ -31,7 +31,7 @@
                <top>
                   <VBox BorderPane.alignment="CENTER">
                      <children>
-                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="lEmphase" text="Selection" />
+                        <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="lBold" text="Selection" />
                         <ImageView fx:id="ivIcone" fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
                               <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
@@ -50,7 +50,7 @@
             </BorderPane>
          </right>
          <top>
-            <Label styleClass="titre" text="Choix de l'icone" BorderPane.alignment="CENTER_LEFT" />
+            <Label styleClass="lTitre" text="Choix de l'icone" BorderPane.alignment="CENTER_LEFT" />
          </top>
       </BorderPane>
    </children>

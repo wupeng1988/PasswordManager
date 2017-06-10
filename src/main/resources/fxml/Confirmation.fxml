@@ -25,7 +25,7 @@
             </ButtonBar>
          </bottom>
          <top>
-            <Label styleClass="titre" text="Confirmation" BorderPane.alignment="CENTER" />
+            <Label styleClass="lTitre" text="Confirmation" BorderPane.alignment="CENTER" />
          </top>
          <center>
             <GridPane hgap="8.0" vgap="8.0" BorderPane.alignment="CENTER">
@@ -42,10 +42,10 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label styleClass="lEmphase" text="Suppression demandée de" GridPane.halignment="RIGHT" />
-                  <Label styleClass="lEmphase" text="Etes-vous sûr(e) de vouloir supprimer cet objet? Cette opération est irréversible!" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <Label styleClass="lBold" text="Suppression demandée de" GridPane.halignment="RIGHT" />
+                  <Label styleClass="lBold" text="Etes-vous sûr(e) de vouloir supprimer cet objet? Cette opération est irréversible!" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                   <Label fx:id="lObjetType" text="Compte/domaine" GridPane.columnIndex="1" />
-                  <Label styleClass="lEmphase" text="Nom de l'élément" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                  <Label styleClass="lBold" text="Nom de l'élément" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                   <Label fx:id="lNom" text="Nom" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
             </GridPane>

@@ -10,7 +10,7 @@
 
 <BorderPane id="detailsIdleVue" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.DetailsIdle">
    <top>
-      <Label styleClass="titre" text="Bienvenue!" BorderPane.alignment="CENTER" />
+      <Label styleClass="lTitre" text="Bienvenue!" BorderPane.alignment="CENTER" />
    </top>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -30,9 +30,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label styleClass="lEmphase" text="Nombre de domaines enregistrés" />
-                  <Label styleClass="lEmphase" text="Nombre de comptes enregistrés" GridPane.rowIndex="1" />
-                  <Label styleClass="lEmphase" text="Moyenne" GridPane.rowIndex="2" />
+                  <Label styleClass="lBold" text="Nombre de domaines enregistrés" />
+                  <Label styleClass="lBold" text="Nombre de comptes enregistrés" GridPane.rowIndex="1" />
+                  <Label styleClass="lBold" text="Moyenne" GridPane.rowIndex="2" />
                   <Label fx:id="lDomaineTaille" text="Label" GridPane.columnIndex="1" />
                   <Label fx:id="lCompteTaille" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label fx:id="lMoyenne" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />

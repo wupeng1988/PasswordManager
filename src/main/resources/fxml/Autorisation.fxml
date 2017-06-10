@@ -26,7 +26,7 @@
                   <TextField fx:id="tfMotDePasse" maxWidth="300.0" promptText="Mot de passe" />
                </center>
                <top>
-                  <Label styleClass="titre" text="Entrez le mot de passe" BorderPane.alignment="CENTER" />
+                  <Label styleClass="lTitre" text="Entrez le mot de passe" BorderPane.alignment="CENTER" />
                </top>
                <bottom>
                   <HBox prefHeight="36.0" prefWidth="520.0" spacing="20.0" BorderPane.alignment="CENTER">

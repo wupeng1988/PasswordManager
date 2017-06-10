@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="editionPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.Explications">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="editionBox" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
@@ -22,7 +21,7 @@
             </ButtonBar>
          </bottom>
          <top>
-            <Label styleClass="titre" text="Explications" BorderPane.alignment="CENTER" />
+            <Label styleClass="lTitre" text="Explications" BorderPane.alignment="CENTER" />
          </top>
       </BorderPane>
    </children>
