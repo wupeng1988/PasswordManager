@@ -57,10 +57,16 @@ public class Compte implements Externalizable, Applicable {
             setNotes(getNotes() + Utils.decryptFinal(scanner.nextLine(), level, 2, crypto) + "\n");
     }
     public Compte(String utilisateur, String motDePasse) {
-        this.utilisateur = new SimpleStringProperty(this, "utilisateur", utilisateur);
-        this.motDePasse = new SimpleStringProperty(this, "motDePasse", motDePasse);
-        this.notes = new SimpleStringProperty(this, "notes", "");
-        this.dateCreation = new SimpleObjectProperty<>(this, "dateCreation", LocalDate.now());
+        this(utilisateur, motDePasse, "", LocalDate.now());
+    }
+    public Compte(String utilisateur, String motDePasse, String notes, LocalDate dateCreation) {
+        this.utilisateur = new SimpleStringProperty(this.utilisateur, "utilisateur", utilisateur);
+        this.motDePasse = new SimpleStringProperty(this.motDePasse, "motDePasse", motDePasse);
+        this.notes = new SimpleStringProperty(this.notes, "notes", notes);
+        this.dateCreation = new SimpleObjectProperty<>(this.dateCreation, "dateCreation", dateCreation);
+    }
+    public Compte(Compte c) {
+        this(c.getUtilisateur(), c.getMotDePasse(), c.getNotes(), c.getDateCreation());
     }
 
     void write(BufferedWriter bufferedWriter, int level, Crypto crypto) throws IOException {
@@ -78,16 +84,16 @@ public class Compte implements Externalizable, Applicable {
         }
     }
 
-    StringProperty utilisateurProperty() {
+    public StringProperty utilisateurProperty() {
         return utilisateur;
     }
-    StringProperty motDePasseProperty() {
+    public StringProperty motDePasseProperty() {
         return motDePasse;
     }
-    StringProperty notesProperty() {
+    public StringProperty notesProperty() {
         return notes;
     }
-    ObjectProperty<LocalDate> dateCreationProperty() {
+    public ObjectProperty<LocalDate> dateCreationProperty() {
         return dateCreation;
     }
 
@@ -122,29 +128,6 @@ public class Compte implements Externalizable, Applicable {
     }
     public String getMotDePasse() {
         return motDePasse.get();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Compte compte = (Compte) o;
-
-        if (getUtilisateur() != null ? !getUtilisateur().equals(compte.getUtilisateur()) : compte.getUtilisateur() != null)
-            return false;
-        if (getMotDePasse() != null ? !getMotDePasse().equals(compte.getMotDePasse()) : compte.getMotDePasse() != null)
-            return false;
-        if (getNotes() != null ? !getNotes().equals(compte.getNotes()) : compte.getNotes() != null) return false;
-        return getDateCreation() != null ? getDateCreation().equals(compte.getDateCreation()) : compte.getDateCreation() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getUtilisateur() != null ? getUtilisateur().hashCode() : 0;
-        result = 31 * result + (getMotDePasse() != null ? getMotDePasse().hashCode() : 0);
-        result = 31 * result + (getNotes() != null ? getNotes().hashCode() : 0);
-        result = 31 * result + (getDateCreation() != null ? getDateCreation().hashCode() : 0);
-        return result;
     }
 
     @Override

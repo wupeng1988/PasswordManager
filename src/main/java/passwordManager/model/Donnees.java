@@ -30,7 +30,7 @@ public class Donnees {
                 domaine -> new Observable[] {
                         domaine.nomProperty(),
                         domaine.domaineProperty(),
-                        domaine.iconeLocationProperty(),
+                        domaine.categorieProperty(),
                         domaine.iconeLocationProperty()
                 }
         );

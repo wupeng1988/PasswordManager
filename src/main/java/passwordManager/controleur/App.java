@@ -87,6 +87,7 @@ public class App implements Initializable {
     @FXML private MenuItem miAjouter;
     @FXML private MenuItem miModifier;
     @FXML private MenuItem miSupprimer;
+    @FXML private MenuItem miDupliquer;
     @FXML private MenuItem miParametres;
 
     @FXML private MenuItem miExplications;
@@ -213,12 +214,13 @@ public class App implements Initializable {
         }
     }
     private void initList() {
-        lvDomaines.prefWidthProperty().bind(spDomaines.widthProperty());
-        lvDomaines.prefHeightProperty().bind(spDomaines.heightProperty());
+        lvDomaines.prefWidthProperty().bind(spDomaines.widthProperty().subtract(2));
+        lvDomaines.prefHeightProperty().bind(spDomaines.heightProperty().subtract(2));
 
         App self = this;
         lvDomaines.setCellFactory(param -> new ListViewCell(self));
         lvDomaines.getSelectionModel().selectedItemProperty().addListener((l, ov, nv) -> updateDomaine(nv));
+        //lvDomaines.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
     private void initDetailsTable() {
         tvComptesUtilisateur.setCellValueFactory(new PropertyValueFactory<>("utilisateur"));
@@ -268,7 +270,6 @@ public class App implements Initializable {
                         setText("????/??/??");
                         setCursor(Cursor.HAND);
                     } else {
-                        // Format date.
                         setText(item.format(DateTimeFormatter.ofPattern(Compte.DATE_FORMAT)));
                         setCursor(Cursor.HAND);
 
@@ -408,6 +409,7 @@ public class App implements Initializable {
         miAjouter.setDisable(true);
         miModifier.setDisable(true);
         miSupprimer.setDisable(true);
+        miDupliquer.setDisable(true);
         miParametres.setDisable(false);
 
         miExplications.setDisable(false);
@@ -453,12 +455,14 @@ public class App implements Initializable {
                 if (compteSelectionne != null) {
                     miModifier.setDisable(false);
                     miSupprimer.setDisable(false);
+                    miDupliquer.setDisable(false);
                 }
             } else if (lvDomaines.isFocused() || lvDomaines.getSelectionModel().getSelectedIndex() > -1) {
                 miAjouter.setDisable(false);
                 if (domaineSelectionne != null) {
                     miModifier.setDisable(false);
                     miSupprimer.setDisable(false);
+                    miDupliquer.setDisable(false);
                 }
             }
 
@@ -483,10 +487,18 @@ public class App implements Initializable {
             }
 
             if (fichierOuvert != null) {
-                miSauvegarder.setDisable(false);
+                if (!donneesActives.getHistorique().isSaved()) {
+                    miSauvegarder.setDisable(false);
+                }
             }
 
             miSauvegarderVers.setDisable(false);
+
+            if (donneesActives.getHistorique().isSaved()) {
+                if (donneesActives.getEncrytionLevel() > 0) {
+                    miFermer.setDisable(false);
+                }
+            }
         } else if (donneesActives.getEncrytionLevel() > 0) {
             miAutoriser.setDisable(false);
         }
@@ -520,6 +532,13 @@ public class App implements Initializable {
             suppressionDomaine();
         }
     }
+    @FXML public void dupliquerAuFocus() {
+        if (tvComptes.isFocused()) {
+            dupliquerCompte();
+        } else if (lvDomaines.isFocused()) {
+            dupliquerDomaine();
+        }
+    }
 
     @FXML public void monterAuFocus() {
         if (tvComptes.isFocused()) {
@@ -550,7 +569,7 @@ public class App implements Initializable {
         }
     }
 
-    private void selection(int level, int item) {
+    private void selection(int level, int item) { // 0 = compte, 1 = domaine
         switch (level) {
             case 0:
                 if (domaineSelectionne != null && item < tvComptes.getItems().size())
@@ -777,6 +796,21 @@ public class App implements Initializable {
         confirmationControleur.initObject(compteSelectionne, domaineSelectionne);
     }
 
+    private void dupliquerCompte() {
+        if (getDomaineSelectionne() == null || getCompteSelectionne() == null) return;
+
+        int place = getDomaineSelectionne().getComptes().indexOf(getCompteSelectionne()) + 1;
+        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.ajoutCompte(place, getDomaineSelectionne(), new Compte(getCompteSelectionne())));
+        selection(0, place);
+    }
+    private void dupliquerDomaine() {
+        if (getDomaineSelectionne() == null) return;
+
+        int place = getDonneesActives().getDomaines().indexOf(getDomaineSelectionne()) + 1;
+        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.ajoutDomaine(place, getDonneesActives(), new Domaine(getDomaineSelectionne())));
+        selection(1, place);
+    }
+
     @FXML public boolean sauvegarderDialog() {
         boolean result = false;
 
@@ -807,6 +841,11 @@ public class App implements Initializable {
 
             initUi();
         }
+    }
+
+    @FXML public void fermer() {
+        if (fichierOuvert != null && donneesActives.getEncrytionLevel() > 0)
+            charger(fichierOuvert, null);
     }
 
     @FXML private void autoriser() {
@@ -935,7 +974,15 @@ public class App implements Initializable {
         lDetailsDomaine.textProperty().bind(d.domaineProperty());
         lDetailsCategorie.textProperty().bind(d.categorieProperty());
         lDetailsComptesTaille.textProperty().bind(Bindings.size(d.getComptes()).asString());
-        lDetailsNotes.textProperty().bind(d.notesProperty());
+        lDetailsNotes.textProperty().bind(Bindings.createStringBinding(() -> {
+            if (d.getNotes().length() > 0) {
+                lDetailsNotes.getStyleClass().clear();
+                return d.getNotes();
+            } else {
+                lDetailsNotes.getStyleClass().add("lItalic");
+                return "Aucune note";
+            }
+        }, d.notesProperty()));
 
         ivDetailsIcone.setImage(imageManager.getImage(d.getIconeLocation()));
 

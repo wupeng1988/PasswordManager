@@ -46,7 +46,6 @@ public class Domaine implements Externalizable, Applicable {
     public Domaine() {
         this("");
     }
-
     public Domaine(String nom) {
         this(nom, "", "");
     }
@@ -54,11 +53,15 @@ public class Domaine implements Externalizable, Applicable {
         this(nom, domaine, "");
     }
     public Domaine(String nom, String domaine, String categorie) {
-        this.nom = new SimpleStringProperty(nom, "nom", nom);
-        this.domaine = new SimpleStringProperty(this, "domaine", domaine);
-        this.categorie = new SimpleStringProperty(this, "categorie", categorie);
-        this.notes = new SimpleStringProperty(this, "notes", "");
-        this.iconeLocation = new SimpleStringProperty(this, "iconeLocation", "");
+        this(nom, domaine, categorie, "", "");
+    }
+    public Domaine(String nom, String domaine, String categorie, String notes, String iconeLocation) {
+        this.nom = new SimpleStringProperty(this.nom, "nom", nom);
+        this.domaine = new SimpleStringProperty(this.domaine, "domaine", domaine);
+        this.categorie = new SimpleStringProperty(this.categorie, "categorie", categorie);
+        this.notes = new SimpleStringProperty(this.notes, "notes", notes);
+        this.iconeLocation = new SimpleStringProperty(this.iconeLocation, "iconeLocation", iconeLocation);
+
         this.comptes = FXCollections.observableArrayList(
                 compte -> new Observable[] {
                         compte.utilisateurProperty(),
@@ -86,6 +89,11 @@ public class Domaine implements Externalizable, Applicable {
                 addCompte(new Compte(scanner, level, crypto));
             else
                 new Compte(scanner, level, null);
+    }
+    public Domaine(Domaine d) {
+        this(d.getNom(), d.getDomaine(), d.getCategorie(), d.getNotes(), d.getIconeLocation());
+        for (Compte c : d.getComptes())
+            addCompte(new Compte(c));
     }
 
     void write(BufferedWriter bufferedWriter, int level, Crypto crypto) throws IOException {
@@ -169,34 +177,6 @@ public class Domaine implements Externalizable, Applicable {
     }
     public ObservableList<Compte> getComptes() {
         return comptes;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Domaine domaine1 = (Domaine) o;
-
-        if (getNom() != null ? !getNom().equals(domaine1.getNom()) : domaine1.getNom() != null) return false;
-        if (getDomaine() != null ? !getDomaine().equals(domaine1.getDomaine()) : domaine1.getDomaine() != null)
-            return false;
-        if (getCategorie() != null ? !getCategorie().equals(domaine1.getCategorie()) : domaine1.getCategorie() != null)
-            return false;
-        if (getNotes() != null ? !getNotes().equals(domaine1.getNotes()) : domaine1.getNotes() != null) return false;
-        if (getIconeLocation() != null ? !getIconeLocation().equals(domaine1.getIconeLocation()) : domaine1.getIconeLocation() != null)
-            return false;
-        return getComptes() != null ? getComptes().equals(domaine1.getComptes()) : domaine1.getComptes() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getNom() != null ? getNom().hashCode() : 0;
-        result = 31 * result + (getDomaine() != null ? getDomaine().hashCode() : 0);
-        result = 31 * result + (getCategorie() != null ? getCategorie().hashCode() : 0);
-        result = 31 * result + (getNotes() != null ? getNotes().hashCode() : 0);
-        result = 31 * result + (getIconeLocation() != null ? getIconeLocation().hashCode() : 0);
-        result = 31 * result + (getComptes() != null ? getComptes().hashCode() : 0);
-        return result;
     }
 
     @Override

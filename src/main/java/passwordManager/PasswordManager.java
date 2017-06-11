@@ -12,18 +12,16 @@ import javafx.stage.Stage;
 import passwordManager.controleur.App;
 
 public class PasswordManager extends Application {
-    private KeyCodeCombination ctrlS =          new KeyCodeCombination(KeyCode.S,       KeyCodeCombination.CONTROL_ANY);
-    private KeyCodeCombination ctrlO =          new KeyCodeCombination(KeyCode.O,       KeyCodeCombination.CONTROL_ANY);
-    private KeyCodeCombination ctrlN =          new KeyCodeCombination(KeyCode.N,       KeyCodeCombination.CONTROL_ANY);
-    private KeyCodeCombination ctrlZ =          new KeyCodeCombination(KeyCode.Z,       KeyCodeCombination.CONTROL_ANY);
-    private KeyCodeCombination ctrlP =          new KeyCodeCombination(KeyCode.P,       KeyCodeCombination.CONTROL_ANY);
-    private KeyCodeCombination ctrlUp =         new KeyCodeCombination(KeyCode.KP_UP,   KeyCodeCombination.CONTROL_ANY);
-    private KeyCodeCombination ctrlDn =         new KeyCodeCombination(KeyCode.KP_DOWN, KeyCodeCombination.CONTROL_ANY);
-    private KeyCodeCombination ctrlH =          new KeyCodeCombination(KeyCode.H,       KeyCodeCombination.CONTROL_ANY);
-    private KeyCodeCombination ctrlShiftS =     new KeyCodeCombination(KeyCode.S,       KeyCodeCombination.CONTROL_ANY, KeyCodeCombination.SHIFT_ANY);
-    private KeyCodeCombination ctrlShiftZ =     new KeyCodeCombination(KeyCode.Z,       KeyCodeCombination.CONTROL_ANY, KeyCodeCombination.SHIFT_ANY);
-    private KeyCodeCombination ctrlShiftUp =    new KeyCodeCombination(KeyCode.KP_UP,   KeyCodeCombination.CONTROL_ANY, KeyCodeCombination.SHIFT_ANY);
-    private KeyCodeCombination ctrlShiftDn =    new KeyCodeCombination(KeyCode.KP_DOWN, KeyCodeCombination.CONTROL_ANY, KeyCodeCombination.SHIFT_ANY);
+    private KeyCodeCombination ctrlS =      new KeyCodeCombination(KeyCode.S, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlO =      new KeyCodeCombination(KeyCode.O, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlN =      new KeyCodeCombination(KeyCode.N, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlZ =      new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlP =      new KeyCodeCombination(KeyCode.P, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlH =      new KeyCodeCombination(KeyCode.H, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlW =      new KeyCodeCombination(KeyCode.W, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlD =      new KeyCodeCombination(KeyCode.D, KeyCodeCombination.CONTROL_ANY);
+    private KeyCodeCombination ctrlShiftS = new KeyCodeCombination(KeyCode.S, KeyCodeCombination.CONTROL_ANY, KeyCodeCombination.SHIFT_ANY);
+    private KeyCodeCombination ctrlShiftZ = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_ANY, KeyCodeCombination.SHIFT_ANY);
 
     private Clipboard clipboard = Clipboard.getSystemClipboard();
     private ClipboardContent clipboardContent = new ClipboardContent();
@@ -129,18 +127,14 @@ public class PasswordManager extends Application {
                     app.montrerExplications();
                 } else if (ctrlN.match(event)) {
                     app.nouvelleSauvegarde();
-                } else if (ctrlUp.match(event)) {
-                    app.monterAuFocus();
-                } else if (ctrlDn.match(event)) {
-                    app.descendreAuFocus();
+                } else if (ctrlW.match(event)) {
+                    app.fermer();
+                } else if (ctrlD.match(event)) {
+                    app.dupliquerAuFocus();
                 } else if (ctrlZ.match(event)) {
                     app.defaire();
                 } else if (ctrlShiftZ.match(event)) {
                     app.refaire();
-                } else if (ctrlShiftUp.match(event)) {
-                    app.monterMaxAuFocus();
-                } else if (ctrlShiftDn.match(event)) {
-                    app.descendreMaxAuFocus();
                 } else if (event.getCode() == KeyCode.DELETE) {
                     app.supprimerAuFocus();
                 } else if (event.getCode() == KeyCode.ADD) {

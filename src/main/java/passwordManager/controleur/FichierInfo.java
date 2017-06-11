@@ -84,7 +84,6 @@ public class FichierInfo implements Initializable {
         lAutorise.setText((donnees.isAutorise() ? "Oui" : "Non"));
         cbEncryptionLevel.getSelectionModel().select((Integer)donnees.getEncrytionLevel());
         cbEncryptionLevel.setDisable(!donnees.isAutorise());
-        tfMotDePasse.setDisable(!donnees.isAutorise());
         tfMotDePasse.setText(donnees.getMotDePasse());
     }
 

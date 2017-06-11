@@ -151,7 +151,14 @@ public class ActionHistorique {
     private void executerAjout(List l, Applicable ref, int pApres) {
         l.add(ref);
         int pAvant = l.indexOf(ref);
-        if (pApres >= 0) executerDeplacement(l, pAvant, pApres);
+        if (pApres >= 0) {
+            int i = pAvant;
+            while (i != pApres)
+                if (i > pApres)
+                    executerDeplacement(l, i, (i--) - 1);
+                else
+                    executerDeplacement(l, i, (i++) + 1);
+        }
     }
     private void executerSuppression(List l, Applicable ref) {
         l.remove(ref);

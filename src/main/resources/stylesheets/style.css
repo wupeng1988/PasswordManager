@@ -65,10 +65,6 @@ TableView:focused, ListView:focused {
 #lvSelection .list-cell:selected, .table-row-cell:selected {
     -fx-background-color: #7fbcff;
 }
-.list-cell:hover > .listViewCell > .nom {
-    -fx-text-fill: #ffb122;
-}
-
 #detailsIdleVue {
     -fx-background-color: white;
 }
@@ -76,25 +72,41 @@ TableView:focused, ListView:focused {
     -fx-font-size: 28;
 }
 
-.bSelectionAction, .bDetailsAction {
+.bSelectionAction, .bSelectionActionFirst,
+.bDetailsAction, .bDetailsActionFirst,
+#bSelectionFiltre {
     -fx-background-radius: 0;
     -fx-border-radius: 0;
 }
+
 .bSelectionAction:focused, .bDetailsAction:focused {
     -fx-background-color: -fx-outer-border, -fx-inner-border, -fx-body-color;
     -fx-background-insets: 0, 1, 2;
 }
 .bSelectionAction {
+    -fx-border-width: 0 1 0 0;
+}
+.bSelectionActionFirst {
     -fx-border-width: 0 1 0 1;
 }
-.bDetailsAction {
+.bDetailsActionFirst {
     -fx-border-width: 1 1 1 0;
+}
+.bDetailsAction {
+    -fx-border-width: 0 1 1 0;
+}
+#bSelectionFiltre {
+    -fx-border-width: 0 1 1 1;
+}
+
+#spDetailsNotes {
+    -fx-background-color: transparent;
 }
 
 .lTitre {
     -fx-font-size: 42;
 }
-#spSelection, #lvSelection, #tfSelectionFiltre {
+#lvSelection {
     -fx-background-radius: 0;
     -fx-background-insets: 0;
     -fx-border-radius: 0;
@@ -102,9 +114,15 @@ TableView:focused, ListView:focused {
     -fx-box-border: transparent;
     -fx-text-box-border: transparent;
 }
+#tfSelectionFiltre {
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-border-radius: 0;
+    -fx-border-width: 0 0 1 1;
+}
 
-#tvDetails {
-    -fx-padding: 1 -1 1 1;
+#tcDetailsColumnNumber {
+    -fx-alignment: center;
 }
 
 .bpEtatA > .label, .bpEtatNA > .label {
