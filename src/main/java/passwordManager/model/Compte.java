@@ -131,6 +131,30 @@ public class Compte implements Externalizable, Applicable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Compte compte = (Compte) o;
+
+        if (getUtilisateur() != null ? !getUtilisateur().equals(compte.getUtilisateur()) : compte.getUtilisateur() != null)
+            return false;
+        if (getMotDePasse() != null ? !getMotDePasse().equals(compte.getMotDePasse()) : compte.getMotDePasse() != null)
+            return false;
+        if (getNotes() != null ? !getNotes().equals(compte.getNotes()) : compte.getNotes() != null) return false;
+        return getDateCreation() != null ? getDateCreation().equals(compte.getDateCreation()) : compte.getDateCreation() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getUtilisateur() != null ? getUtilisateur().hashCode() : 0;
+        result = 31 * result + (getMotDePasse() != null ? getMotDePasse().hashCode() : 0);
+        result = 31 * result + (getNotes() != null ? getNotes().hashCode() : 0);
+        result = 31 * result + (getDateCreation() != null ? getDateCreation().hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Compte{" +
                 "utilisateur=" + getUtilisateur() +

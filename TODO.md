@@ -33,7 +33,7 @@
 
 ## Bugs
 * **00** Nom du domaine non mis à jour si fichier chargé et domaine dupliqué
-* **00** Entrée sur confirmer
+-> apparement relatif à un bug avec Collections.swap
 
 ## Liens
 * Pour localiser: [doc](https://stackoverflow.com/documentation/javafx/5434/internationalization-in-javafx#t=201706081711105249664)

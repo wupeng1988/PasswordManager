@@ -3,7 +3,6 @@ package passwordManager.model;
 import javafx.collections.ObservableList;
 
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Nico on 08/06/2017.
@@ -148,7 +147,7 @@ public class ActionHistorique {
                 .setObjetReferent(referent);
     }
 
-    private void executerAjout(List l, Applicable ref, int pApres) {
+    private void executerAjout(ObservableList l, Applicable ref, int pApres) {
         l.add(ref);
         int pAvant = l.indexOf(ref);
         if (pApres >= 0) {
@@ -160,13 +159,13 @@ public class ActionHistorique {
                     executerDeplacement(l, i, (i++) + 1);
         }
     }
-    private void executerSuppression(List l, Applicable ref) {
+    private void executerSuppression(ObservableList l, Applicable ref) {
         l.remove(ref);
     }
     private void executerModification(Applicable a1, Object a2) {
         a1.appliquer((Applicable) a2);
     }
-    private void executerDeplacement(List l, int avant, int apres) {
+    private void executerDeplacement(ObservableList l, int avant, int apres) {
         Collections.swap(l, avant, apres);
     }
 
@@ -189,7 +188,7 @@ public class ActionHistorique {
         executerAction(l, d, reverse);
     }
 
-    private void executerAction(List l, Applicable a, boolean reverse) {
+    private void executerAction(ObservableList l, Applicable a, boolean reverse) {
         switch (action) {
             case AJOUT:
                 if (!reverse) executerAjout(l, a, pApres);

@@ -66,6 +66,8 @@ public class Confirmation implements Initializable {
 
         lObjetType.setText("Domaine");
         lNom.setText(d.getNom());
+
+        root.requestFocus();
     }
     void initObject(Compte c, Domaine d) { // o est soit un compte, soit un domaine
         toDelete = c;

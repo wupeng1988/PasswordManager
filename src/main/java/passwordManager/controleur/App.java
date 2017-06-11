@@ -800,14 +800,20 @@ public class App implements Initializable {
         if (getDomaineSelectionne() == null || getCompteSelectionne() == null) return;
 
         int place = getDomaineSelectionne().getComptes().indexOf(getCompteSelectionne()) + 1;
-        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.ajoutCompte(place, getDomaineSelectionne(), new Compte(getCompteSelectionne())));
+        Compte nCompte = new Compte(getCompteSelectionne());
+        nCompte.setUtilisateur(nCompte.getUtilisateur() + " 2");
+
+        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.ajoutCompte(place, getDomaineSelectionne(), nCompte));
         selection(0, place);
     }
     private void dupliquerDomaine() {
         if (getDomaineSelectionne() == null) return;
 
         int place = getDonneesActives().getDomaines().indexOf(getDomaineSelectionne()) + 1;
-        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.ajoutDomaine(place, getDonneesActives(), new Domaine(getDomaineSelectionne())));
+        Domaine nDom = new Domaine(getDomaineSelectionne());
+        nDom.setNom(nDom.getNom() + " 2");
+
+        getDonneesActives().getHistorique().ajoutAction(ActionHistorique.ajoutDomaine(place, getDonneesActives(), nDom));
         selection(1, place);
     }
 
