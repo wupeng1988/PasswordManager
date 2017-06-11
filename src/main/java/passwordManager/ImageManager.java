@@ -55,7 +55,7 @@ public class ImageManager {
                     f = new File(location);
                     if (f.exists() && f.isFile()) {
                         i = new Image(f.toURI().toURL().toExternalForm());
-                        if (i.getHeight() > 128 || i.getWidth() > 128) i = null;
+                        if (i.getHeight() > 512 || i.getWidth() > 512) i = null;
                         userImages.add(f.getAbsolutePath());
                     }
                 } else {

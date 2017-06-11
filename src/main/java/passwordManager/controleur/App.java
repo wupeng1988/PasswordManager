@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import passwordManager.*;
@@ -119,6 +120,7 @@ public class App implements Initializable {
     @FXML private Label lEtat;
 
     @FXML private AnchorPane root;
+    @FXML private VBox vbRoot;
     @FXML private AnchorPane detailsRoot;
     @FXML private BorderPane bpEtat;
     @FXML private BorderPane detailsTitrePane;

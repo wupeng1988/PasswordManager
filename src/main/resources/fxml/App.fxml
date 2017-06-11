@@ -68,7 +68,7 @@
             </MenuBar>
          </top>
          <center>
-            <VBox BorderPane.alignment="CENTER">
+            <VBox fx:id="vboxRoot" BorderPane.alignment="CENTER">
                <children>
                   <BorderPane fx:id="bpEtat" prefHeight="24.0">
                      <center>

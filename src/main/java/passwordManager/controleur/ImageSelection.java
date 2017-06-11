@@ -105,7 +105,7 @@ public class ImageSelection implements Initializable {
         fileChooser.setInitialDirectory(new File("."));
         fileChooser.setTitle("Choisir une icone");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Images", "*.png")
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
         );
         File fileSelected = fileChooser.showOpenDialog(infosDomaine.app.getPasswordManager().getStage());
         if (fileSelected != null) {
