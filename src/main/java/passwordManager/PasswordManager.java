@@ -50,6 +50,7 @@ public class PasswordManager extends Application {
     public final static String FXML_IMAGESELECTION =    DOSSIER_FXML + "ImageSelection.fxml";
     public final static String FXML_ABOUT =             DOSSIER_FXML + "About.fxml";
     public final static String FXML_EXPLICATIONS =      DOSSIER_FXML + "Explications.fxml";
+    public final static String FXML_ALEASCHEMES =       DOSSIER_FXML + "AleaSchemes.fxml";
 
     public final static String TEXT_NAMES =             DOSSIER_TEXTE + "names.txt";
 

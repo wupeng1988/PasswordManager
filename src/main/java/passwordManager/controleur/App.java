@@ -46,6 +46,7 @@ public class App implements Initializable {
     private Backup backup;
     private PSWFile fichierOuvert = null;
     private DriveHelper driveHelper = new DriveHelper();
+    private passwordManager.alea.AleaSchemes aleaSchemes = new passwordManager.alea.AleaSchemes();
 
     private Donnees donneesActives = null;
     private Domaine domaineSelectionne = null;
@@ -64,6 +65,7 @@ public class App implements Initializable {
     private Parametres parametresControleur;
     private Explications explicationsControleur;
     private About aboutControleur;
+    private AleaSchemes aleaSchemesControleur;
     private Parent infosCompteVue;
     private Parent infosDomaineVue;
     private Parent detailsIdleVue;
@@ -73,6 +75,7 @@ public class App implements Initializable {
     private Parent parametresVue;
     private Parent explicationsVue;
     private Parent aboutVue;
+    private Parent aleaSchemesVue;
 
     @FXML private MenuItem miNouveau;
     @FXML private MenuItem miFermer;
@@ -175,6 +178,7 @@ public class App implements Initializable {
         FXMLLoader fxmlLoaderParametres = new FXMLLoader(getClass().getResource(PasswordManager.FXML_PARAMETRES));
         FXMLLoader fxmlLoaderExplications = new FXMLLoader(getClass().getResource(PasswordManager.FXML_EXPLICATIONS));
         FXMLLoader fxmlLoaderAbout = new FXMLLoader(getClass().getResource(PasswordManager.FXML_ABOUT));
+        FXMLLoader fxmlLoaderAleaSchemes = new FXMLLoader(getClass().getResource(PasswordManager.FXML_ALEASCHEMES));
 
         try {
             infosCompteVue = fxmlLoaderInfosCompte.load();
@@ -204,6 +208,9 @@ public class App implements Initializable {
             aboutVue = fxmlLoaderAbout.load();
             aboutControleur = fxmlLoaderAbout.getController();
 
+            aleaSchemesVue = fxmlLoaderAleaSchemes.load();
+            aleaSchemesControleur = fxmlLoaderAleaSchemes.getController();
+
             infosCompteControleur.bindParent(this);
             infosDomaineControleur.bindParent(this);
             fichierInfoControleur.bindParent(this);
@@ -212,8 +219,9 @@ public class App implements Initializable {
             parametresControleur.bindParent(this);
             explicationsControleur.bindParent(this);
             aboutControleur.bindParent(this);
+            aleaSchemesControleur.bindParent(this);
 
-            setAnchor(infosCompteVue, infosDomaineVue, fichierInfoVue, autorisationVue, detailsIdleVue, confirmationVue, parametresVue, explicationsVue, aboutVue);
+            setAnchor(infosCompteVue, infosDomaineVue, fichierInfoVue, autorisationVue, detailsIdleVue, confirmationVue, parametresVue, explicationsVue, aboutVue, aleaSchemesVue);
         } catch (IOException io) {
             io.printStackTrace();
         }
@@ -636,6 +644,10 @@ public class App implements Initializable {
     @FXML private void montrerAbout() {
         root.getChildren().add(aboutVue);
     }
+    @FXML private void montrerAleaSchemes() {
+        aleaSchemesControleur.initSchemes(getAleaSchemes());
+        montrerOption(aleaSchemesVue);
+    }
 
     @FXML public void montrerParametres() {
         montrerOption(parametresVue);
@@ -1039,7 +1051,8 @@ public class App implements Initializable {
                 confirmationVue,
                 parametresVue,
                 explicationsVue,
-                aboutVue
+                aboutVue,
+                aleaSchemesVue
         );
         inOptions = false;
     }
@@ -1126,6 +1139,9 @@ public class App implements Initializable {
         } catch (Exception ignored) {}
 
         return null;
+    }
+    public passwordManager.alea.AleaSchemes getAleaSchemes() {
+        return aleaSchemes;
     }
 
     private void nouvellesDonnees(Donnees donnees) {

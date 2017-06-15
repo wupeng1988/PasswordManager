@@ -92,7 +92,7 @@ public class InfosDomaine implements Initializable {
         validationSupport.registerValidator(
                 tfNom,
                 true,
-                (control, s) -> ValidationResult.fromErrorIf(control, "error", ((String)s).length() < 2 || ((String)s).length() > 18));
+                (control, s) -> ValidationResult.fromErrorIf(control, "error", ((String)s).length() < 2 || ((String)s).length() > 30));
         bOk.disableProperty().bind(validationSupport.invalidProperty());
     }
 

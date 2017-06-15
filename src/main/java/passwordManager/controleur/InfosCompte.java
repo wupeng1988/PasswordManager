@@ -10,6 +10,7 @@ import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
 import passwordManager.ImageManager;
 import passwordManager.PasswordManager;
+import passwordManager.alea.AleaScheme;
 import passwordManager.model.*;
 
 import java.net.URL;
@@ -26,19 +27,6 @@ public class InfosCompte implements Initializable {
 
     private Compte toEdit;
     private boolean exists;
-
-    private final static String MDP_ALPHABET_LETTRE_MAJ = "ABCDEFGHIJKLMNOPQRSTUVWYZ";
-    private final static String MDP_ALPHABET_LETTRE_MIN = MDP_ALPHABET_LETTRE_MAJ.toLowerCase();
-    private final static String MDP_ALPHABET_CHIFFRE = "0123456789";
-    private final static String MDP_ALPHABET_SEPARATEUR = "-_";
-    private final static String MDP_ALPHABET_SPECIAL = "$*";
-
-    private final static String MDP_ALPHABET =
-                                    MDP_ALPHABET_LETTRE_MIN
-                                    + MDP_ALPHABET_LETTRE_MAJ
-                                    + MDP_ALPHABET_CHIFFRE
-                                    + MDP_ALPHABET_SEPARATEUR
-                                    + MDP_ALPHABET_SPECIAL;
 
     private ArrayList<String> listeNoms;
 
@@ -59,7 +47,7 @@ public class InfosCompte implements Initializable {
 
     private ValidationSupport validationSupport = new ValidationSupport();
     private Validator<String> validator = (control, s) -> {
-        boolean condition = s.length() < 2 || s.length() > 30;
+        boolean condition = s.length() < 2 || s.length() > 50;
         return ValidationResult.fromErrorIf(control, "error", condition);
     };
 
@@ -166,7 +154,7 @@ public class InfosCompte implements Initializable {
     private String genNomAlea() {
         Random r = app.getRandom();
 
-        char sep = MDP_ALPHABET_SEPARATEUR.charAt(r.nextInt(MDP_ALPHABET_SEPARATEUR.length()));
+        char sep = '-';
 
         int lengthVar = 10;
         int lengthMin = 6;
@@ -181,18 +169,7 @@ public class InfosCompte implements Initializable {
         return gen.toString();
     }
     private String genMdpAlea() {
-        Random r = app.getRandom();
-
-        int lengthVar = 6;
-        int lengthMin = 6;
-        int length = r.nextInt(lengthVar) + lengthMin;
-
-        StringBuilder gen = new StringBuilder();
-
-        for (int i = 0; i < length; i++)
-            gen.append(MDP_ALPHABET.charAt(r.nextInt(MDP_ALPHABET.length())));
-
-        return gen.toString();
+        return app.getAleaSchemes().getScheme("default").generate();
     }
 
     void initCompte(Compte c) {
@@ -205,6 +182,15 @@ public class InfosCompte implements Initializable {
         tfMotDePasse.setText((level > 0 && !autorise ? "*********" : c.getMotDePasse()));
         taNotes.setText((level > 1 && !autorise ? "*********" : c.getNotes()));
         exists = true;
+
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem mi;
+        for (AleaScheme a : app.getAleaSchemes().getSchemes()) {
+            mi = new MenuItem(a.getNom());
+            mi.setOnAction((action) -> tfMotDePasse.setText(a.generate()));
+            contextMenu.getItems().add(mi);
+        }
+        bAleaM.setContextMenu(contextMenu);
 
         Platform.runLater(() -> {
             tfUtilisateur.requestFocus();

@@ -58,6 +58,7 @@
                         <MenuItem fx:id="miDupliquer" mnemonicParsing="false" onAction="#dupliquerAuFocus" text="Dupliquer" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="miParametres" mnemonicParsing="false" onAction="#montrerParametres" text="Paramètres" />
+                        <MenuItem mnemonicParsing="false" onAction="#montrerAleaSchemes" text="Alea Schemes" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Aide">
