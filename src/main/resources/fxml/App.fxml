@@ -34,8 +34,10 @@
                   <items>
                         <MenuItem fx:id="miNouveau" mnemonicParsing="false" onAction="#nouvelleSauvegarde" text="Nouveau" />
                         <MenuItem fx:id="miOuvrir" mnemonicParsing="false" onAction="#chargerDialog" text="Ouvrir" />
+                        <MenuItem fx:id="miOuvrirDrive" mnemonicParsing="false" onAction="#chargerDriveDialog" text="Ouvrir depuis Drive" />
                         <MenuItem fx:id="miSauvegarder" mnemonicParsing="false" onAction="#sauvegarderSc" text="Sauvegarder" />
                         <MenuItem fx:id="miSauvegarderVers" mnemonicParsing="false" onAction="#sauvegarderDialog" text="Sauvegarder vers..." />
+                        <MenuItem fx:id="miSauvegarderVersDrive" mnemonicParsing="false" onAction="#sauvegarderDrive" text="Sauvegarder dans Drive" />
                         <MenuItem fx:id="miFermer" mnemonicParsing="false" onAction="#fermer" text="Fermer" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="miAutoriser" mnemonicParsing="false" onAction="#autoriser" text="Autoriser" />
@@ -68,7 +70,7 @@
             </MenuBar>
          </top>
          <center>
-            <VBox fx:id="vboxRoot" BorderPane.alignment="CENTER">
+            <VBox fx:id="vbRoot" BorderPane.alignment="CENTER">
                <children>
                   <BorderPane fx:id="bpEtat" prefHeight="24.0">
                      <center>
@@ -208,8 +210,8 @@
                                                   <columns>
                                                       <TableColumn id="tcDetailsColumnNumber" fx:id="tvComptesNumero" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortable="false" text="#" />
                                                     <TableColumn id="tcDetailsColumnUtilisateur" fx:id="tvComptesUtilisateur" editable="false" prefWidth="280.0" text="Utilisateur" />
-                                                    <TableColumn id="tcDetailsColumnMotDePasse" fx:id="tvComptesMotDePasse" editable="false" prefWidth="75.0" text="Mot de passe" />
-                                                      <TableColumn id="tcDetailsColumnDateCreation" fx:id="tvComptesDateCreation" editable="false" prefWidth="75.0" text="Date de création" />
+                                                    <TableColumn id="tcDetailsColumnMotDePasse" fx:id="tvComptesMotDePasse" editable="false" maxWidth="3000.0" minWidth="30.0" prefWidth="100.0" text="Mot de passe" />
+                                                      <TableColumn id="tcDetailsColumnDateCreation" fx:id="tvComptesDateCreation" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="Date de création" />
                                                   </columns>
                                                    <columnResizePolicy>
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

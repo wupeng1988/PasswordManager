@@ -44,7 +44,8 @@ public class App implements Initializable {
     private PasswordManager passwordManager;
     private ImageManager imageManager = new ImageManager();
     private Backup backup;
-    private File fichierOuvert = null;
+    private PSWFile fichierOuvert = null;
+    private DriveHelper driveHelper = new DriveHelper();
 
     private Donnees donneesActives = null;
     private Domaine domaineSelectionne = null;
@@ -76,8 +77,10 @@ public class App implements Initializable {
     @FXML private MenuItem miNouveau;
     @FXML private MenuItem miFermer;
     @FXML private MenuItem miOuvrir;
+    @FXML private MenuItem miOuvrirDrive;
     @FXML private MenuItem miSauvegarder;
     @FXML private MenuItem miSauvegarderVers;
+    @FXML private MenuItem miSauvegarderVersDrive;
     @FXML private MenuItem miAutoriser;
     @FXML private MenuItem miInformations;
     @FXML private MenuItem miStatistiques;
@@ -376,11 +379,20 @@ public class App implements Initializable {
                 Integer.parseInt(preferences.getPropriete(Preferences.PROP_BACKUP_AUTO))
         );
 
-        String lastFile = preferences.getPropriete(Preferences.PROP_DERNIER_FICHIER);
-        if (!Boolean.parseBoolean(preferences.getPropriete(Preferences.PROP_CHARGER_DERNIER_FICHIER)) || lastFile == null || lastFile.equals(""))
+        fichierOuvert = new PSWFile(preferences);
+        if (!fichierOuvert.exists()) {
             nouvelleSauvegarde();
-        else {
-            if (!charger(new File(lastFile), null))
+        } else {
+            boolean reussi = false;
+            if (fichierOuvert.isDepuisDrive()) {
+                if (telecharger(fichierOuvert, null))
+                    reussi = true;
+            } else {
+                if (charger(fichierOuvert, null))
+                    reussi = true;
+            }
+
+            if (!reussi)
                 nouvelleSauvegarde();
 
             initUi();
@@ -718,20 +730,9 @@ public class App implements Initializable {
         if (!checkSaveEnregistree()) return;
 
         nouvellesDonnees(new Donnees());
-        fichierOuvert = null;
+        fichierOuvert = new PSWFile();
 
         tfFiltre.setText("");
-        bMonterDomaine.setDisable(true);
-        bDescendreDomaine.setDisable(true);
-        bModificationDomaine.setDisable(true);
-        bSuppressionDomaine.setDisable(true);
-
-        miSauvegarder.setDisable(true);
-        miAjouter.setDisable(true);
-        miModifier.setDisable(true);
-        miSupprimer.setDisable(true);
-
-        miSauvegarder.setDisable(true);
 
         initUi();
         setTitre();
@@ -820,6 +821,8 @@ public class App implements Initializable {
     }
 
     @FXML public boolean sauvegarderDialog() {
+        if (!donneesActives.isAutorise()) return false;
+
         boolean result = false;
 
         FileChooser fileChooser = new FileChooser();
@@ -829,13 +832,32 @@ public class App implements Initializable {
 
         File selectedFile = fileChooser.showSaveDialog(passwordManager.getStage());
         if (selectedFile != null) {
-            result = sauvegarder(selectedFile);
-            fichierOuvert = selectedFile;
-            passwordManager.getPreferences().setPropriete(Preferences.PROP_DERNIER_FICHIER, fichierOuvert.getAbsolutePath());
+            fichierOuvert.setDepuisDrive(false);
+            fichierOuvert.setFichier(selectedFile);
+            fichierOuvert.saveToPreferences(getPasswordManager().getPreferences());
+            result = ecrire(selectedFile.getAbsolutePath(), fichierOuvert);
             initUi();
         }
 
         return result;
+    }
+    @FXML private void sauvegarderDrive() {
+        String v = "save.psw";
+        if (!fichierOuvert.getNomDansDrive().equals(""))
+            v = fichierOuvert.getNomDansDrive();
+
+        TextInputDialog dialog = new TextInputDialog(v);
+        dialog.setTitle("Choisir un nom");
+        dialog.setHeaderText("Choisissez un nom pour le fichier");
+        dialog.setContentText("Nom du fichier:");
+
+        dialog.showAndWait().ifPresent(nom -> {
+            fichierOuvert.setDepuisDrive(true);
+            fichierOuvert.setNomDansDrive(nom);
+            fichierOuvert.saveToPreferences(getPasswordManager().getPreferences());
+            ecrire(nom, fichierOuvert);
+            initUi();
+        });
     }
     @FXML public void chargerDialog() {
         FileChooser fileChooser = new FileChooser();
@@ -845,7 +867,16 @@ public class App implements Initializable {
 
         File selectedFile = fileChooser.showOpenDialog(passwordManager.getStage());
         if (selectedFile != null) {
-            if (!charger(selectedFile, null)) return;
+            if (!charger(new PSWFile(selectedFile.getAbsolutePath(), false), null)) return;
+
+            initUi();
+        }
+    }
+    @FXML private void chargerDriveDialog() {
+        PSWFile selectedFile = driveHelper.chooseFile();
+
+        if (selectedFile != null) {
+            if (!telecharger(selectedFile, null)) return;
 
             initUi();
         }
@@ -863,7 +894,13 @@ public class App implements Initializable {
 
     @FXML public boolean sauvegarderSc() { // shortcut
         if (fichierOuvert == null) return sauvegarderDialog();
-        return sauvegarder(fichierOuvert);
+
+        if (fichierOuvert.isDepuisDrive()) {
+            String nom = !fichierOuvert.getNomDansDrive().equals("") ? fichierOuvert.getNomDansDrive() : "save.psw";
+            return ecrire(nom, fichierOuvert);
+        } else {
+            return ecrire(fichierOuvert.getChemin(), fichierOuvert);
+        }
     }
 
     @FXML private void ecraserFiltre() {
@@ -875,14 +912,24 @@ public class App implements Initializable {
         inOptions = true;
     }
 
-    private boolean sauvegarder(File file) {
+    public boolean ouvrir(PSWFile f, Crypto c) {
+        if (f.isDepuisDrive())
+            return telecharger(f, c);
+        else
+            return charger(f, c);
+    }
+    public boolean ecrire(String n, PSWFile f) {
+        if (f.isDepuisDrive())
+            return televerser(n, f, getCrypto());
+        else
+            return sauvegarder(n, f, getCrypto());
+    }
+
+    private boolean sauvegarder(String chemin, PSWFile file, Crypto c) {
         if (!donneesActives.isAutorise() || file == null) return false;
 
         try {
-            if (donneesActives.getEncrytionLevel() > 0 && donneesActives.getMotDePasse().length() > 5)
-                Utils.writeSaveData(donneesActives, file.getAbsolutePath(), new Crypto(donneesActives.getMotDePasse()));
-            else
-                Utils.writeSaveData(donneesActives, file.getAbsolutePath(), null);
+            Utils.writeSaveData(donneesActives, chemin, c);
             donneesActives.getHistorique().setSaved(true);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -891,10 +938,30 @@ public class App implements Initializable {
 
         return true;
     }
-    boolean charger(File file, Crypto crypto) {
+    private boolean televerser(String nom, PSWFile file, Crypto c) {
+        if (!donneesActives.isAutorise() || file == null) return false;
+
+        try {
+            Utils.writeSaveData(donneesActives, nom, c);
+            File f = new File(nom);
+            file.setFichier(f);
+            file.setNomDansDrive(nom);
+            driveHelper.uploadFile(file);
+            f.delete();
+            file.setFichier(null);
+            file.saveToPreferences(getPasswordManager().getPreferences());
+            donneesActives.getHistorique().setSaved(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+    private boolean charger(PSWFile file, Crypto crypto) {
         if (!checkSaveEnregistree()) return false;
 
-        nouvellesDonnees(Utils.readSavedData(file, crypto));
+        nouvellesDonnees(Utils.readSavedData(file.getFichier(), crypto));
         if (donneesActives == null) { // erreur
             //nouvelleSauvegarde();
             System.err.println("Erreur de lecture!");
@@ -902,7 +969,27 @@ public class App implements Initializable {
         }
 
         fichierOuvert = file;
-        passwordManager.getPreferences().setPropriete(Preferences.PROP_DERNIER_FICHIER, fichierOuvert.getAbsolutePath());
+        fichierOuvert.saveToPreferences(getPasswordManager().getPreferences());
+        miSauvegarder.setDisable(false);
+
+        return true;
+    }
+    private boolean telecharger(PSWFile file, Crypto crypto) {
+        if (!checkSaveEnregistree()) return false;
+
+        File tmpFile = driveHelper.downloadFile(file);
+        if (tmpFile != null)
+            nouvellesDonnees(Utils.readSavedData(tmpFile, crypto));
+        if (donneesActives == null) { // erreur
+            //nouvelleSauvegarde();
+            System.err.println("Erreur de lecture!");
+            return false;
+        } else if (!tmpFile.delete()) {
+            System.err.println("Impossible de supprimer le fichier temporaire!");
+        }
+
+        fichierOuvert = file;
+        fichierOuvert.saveToPreferences(getPasswordManager().getPreferences());
         miSauvegarder.setDisable(false);
 
         return true;
@@ -912,7 +999,7 @@ public class App implements Initializable {
         bpEtat.getStyleClass().clear();
         bpEtat.getStyleClass().add((donneesActives.getEncrytionLevel() > 0 && !donneesActives.isAutorise() ? "bpEtatNA" : "bpEtatA"));
         if (fichierOuvert != null)
-            lEtat.setText(fichierOuvert.getAbsolutePath() + " - édition " + (donneesActives.getEncrytionLevel() > 0 && !donneesActives.isAutorise() ? "interdite" : "autorisée"));
+            lEtat.setText(fichierOuvert.getNomFichier() + " - édition " + (donneesActives.getEncrytionLevel() > 0 && !donneesActives.isAutorise() ? "interdite" : "autorisée"));
         else
             lEtat.setText("Nouveau fichier");
         setTitre();
@@ -1009,7 +1096,7 @@ public class App implements Initializable {
     }
     private void setTitre() {
         if (fichierOuvert != null)
-            passwordManager.getStage().setTitle(PasswordManager.TITLE + " - " + fichierOuvert.getAbsolutePath());
+            passwordManager.getStage().setTitle(PasswordManager.TITLE + " - " + fichierOuvert.getNomFichier());
         else
             passwordManager.getStage().setTitle(PasswordManager.TITLE);
     }
@@ -1029,11 +1116,19 @@ public class App implements Initializable {
     public PasswordManager getPasswordManager() {
         return passwordManager;
     }
-    File getFichierOuvert() {
+    PSWFile getFichierOuvert() {
         return fichierOuvert;
     }
     Random getRandom() {
         return random;
+    }
+    private Crypto getCrypto() {
+        try {
+            if (donneesActives.getEncrytionLevel() > 0 && donneesActives.getMotDePasse().length() > 5)
+                return new Crypto(donneesActives.getMotDePasse());
+        } catch (Exception ignored) {}
+
+        return null;
     }
 
     private void nouvellesDonnees(Donnees donnees) {

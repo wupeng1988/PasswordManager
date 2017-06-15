@@ -86,6 +86,11 @@ public class Utils {
         String localPath = new File(".").getAbsolutePath();
         localPath = localPath.substring(0 , localPath.length() - 1);
 
-        return path.replace(localPath, "." + File.separator).replace("/", File.separator);
+        String toRet = path
+                .replace(localPath, "." + File.separator)
+                .replace("/", File.separator)
+                .replace("." + File.separator, "");
+
+        return toRet;
     }
 }

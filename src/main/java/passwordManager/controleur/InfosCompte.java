@@ -59,9 +59,8 @@ public class InfosCompte implements Initializable {
 
     private ValidationSupport validationSupport = new ValidationSupport();
     private Validator<String> validator = (control, s) -> {
-        boolean condition = ((TextField)control).getText().length() < 4
-                || ((TextField)control).getText().length() > 18;
-        return ValidationResult.fromErrorIf(control, "control < 4 ou > 18", condition);
+        boolean condition = s.length() < 2 || s.length() > 30;
+        return ValidationResult.fromErrorIf(control, "error", condition);
     };
 
     @Override

@@ -12,7 +12,6 @@ import javafx.scene.layout.StackPane;
 import org.controlsfx.control.textfield.TextFields;
 import org.controlsfx.validation.ValidationResult;
 import org.controlsfx.validation.ValidationSupport;
-import org.controlsfx.validation.Validator;
 import passwordManager.ImageManager;
 import passwordManager.PasswordManager;
 import passwordManager.model.ActionHistorique;
@@ -58,7 +57,6 @@ public class InfosDomaine implements Initializable {
     @FXML private TextArea taNotes;
 
     private ValidationSupport validationSupport = new ValidationSupport();
-    private Validator<String> validator = (control, s) -> ValidationResult.fromErrorIf(control, "error", s.length() < 4 || s.length() > 18);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -90,7 +88,11 @@ public class InfosDomaine implements Initializable {
             if (event.getCode() == KeyCode.ENTER)
                 okEdition();
         });
-        validationSupport.registerValidator(tfNom, true, validator);
+
+        validationSupport.registerValidator(
+                tfNom,
+                true,
+                (control, s) -> ValidationResult.fromErrorIf(control, "error", ((String)s).length() < 2 || ((String)s).length() > 18));
         bOk.disableProperty().bind(validationSupport.invalidProperty());
     }
 

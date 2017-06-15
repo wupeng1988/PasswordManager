@@ -16,6 +16,7 @@ Features:
 * Drag and drop, move domains and accounts up and down freely
 * Support for adding notes to domains and accounts
 * Automatic backup
+* Support for Google Drive
 
 [FR]
 
@@ -33,6 +34,7 @@ Fonctionnalités:
 * Glisser-déposer, déplacement des domaines et des comptes librement
 * Support pour l'ajout de notes aux domaines et aux comptes
 * Sauvegardes automatiques
+* Support pour Google Drive
 
 # Todo
 -> TODO.md

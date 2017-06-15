@@ -15,7 +15,7 @@
          <bottom>
             <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <buttons>
-                <Button fx:id="ok" mnemonicParsing="false" onAction="#ok" text="Ok" />
+                <Button fx:id="bOk" mnemonicParsing="false" onAction="#ok" text="Ok" />
                   <Button mnemonicParsing="false" onAction="#annuler" text="Annuler" />
               </buttons>
             </ButtonBar>

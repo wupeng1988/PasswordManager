@@ -3,9 +3,12 @@ package passwordManager.controleur;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import org.controlsfx.validation.ValidationResult;
+import org.controlsfx.validation.ValidationSupport;
 import passwordManager.Crypto;
 
 import java.net.URL;
@@ -18,8 +21,10 @@ public class Autorisation implements Initializable {
     private App app;
 
     @FXML private TextField tfMotDePasse;
-
     @FXML private Label lStatut;
+    @FXML private Button bOk;
+
+    private ValidationSupport validationSupport = new ValidationSupport();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -28,13 +33,16 @@ public class Autorisation implements Initializable {
                 ok();
             }
         });
+
+        validationSupport.registerValidator(bOk, ((control, o) -> ValidationResult.fromErrorIf(control, "e", ((String)o).length() < 5)));
+        bOk.disableProperty().bind(validationSupport.invalidProperty());
     }
 
     private void autorisation(String mdp) {
         try {
             Crypto crypto = new Crypto(mdp);
 
-            app.charger(app.getFichierOuvert(), crypto);
+            app.ouvrir(app.getFichierOuvert(), crypto);
             app.getDonneesActives().setAutorise(true);
             app.getDonneesActives().setMotDePasse(mdp);
             app.initUi();

@@ -9,7 +9,8 @@ import java.util.*;
 public class Preferences {
     private final static String FILENAME = "config.properties";
 
-    public final static String PROP_DERNIER_FICHIER = "dernierFichier";
+    public final static String PROP_DERNIER_FICHIER_CHEMIN = "dernierFichier";
+    public final static String PROP_DERNIER_FICHIER_DRIVE = "dernierFichierDrive";
     public final static String PROP_DEFAUT_LARGEUR = "defautLargeur";
     public final static String PROP_DEFAUT_HAUTEUR = "defautHauteur";
     public final static String PROP_CHARGER_DERNIER_FICHIER = "chargerDernierFichier";
@@ -19,7 +20,8 @@ public class Preferences {
 
     private Properties properties = new Properties();
     private HashMap<String, String> defautProprietes = new HashMap<String, String>() {{
-        put(PROP_DERNIER_FICHIER, "");
+        put(PROP_DERNIER_FICHIER_CHEMIN, "");
+        put(PROP_DERNIER_FICHIER_DRIVE, "false");
         put(PROP_DEFAUT_LARGEUR, "1000");
         put(PROP_DEFAUT_HAUTEUR, "500");
         put(PROP_CHARGER_DERNIER_FICHIER, "true");
