@@ -6,6 +6,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextFlow?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="editionPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.About">
    <children>
@@ -23,6 +25,34 @@
          <top>
             <Label styleClass="lTitre" text="A Propos" BorderPane.alignment="CENTER" />
          </top>
+         <center>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" style="-fx-font-size: 20;" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </BorderPane.margin>
+               <children>
+                  <TextFlow textAlignment="CENTER">
+                     <children>
+                        <Label text="Développé par " />
+                        <Label styleClass="lBold" text="Nicolas Huchet" />
+                     </children>
+                  </TextFlow>
+                  <TextFlow textAlignment="CENTER">
+                     <children>
+                        <Label text="Icônes fournis par " />
+                        <Label styleClass="lBold" text="Dave Gandy " />
+                        <Label text="(depuis la collection FontAwesome)" />
+                     </children>
+                  </TextFlow>
+                  <TextFlow textAlignment="CENTER">
+                     <children>
+                        <Label text="Librarie ControlsFX par " />
+                        <Label styleClass="lBold" text="Jonathan Giles" />
+                     </children>
+                  </TextFlow>
+               </children>
+            </VBox>
+         </center>
       </BorderPane>
    </children>
 </AnchorPane>

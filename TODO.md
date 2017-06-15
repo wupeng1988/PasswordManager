@@ -19,9 +19,9 @@
 * **90** Agencement des contrôles
 * **90** Validation des champs d'ajout et mod des éléments
 * **90** Réorganisation du code et des fichiers ressource
-* **80** Fichier de config (auto-load, etc)
+* **85** Fichier de config (auto-load, etc)
+* **75** Explications & about popups
 * **50** Améliorer le rendu visuel global
-* **20** Explications & about popups
 * **00** Tri des données
 * **00** Localisation (langues)
 * **00** Sélection multiple

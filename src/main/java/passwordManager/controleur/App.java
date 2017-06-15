@@ -883,8 +883,9 @@ public class App implements Initializable {
     }
 
     @FXML public void fermer() {
-        if (fichierOuvert != null && donneesActives.getEncrytionLevel() > 0)
-            charger(fichierOuvert, null);
+        if (fichierOuvert != null && donneesActives.getEncrytionLevel() > 0 && donneesActives.isAutorise())
+            if (ouvrir(fichierOuvert, null))
+                initUi();
     }
 
     @FXML private void autoriser() {
@@ -913,12 +914,16 @@ public class App implements Initializable {
     }
 
     public boolean ouvrir(PSWFile f, Crypto c) {
+        if (!checkSaveEnregistree()) return false;
+
         if (f.isDepuisDrive())
             return telecharger(f, c);
         else
             return charger(f, c);
     }
     public boolean ecrire(String n, PSWFile f) {
+        if (!donneesActives.isAutorise() || f == null || n.equals("")) return false;
+
         if (f.isDepuisDrive())
             return televerser(n, f, getCrypto());
         else
@@ -926,8 +931,6 @@ public class App implements Initializable {
     }
 
     private boolean sauvegarder(String chemin, PSWFile file, Crypto c) {
-        if (!donneesActives.isAutorise() || file == null) return false;
-
         try {
             Utils.writeSaveData(donneesActives, chemin, c);
             donneesActives.getHistorique().setSaved(true);
@@ -939,8 +942,6 @@ public class App implements Initializable {
         return true;
     }
     private boolean televerser(String nom, PSWFile file, Crypto c) {
-        if (!donneesActives.isAutorise() || file == null) return false;
-
         try {
             Utils.writeSaveData(donneesActives, nom, c);
             File f = new File(nom);
@@ -959,8 +960,6 @@ public class App implements Initializable {
         return true;
     }
     private boolean charger(PSWFile file, Crypto crypto) {
-        if (!checkSaveEnregistree()) return false;
-
         nouvellesDonnees(Utils.readSavedData(file.getFichier(), crypto));
         if (donneesActives == null) { // erreur
             //nouvelleSauvegarde();
@@ -975,8 +974,6 @@ public class App implements Initializable {
         return true;
     }
     private boolean telecharger(PSWFile file, Crypto crypto) {
-        if (!checkSaveEnregistree()) return false;
-
         File tmpFile = driveHelper.downloadFile(file);
         if (tmpFile != null)
             nouvellesDonnees(Utils.readSavedData(tmpFile, crypto));

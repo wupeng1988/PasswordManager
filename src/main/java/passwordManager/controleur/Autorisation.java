@@ -34,7 +34,7 @@ public class Autorisation implements Initializable {
             }
         });
 
-        validationSupport.registerValidator(bOk, ((control, o) -> ValidationResult.fromErrorIf(control, "e", ((String)o).length() < 5)));
+        validationSupport.registerValidator(tfMotDePasse, ((control, o) -> ValidationResult.fromErrorIf(control, "e", ((String)o).length() < 6)));
         bOk.disableProperty().bind(validationSupport.invalidProperty());
     }
 

@@ -106,6 +106,10 @@ TableView:focused, ListView:focused {
 .lTitre {
     -fx-font-size: 42;
 }
+.lTitrePetit {
+    -fx-font-size: 36;
+}
+
 #lvSelection {
     -fx-background-radius: 0;
     -fx-background-insets: 0;

@@ -4,8 +4,11 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="editionPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.Explications">
    <children>
@@ -23,6 +26,62 @@
          <top>
             <Label styleClass="lTitre" text="Explications" BorderPane.alignment="CENTER" />
          </top>
+         <center>
+            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                  <Tab text="Application">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                 <children>
+                                    <Label text="Cette application permet de gérer différents comptes répartis sur plusieurs &quot;Domaines&quot;, ou &quot;Sites&quot;." wrapText="true" />
+                                    <Label text="Les détails sur l'utilisation et ces notions sont disponibles en changeant de section en haut de ce texte." wrapText="true" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                <Tab text="Domaine">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox layoutX="59.0" layoutY="-37.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                 <children>
+                                    <Label text="Un domaine, ou &quot;site&quot;, est une dossier dans lequel ranger plusieurs comptes." />
+                                    <Label text="Chaque domaine peut posséder plusieurs comptes, qui lui sont alors associés." />
+                                    <Label text="Un domaine possède un nom (e.g. &quot;Amazon&quot;), un nom de domaine (e.g. &quot;www.amazon.fr&quot;), une catégorie (e.g. &quot;Achats&quot;), des notes personnelles concernant ce domaine et une icône." wrapText="true" />
+                                    <Label text="Le nom de domaine peut être résolu automatiquement, mais attention, car il n'est pas toujours juste. Il sert notamment à retrouver ce domaine plus facilement via la recherche, et aussi à l'accès facile grâce au bouton d'accès dans son édition qui ouvre le navigateur directement à l'adresse indiquée." wrapText="true" />
+                                    <Label text="Uniquement le nom est obligatoire; le reste est optionnel, bien que le maximum d'informations aide pour l'organisation." wrapText="true" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Compte">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox layoutX="77.0" layoutY="-12.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                 <children>
+                                    <Label text="Un compte contient les informations de connection au domaine dans lequel il est contenu; mais il peut aussi contenir d'autres informations utiles telles que l'adresse mail associée, ou la réponse à la question secrète." wrapText="true" />
+                                    <Label text="Il contient donc un nom d'utilisateur, le mot de passe correspondant, des notes (ou informations supplémentaires), ainsi que la date initiale à laquelle il a été créé." wrapText="true" />
+                                    <Label text="Le nom d'utilisateur et le mot de passe peuvent être générés aléatoirement, individuellement ou bien ensembles." wrapText="true" />
+                                    <Label text="La date de création n'est pas modifiable: cela évite de la changer par erreur." />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </BorderPane.margin>
+            </TabPane>
+         </center>
       </BorderPane>
    </children>
 </AnchorPane>

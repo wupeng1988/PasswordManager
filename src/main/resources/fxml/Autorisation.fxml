@@ -9,41 +9,45 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="editionPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.Autorisation">
-   <children>
-      <BorderPane layoutX="200.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" styleClass="editionBox" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
-         <bottom>
-            <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-              <buttons>
-                <Button fx:id="bOk" mnemonicParsing="false" onAction="#ok" text="Ok" />
-                  <Button mnemonicParsing="false" onAction="#annuler" text="Annuler" />
-              </buttons>
-            </ButtonBar>
-         </bottom>
-         <center>
-            <BorderPane BorderPane.alignment="CENTER">
-               <center>
-                  <TextField fx:id="tfMotDePasse" maxWidth="300.0" promptText="Mot de passe" />
-               </center>
-               <top>
-                  <Label styleClass="lTitre" text="Entrez le mot de passe" BorderPane.alignment="CENTER" />
-               </top>
+<BorderPane styleClass="editionPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.Autorisation">
+   <center>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+         <children>
+            <BorderPane layoutX="200.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" styleClass="editionBox" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                <bottom>
-                  <HBox prefHeight="36.0" prefWidth="520.0" spacing="20.0" BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets bottom="20.0" />
-                     </BorderPane.margin>
-                     <children>
-                        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="lEmphase" text="Statut:" HBox.hgrow="ALWAYS" />
-                        <Label fx:id="lStatut" maxWidth="1.7976931348623157E308" text="en attente" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
+                  <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <buttons>
+                      <Button fx:id="bOk" mnemonicParsing="false" onAction="#ok" text="Ok" />
+                        <Button mnemonicParsing="false" onAction="#annuler" text="Annuler" />
+                    </buttons>
+                  </ButtonBar>
                </bottom>
+               <center>
+                  <BorderPane BorderPane.alignment="CENTER">
+                     <center>
+                        <TextField fx:id="tfMotDePasse" maxWidth="300.0" promptText="Mot de passe" />
+                     </center>
+                     <top>
+                        <Label styleClass="lTitrePetit" text="Entrez le mot de passe" BorderPane.alignment="CENTER" />
+                     </top>
+                     <bottom>
+                        <HBox prefHeight="36.0" prefWidth="520.0" spacing="20.0" BorderPane.alignment="CENTER">
+                           <BorderPane.margin>
+                              <Insets bottom="20.0" />
+                           </BorderPane.margin>
+                           <children>
+                              <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" styleClass="lEmphase" text="Statut:" HBox.hgrow="ALWAYS" />
+                              <Label fx:id="lStatut" maxWidth="1.7976931348623157E308" text="en attente" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                     </bottom>
+                  </BorderPane>
+               </center>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
             </BorderPane>
-         </center>
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
-      </BorderPane>
-   </children>
-</AnchorPane>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

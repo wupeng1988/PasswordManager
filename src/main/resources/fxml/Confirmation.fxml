@@ -10,46 +10,51 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" styleClass="editionPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.Confirmation">
-   <children>
-      <BorderPane layoutX="-7.0" layoutY="73.0" prefHeight="200.0" prefWidth="200.0" styleClass="editionBox" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
-         <bottom>
-            <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-              <buttons>
-                <Button mnemonicParsing="false" onAction="#ok" text="Ok" />
-                  <Button mnemonicParsing="false" onAction="#annuler" text="Annuler" />
-              </buttons>
-            </ButtonBar>
-         </bottom>
-         <top>
-            <Label styleClass="lTitre" text="Confirmation" BorderPane.alignment="CENTER" />
-         </top>
-         <center>
-            <GridPane hgap="8.0" vgap="8.0" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets bottom="20.0" top="20.0" />
-               </BorderPane.margin>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" />
-                  <ColumnConstraints hgrow="SOMETIMES" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <Label styleClass="lBold" text="Suppression demandée de" GridPane.halignment="RIGHT" />
-                  <Label styleClass="lBold" text="Etes-vous sûr(e) de vouloir supprimer cet objet? Cette opération est irréversible!" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Label fx:id="lObjetType" text="Compte/domaine" GridPane.columnIndex="1" />
-                  <Label styleClass="lBold" text="Nom de l'élément" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                  <Label fx:id="lNom" text="Nom" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-               </children>
-            </GridPane>
-         </center>
-      </BorderPane>
-   </children>
-</AnchorPane>
+
+<BorderPane styleClass="editionPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="passwordManager.controleur.Confirmation">
+   <center>
+      <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+         <children>
+            <BorderPane layoutX="-7.0" layoutY="73.0" prefHeight="200.0" prefWidth="200.0" styleClass="editionBox" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <bottom>
+                  <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <buttons>
+                      <Button mnemonicParsing="false" onAction="#ok" text="Ok" />
+                        <Button mnemonicParsing="false" onAction="#annuler" text="Annuler" />
+                    </buttons>
+                  </ButtonBar>
+               </bottom>
+               <top>
+                  <Label styleClass="lTitre" text="Confirmation" BorderPane.alignment="CENTER" />
+               </top>
+               <center>
+                  <GridPane hgap="8.0" vgap="8.0" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                     </BorderPane.margin>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label styleClass="lBold" text="Suppression demandée de" GridPane.halignment="RIGHT" />
+                        <Label styleClass="lBold" text="Etes-vous sûr(e) de vouloir supprimer cet objet?" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <Label fx:id="lObjetType" text="Compte/domaine" GridPane.columnIndex="1" />
+                        <Label styleClass="lBold" text="Nom de l'élément" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <Label fx:id="lNom" text="Nom" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
+               </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
