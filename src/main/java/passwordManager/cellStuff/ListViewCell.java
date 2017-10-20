@@ -21,8 +21,8 @@ import passwordManager.model.Historique;
  */
 public class ListViewCell extends ListCell<Domaine> {
     private final static String CLASS = "listViewCell";
-    private final static String CLASS_NOM = "nom";
-    private final static String CLASS_DOMAINE = "domaine";
+    private final static String CLASS_NOM = "name";
+    private final static String CLASS_DOMAINE = "field";
 
     private App app;
     private ImageManager imageManager;

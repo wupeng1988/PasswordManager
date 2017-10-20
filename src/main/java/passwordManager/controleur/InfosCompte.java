@@ -66,11 +66,11 @@ public class InfosCompte implements Initializable {
         bCopyU.setText(null);
         bCopyM.setText(null);
 
-        bAlea.setTooltip(new Tooltip("Tout générer aléatoirement"));
-        bAleaU.setTooltip(new Tooltip("Générer un nom d'utilisateur aléatoirement"));
-        bAleaM.setTooltip(new Tooltip("Générer un mot de passe aléatoirement"));
-        bCopyU.setTooltip(new Tooltip("Copier le nom d'utilisateur dans le presse-papier"));
-        bCopyM.setTooltip(new Tooltip("Copier le mot de passe dans le presse-papier"));
+        bAlea.setTooltip(new Tooltip("Generate randomly"));
+        bAleaU.setTooltip(new Tooltip("Generate a user name randomly"));
+        bAleaM.setTooltip(new Tooltip("Generate a password randomly"));
+        bCopyU.setTooltip(new Tooltip("Copy the user name to the clipboard"));
+        bCopyM.setTooltip(new Tooltip("Copy the password to the clipboard"));
 
         tfUtilisateur.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER)
@@ -199,7 +199,7 @@ public class InfosCompte implements Initializable {
     }
 
     void nouveauCompte() {
-        initCompte(new Compte("Nouveau compte", ""));
+        initCompte(new Compte("New account", ""));
         exists = false;
     }
 }

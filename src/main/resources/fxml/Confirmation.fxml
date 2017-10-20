@@ -23,12 +23,12 @@
                   <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <buttons>
                       <Button mnemonicParsing="false" onAction="#ok" text="Ok" />
-                        <Button mnemonicParsing="false" onAction="#annuler" text="Annuler" />
+                        <Button mnemonicParsing="false" onAction="#annuler" text="Cancel" />
                     </buttons>
                   </ButtonBar>
                </bottom>
                <top>
-                  <Label styleClass="lTitre" text="Confirmation" BorderPane.alignment="CENTER" />
+                  <Label styleClass="lTitre" text="Confirm" BorderPane.alignment="CENTER" />
                </top>
                <center>
                   <GridPane hgap="8.0" vgap="8.0" BorderPane.alignment="CENTER">
@@ -45,11 +45,11 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label styleClass="lBold" text="Suppression demandée de" GridPane.halignment="RIGHT" />
-                        <Label styleClass="lBold" text="Etes-vous sûr(e) de vouloir supprimer cet objet?" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                        <Label fx:id="lObjetType" text="Compte/domaine" GridPane.columnIndex="1" />
-                        <Label styleClass="lBold" text="Nom de l'élément" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <Label fx:id="lNom" text="Nom" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label styleClass="lBold" text="Deletion requested from" GridPane.halignment="RIGHT" />
+                        <Label styleClass="lBold" text="Are you sure you want to delete this item?" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <Label fx:id="lObjetType" text="Account / field" GridPane.columnIndex="1" />
+                        <Label styleClass="lBold" text="Name of the element" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <Label fx:id="lNom" text="Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </center>

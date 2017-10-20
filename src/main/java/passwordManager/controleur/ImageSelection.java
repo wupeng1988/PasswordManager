@@ -80,8 +80,8 @@ public class ImageSelection implements Initializable {
         bAjout.setText(null);
         bSuppression.setText(null);
 
-        bAjout.setTooltip(new Tooltip("Icone depuis l'ordinateur..."));
-        bSuppression.setTooltip(new Tooltip("Déselectionner l'icone sélectionnée"));
+        bAjout.setTooltip(new Tooltip("Icone from the computer ..."));
+        bSuppression.setTooltip(new Tooltip("Deselect the selected icon"));
 
         bAjout.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_UPLOAD, 32, 32, true));
         bSuppression.setGraphic(imageManager.constructImageViewFrom(ImageManager.ICONE_RECT_CLOSE, 32, 32, true));
@@ -103,7 +103,7 @@ public class ImageSelection implements Initializable {
     private void selectionIcone() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("."));
-        fileChooser.setTitle("Choisir une icone");
+        fileChooser.setTitle("Choose an icon");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
         );

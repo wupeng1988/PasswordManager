@@ -67,12 +67,12 @@ public class InfosDomaine implements Initializable {
         bCopN.setText(null);
         bSupN.setText(null);
 
-        bGenD.setTooltip(new Tooltip("Générer le nom de domaine le plus proche"));
-        bAccD.setTooltip(new Tooltip("Accéder à l'url (navigateur par défaut)"));
-        bModI.setTooltip(new Tooltip("Modifier l'icone associée"));
-        bSupI.setTooltip(new Tooltip("Supprimer l'icone associée"));
-        bCopN.setTooltip(new Tooltip("Copier le texte dans le presse-papier"));
-        bSupN.setTooltip(new Tooltip("Supprimer les notes contenues"));
+        bGenD.setTooltip(new Tooltip("Generate the closest domain name"));
+        bAccD.setTooltip(new Tooltip("Access the url (default browser)"));
+        bModI.setTooltip(new Tooltip("Edit the associated icon"));
+        bSupI.setTooltip(new Tooltip("Delete the associated icon"));
+        bCopN.setTooltip(new Tooltip("Copy the text to the clipboard"));
+        bSupN.setTooltip(new Tooltip("Delete the notes contained"));
 
         initImageSelection();
 
@@ -234,7 +234,7 @@ public class InfosDomaine implements Initializable {
     }
 
     void nouveauDomaine() {
-        initDomaine(new Domaine("Nouveau domaine"));
+        initDomaine(new Domaine("New domain"));
         exists = false;
     }
 }

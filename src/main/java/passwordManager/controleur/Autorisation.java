@@ -48,8 +48,8 @@ public class Autorisation implements Initializable {
             app.initUi();
             app.finEdition();
         } catch (Exception e) {
-            System.err.println("Mot de passe incorrect");
-            lStatut.setText("échec -> veuillez vérifier puis réessayer");
+            System.err.println("incorrect password");
+            lStatut.setText("failure -> please check and try again");
             lStatut.setStyle("-fx-text-fill: red");
         }
     }

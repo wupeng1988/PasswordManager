@@ -154,8 +154,8 @@ public class App implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         lDetailsTitre.maxWidthProperty().bind(detailsTitrePane.widthProperty().subtract(72));
-        lvDomaines.setPlaceholder(new Label("Aucun domaine"));
-        tvComptes.setPlaceholder(new Label("Aucun compte"));
+        lvDomaines.setPlaceholder(new Label("No domain"));
+        tvComptes.setPlaceholder(new Label("No account"));
 
         initPhase1();
     }
@@ -319,20 +319,20 @@ public class App implements Initializable {
         bSuppressionCompte.setText(null);
 
         // Tootips
-        bMonterDomaine.setTooltip(new Tooltip("Monter le domaine sélectionné d'une place"));
-        bMonterCompte.setTooltip(new Tooltip("Monter le compte sélectionné d'une place"));
-        bDescendreDomaine.setTooltip(new Tooltip("Descendre le domaine sélectionné d'une place"));
-        bDescendreCompte.setTooltip(new Tooltip("Descendre le compte sélectionné d'une place"));
-        bMonterDomaineMax.setTooltip(new Tooltip("Monter le domaine sélectionné jusqu'en première place"));
-        bMonterCompteMax.setTooltip(new Tooltip("Monter le compte sélectionné jusqu'en première place"));
-        bDescendreDomaineMax.setTooltip(new Tooltip("Descendre le domaine sélectionné jusqu'en dernière place"));
-        bDescendreCompteMax.setTooltip(new Tooltip("Descendre le compte sélectionné jusqu'en dernière place"));
-        bAjoutDomaine.setTooltip(new Tooltip("Ajouter un nouveau domaine"));
-        bAjoutCompte.setTooltip(new Tooltip("Ajouter un nouveau compte"));
-        bModificationDomaine.setTooltip(new Tooltip("Modifier le domaine sélectionné"));
-        bModificationCompte.setTooltip(new Tooltip("Modifier le compte sélectionné"));
-        bSuppressionDomaine.setTooltip(new Tooltip("Supprimer le domaine sélectionné"));
-        bSuppressionCompte.setTooltip(new Tooltip("Supprimer le compte sélectionné"));
+        bMonterDomaine.setTooltip(new Tooltip("Fit the selected domain"));
+        bMonterCompte.setTooltip(new Tooltip("Edit the selected account"));
+        bDescendreDomaine.setTooltip(new Tooltip("Go down the selected domain"));
+        bDescendreCompte.setTooltip(new Tooltip("Move down the selected account"));
+        bMonterDomaineMax.setTooltip(new Tooltip("Climb the selected domain to the first place"));
+        bMonterCompteMax.setTooltip(new Tooltip("Fit the selected account to the first place"));
+        bDescendreDomaineMax.setTooltip(new Tooltip("Move down the selected domain to the last"));
+        bDescendreCompteMax.setTooltip(new Tooltip("Move down the selected account to the last"));
+        bAjoutDomaine.setTooltip(new Tooltip("Add a new domain"));
+        bAjoutCompte.setTooltip(new Tooltip("Add a new account"));
+        bModificationDomaine.setTooltip(new Tooltip("Edit the selected domain"));
+        bModificationCompte.setTooltip(new Tooltip("Edit the selected account"));
+        bSuppressionDomaine.setTooltip(new Tooltip("Delete the selected domain"));
+        bSuppressionCompte.setTooltip(new Tooltip("Delete the selected account"));
 
         // Gestion des activations de boutons
         bMonterDomaine.setDisable(true);
@@ -975,7 +975,7 @@ public class App implements Initializable {
         nouvellesDonnees(Utils.readSavedData(file.getFichier(), crypto));
         if (donneesActives == null) { // erreur
             //nouvelleSauvegarde();
-            System.err.println("Erreur de lecture!");
+            System.err.println("Playback error!");
             return false;
         }
 
@@ -991,10 +991,10 @@ public class App implements Initializable {
             nouvellesDonnees(Utils.readSavedData(tmpFile, crypto));
         if (donneesActives == null) { // erreur
             //nouvelleSauvegarde();
-            System.err.println("Erreur de lecture!");
+            System.err.println("Playback error!");
             return false;
         } else if (!tmpFile.delete()) {
-            System.err.println("Impossible de supprimer le fichier temporaire!");
+            System.err.println("Can not delete the temporary file!");
         }
 
         fichierOuvert = file;
@@ -1008,9 +1008,9 @@ public class App implements Initializable {
         bpEtat.getStyleClass().clear();
         bpEtat.getStyleClass().add((donneesActives.getEncrytionLevel() > 0 && !donneesActives.isAutorise() ? "bpEtatNA" : "bpEtatA"));
         if (fichierOuvert != null)
-            lEtat.setText(fichierOuvert.getNomFichier() + " - édition " + (donneesActives.getEncrytionLevel() > 0 && !donneesActives.isAutorise() ? "interdite" : "autorisée"));
+            lEtat.setText(fichierOuvert.getNomFichier() + " - edition " + (donneesActives.getEncrytionLevel() > 0 && !donneesActives.isAutorise() ? "forbidden" : "authorized"));
         else
-            lEtat.setText("Nouveau fichier");
+            lEtat.setText("New File");
         setTitre();
         Platform.runLater(lvDomaines::requestFocus);
         montrerDetailsIdle();
@@ -1085,7 +1085,7 @@ public class App implements Initializable {
                 return d.getNotes();
             } else {
                 lDetailsNotes.getStyleClass().add("lItalic");
-                return "Aucune note";
+                return "Not rated yet";
             }
         }, d.notesProperty()));
 
@@ -1153,14 +1153,14 @@ public class App implements Initializable {
         if (getDonneesActives() == null || getDonneesActives().getHistorique().isSaved()) return true;
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Sauvegarde non enregistrée!");
-        alert.setHeaderText("Vous allez quitter sans enregistrer vos changements!");
-        alert.setContentText("Que voulez-vous faire?");
+        alert.setTitle("Unsaved backup!");
+        alert.setHeaderText("You will leave without saving your changes!");
+        alert.setContentText("What do you want to do?");
 
-        ButtonType sv = new ButtonType("Sauvegarder vers");
-        ButtonType s = new ButtonType("Sauvegarder");
-        ButtonType q = new ButtonType("Quitter");
-        ButtonType a = new ButtonType("Annuler", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType sv = new ButtonType("Save to");
+        ButtonType s = new ButtonType("Save");
+        ButtonType q = new ButtonType("Leave");
+        ButtonType a = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
         alert.getButtonTypes().setAll(sv, s, q, a);
 

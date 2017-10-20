@@ -26,7 +26,7 @@
                   <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <buttons>
                       <Button fx:id="bOk" mnemonicParsing="false" onAction="#okEdition" text="Ok" />
-                        <Button mnemonicParsing="false" onAction="#annulerEdition" text="Annuler" />
+                        <Button mnemonicParsing="false" onAction="#annulerEdition" text="Cancel" />
                     </buttons>
                   </ButtonBar>
                </bottom>
@@ -45,12 +45,12 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label styleClass="lBold" text="Nom" GridPane.halignment="RIGHT" />
-                        <Label styleClass="lBold" text="Domaine" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <TextField fx:id="tfNom" promptText="Nom du domaine [2 &lt;= longueur &lt;= 30]" GridPane.columnIndex="1" />
-                        <TextField fx:id="tfDomaine" promptText="Domaine (adresse)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="tfCategorie" promptText="Catégorie" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextArea fx:id="taNotes" prefHeight="200.0" prefWidth="200.0" promptText="(Optionnel) Notes à propos du domaine" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                        <Label styleClass="lBold" text="Name" GridPane.halignment="RIGHT" />
+                        <Label styleClass="lBold" text="Field" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <TextField fx:id="tfNom" promptText="Domain name [2 &lt; = length &lt; = 30]" GridPane.columnIndex="1" />
+                        <TextField fx:id="tfDomaine" promptText="Domain (address)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="tfCategorie" promptText="Category" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextArea fx:id="taNotes" prefHeight="200.0" prefWidth="200.0" promptText="(Optional) Notes about the domain" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                         <Label styleClass="lBold" text="Notes" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                         <BorderPane GridPane.columnIndex="3" GridPane.rowSpan="3">
                            <center>
@@ -65,7 +65,7 @@
                               </VBox>
                            </right>
                            <top>
-                              <Label styleClass="lBold" text="Icone" BorderPane.alignment="CENTER" />
+                              <Label styleClass="lBold" text="Icon" BorderPane.alignment="CENTER" />
                            </top>
                         </BorderPane>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
@@ -81,7 +81,7 @@
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" />
-                        <Label styleClass="lBold" text="Catégorie" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                        <Label styleClass="lBold" text="Category" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                      </children>
                      <BorderPane.margin>
                         <Insets bottom="10.0" top="10.0" />

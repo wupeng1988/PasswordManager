@@ -48,7 +48,7 @@ public class Backup implements Observer {
 
         if (files != null && files.length > MAX) {
             if (!files[0].delete())
-                System.err.println("Impossible de supprimer un fichier de backup");
+                System.err.println("Can not delete a backup file");
         }
     }
     private void analyseDossier() {

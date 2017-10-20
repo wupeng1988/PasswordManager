@@ -53,7 +53,7 @@ public class Parametres implements Initializable {
         bOk.disableProperty().bind(validationSupport.invalidProperty()); // à enlever quand paramètre implémentés
 
         bChoisirDossier.setText(null);
-        bChoisirDossier.setTooltip(new Tooltip("Choisir un dossier"));
+        bChoisirDossier.setTooltip(new Tooltip("Choose a folder"));
 
         ifLargeurDefaut = new IntField(400, 2000, 1000);
         ifHauteurDefaut = new IntField(400, 2000, 1000);
@@ -114,7 +114,7 @@ public class Parametres implements Initializable {
 
         validationSupport.registerValidator(tfDossierBackup, ((control, o) -> {
             File f = new File(o.toString());
-            return ValidationResult.fromErrorIf(control, "dossier n'existe pas", !f.exists() || !f.isDirectory());
+            return ValidationResult.fromErrorIf(control, "folder does not exist", !f.exists() || !f.isDirectory());
         }));
     }
 
@@ -127,7 +127,7 @@ public class Parametres implements Initializable {
     private String choisirDossier() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(new File("."));
-        directoryChooser.setTitle("Choisir un dossier");
+        directoryChooser.setTitle("Choose a folder");
 
         File f = directoryChooser.showDialog(null);
         return f == null ? "" : f.getAbsolutePath();

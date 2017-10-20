@@ -20,13 +20,13 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <top>
-            <Label styleClass="lTitre" text="Informations sur la sauvegarde" BorderPane.alignment="CENTER" />
+            <Label styleClass="lTitre" text="Backup information" BorderPane.alignment="CENTER" />
          </top>
          <bottom>
             <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <buttons>
                 <Button fx:id="bOk" mnemonicParsing="false" onAction="#okEdition" text="Ok" />
-                  <Button mnemonicParsing="false" onAction="#annulerEdition" text="Annuler" />
+                  <Button mnemonicParsing="false" onAction="#annulerEdition" text="Cancel" />
               </buttons>
             </ButtonBar>
          </bottom>
@@ -43,31 +43,31 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label styleClass="lBold" text="Niveau d'encryption" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                  <Label styleClass="lBold" text="Level of encryption" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                      <padding>
                         <Insets top="4.0" />
                      </padding></Label>
                   <ComboBox fx:id="cbEncryptionLevel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-                  <Label styleClass="lBold" text="Mot de passe" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                  <Label styleClass="lBold" text="Password" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                      <padding>
                         <Insets top="4.0" />
                      </padding></Label>
                   <TextField fx:id="tfMotDePasse" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-                  <Label styleClass="lBold" text="Autorisé" GridPane.halignment="RIGHT" />
-                  <Label fx:id="lAutorise" text="Oui/Non" GridPane.columnIndex="1" />
+                  <Label styleClass="lBold" text="Authorized" GridPane.halignment="RIGHT" />
+                  <Label fx:id="lAutorise" text="Yes/No" GridPane.columnIndex="1" />
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <children>
-                        <Label text="Niveau d'encryption:" />
-                        <Label text="0 = aucune encryption, fichier en clair" />
-                        <Label text="1 = encryption minimale, seuls les mot de passe sont cryptés" wrapText="true" />
-                        <Label text="2 = encryption moyenne, toutes les information relatives aux comptes (utilisateur, mot de passe, notes...) sont cryptés" wrapText="true" />
-                        <Label text="3 = encryption maximale, tout le fichier est crypté" />
+                        <Label text="Level of encryption:" />
+                        <Label text="0 = no encryption, unencrypted file" />
+                        <Label text="1 = minimum encryption, only passwords are encrypted" wrapText="true" />
+                        <Label text="2 = average encryption, all the information relating to the accounts (user, password, notes ...) are encrypted" wrapText="true" />
+                        <Label text="3 = maximum encryption, the entire file is encrypted" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <children>
-                        <Label text="Mot de passe:" />
-                        <Label text="Le mot de passe est utilisé pour encrypter le fichier de sauvegarde. Attention donc à ne pas le perde, sinon il sera impossible de récupérer le contenu du fichier en question." wrapText="true" />
+                        <Label text="Password:" />
+                        <Label text="The password is used to encrypt the backup file. So be careful not to lose it, otherwise it will be impossible to recover the contents of the file in question." wrapText="true" />
                      </children>
                   </VBox>
                </children>

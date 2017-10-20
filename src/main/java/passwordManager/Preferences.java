@@ -75,7 +75,7 @@ public class Preferences {
         try {
             if (!f.exists())
                 if (!f.createNewFile())
-                    System.err.println("Fichier impossible à créer.");
+                    System.err.println("File cannot create !");
         } catch (IOException io) {
             io.printStackTrace();
         }

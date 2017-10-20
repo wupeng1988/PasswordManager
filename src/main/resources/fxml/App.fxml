@@ -30,41 +30,41 @@
          <top>
             <MenuBar BorderPane.alignment="CENTER">
               <menus>
-                <Menu mnemonicParsing="false" text="Fichier">
+                <Menu mnemonicParsing="false" text="File">
                   <items>
-                        <MenuItem fx:id="miNouveau" mnemonicParsing="false" onAction="#nouvelleSauvegarde" text="Nouveau" />
-                        <MenuItem fx:id="miOuvrir" mnemonicParsing="false" onAction="#chargerDialog" text="Ouvrir" />
-                        <MenuItem fx:id="miOuvrirDrive" mnemonicParsing="false" onAction="#chargerDriveDialog" text="Ouvrir depuis Drive" />
-                        <MenuItem fx:id="miSauvegarder" mnemonicParsing="false" onAction="#sauvegarderSc" text="Sauvegarder" />
-                        <MenuItem fx:id="miSauvegarderVers" mnemonicParsing="false" onAction="#sauvegarderDialog" text="Sauvegarder vers..." />
-                        <MenuItem fx:id="miSauvegarderVersDrive" mnemonicParsing="false" onAction="#sauvegarderDrive" text="Sauvegarder dans Drive" />
-                        <MenuItem fx:id="miFermer" mnemonicParsing="false" onAction="#fermer" text="Fermer" />
+                        <MenuItem fx:id="miNouveau" mnemonicParsing="false" onAction="#nouvelleSauvegarde" text="New" />
+                        <MenuItem fx:id="miOuvrir" mnemonicParsing="false" onAction="#chargerDialog" text="Open" />
+                        <MenuItem fx:id="miOuvrirDrive" mnemonicParsing="false" onAction="#chargerDriveDialog" text="Open from Drive" />
+                        <MenuItem fx:id="miSauvegarder" mnemonicParsing="false" onAction="#sauvegarderSc" text="Save" />
+                        <MenuItem fx:id="miSauvegarderVers" mnemonicParsing="false" onAction="#sauvegarderDialog" text="Save to..." />
+                        <MenuItem fx:id="miSauvegarderVersDrive" mnemonicParsing="false" onAction="#sauvegarderDrive" text="Save to Drive" />
+                        <MenuItem fx:id="miFermer" mnemonicParsing="false" onAction="#fermer" text="To close" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="miAutoriser" mnemonicParsing="false" onAction="#autoriser" text="Autoriser" />
-                        <MenuItem fx:id="miInformations" mnemonicParsing="false" onAction="#modifierFichierInfo" text="Informations" />
-                        <MenuItem fx:id="miStatistiques" mnemonicParsing="false" onAction="#menuDetailsIdle" text="Statistiques" />
+                        <MenuItem fx:id="miAutoriser" mnemonicParsing="false" onAction="#autoriser" text="To allow" />
+                        <MenuItem fx:id="miInformations" mnemonicParsing="false" onAction="#modifierFichierInfo" text="information" />
+                        <MenuItem fx:id="miStatistiques" mnemonicParsing="false" onAction="#menuDetailsIdle" text="Statistics" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                    <MenuItem fx:id="miQuitter" mnemonicParsing="false" onAction="#exit" text="Quitter" />
+                    <MenuItem fx:id="miQuitter" mnemonicParsing="false" onAction="#exit" text="Leave" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edition">
                   <items>
-                        <MenuItem fx:id="miAnnuler" mnemonicParsing="false" onAction="#defaire" text="Annuler" />
-                        <MenuItem fx:id="miRefaire" mnemonicParsing="false" onAction="#refaire" text="Refaire" />
+                        <MenuItem fx:id="miAnnuler" mnemonicParsing="false" onAction="#defaire" text="Cancel" />
+                        <MenuItem fx:id="miRefaire" mnemonicParsing="false" onAction="#refaire" text="Remake" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="miAjouter" mnemonicParsing="false" onAction="#ajouterAuFocus" text="Ajouter" />
-                        <MenuItem fx:id="miModifier" mnemonicParsing="false" onAction="#modifierAuFocus" text="Modifier" />
-                    <MenuItem fx:id="miSupprimer" mnemonicParsing="false" onAction="#supprimerAuFocus" text="Supprimer" />
-                        <MenuItem fx:id="miDupliquer" mnemonicParsing="false" onAction="#dupliquerAuFocus" text="Dupliquer" />
+                        <MenuItem fx:id="miAjouter" mnemonicParsing="false" onAction="#ajouterAuFocus" text="Add" />
+                        <MenuItem fx:id="miModifier" mnemonicParsing="false" onAction="#modifierAuFocus" text="Edit" />
+                    <MenuItem fx:id="miSupprimer" mnemonicParsing="false" onAction="#supprimerAuFocus" text="Remove" />
+                        <MenuItem fx:id="miDupliquer" mnemonicParsing="false" onAction="#dupliquerAuFocus" text="Duplicate" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="miParametres" mnemonicParsing="false" onAction="#montrerParametres" text="Paramètres" />
+                        <MenuItem fx:id="miParametres" mnemonicParsing="false" onAction="#montrerParametres" text="Settings" />
                         <MenuItem mnemonicParsing="false" onAction="#montrerAleaSchemes" text="Alea Schemes" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Aide">
+                <Menu mnemonicParsing="false" text="Help">
                   <items>
-                        <MenuItem fx:id="miExplications" mnemonicParsing="false" onAction="#montrerExplications" text="Explications" />
-                    <MenuItem fx:id="miAPropos" mnemonicParsing="false" onAction="#montrerAbout" text="A propos" />
+                        <MenuItem fx:id="miExplications" mnemonicParsing="false" onAction="#montrerExplications" text="explanations" />
+                    <MenuItem fx:id="miAPropos" mnemonicParsing="false" onAction="#montrerAbout" text="About" />
                   </items>
                 </Menu>
               </menus>
@@ -75,7 +75,7 @@
                <children>
                   <BorderPane fx:id="bpEtat" prefHeight="24.0">
                      <center>
-                        <Label id="lEtat" fx:id="lEtat" text="Autorisé" BorderPane.alignment="CENTER" />
+                        <Label id="lEtat" fx:id="lEtat" text="Authorized" BorderPane.alignment="CENTER" />
                      </center>
                   </BorderPane>
                   <SplitPane dividerPositions="0.3007518796992481" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -94,7 +94,7 @@
                                     <Insets />
                                  </BorderPane.margin>
                                  <center>
-                                    <TextField id="tfSelectionFiltre" fx:id="tfFiltre" promptText="Rechercher...">
+                                    <TextField id="tfSelectionFiltre" fx:id="tfFiltre" promptText="Search...">
                                        <BorderPane.margin>
                                           <Insets />
                                        </BorderPane.margin>
@@ -210,9 +210,9 @@
                                                 <TableView id="tvDetails" fx:id="tvComptes" prefHeight="212.0" prefWidth="501.0" HBox.hgrow="ALWAYS">
                                                   <columns>
                                                       <TableColumn id="tcDetailsColumnNumber" fx:id="tvComptesNumero" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortable="false" text="#" />
-                                                    <TableColumn id="tcDetailsColumnUtilisateur" fx:id="tvComptesUtilisateur" editable="false" prefWidth="280.0" text="Utilisateur" />
-                                                    <TableColumn id="tcDetailsColumnMotDePasse" fx:id="tvComptesMotDePasse" editable="false" maxWidth="3000.0" minWidth="30.0" prefWidth="100.0" text="Mot de passe" />
-                                                      <TableColumn id="tcDetailsColumnDateCreation" fx:id="tvComptesDateCreation" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="Date de création" />
+                                                    <TableColumn id="tcDetailsColumnUtilisateur" fx:id="tvComptesUtilisateur" editable="false" prefWidth="280.0" text="User" />
+                                                    <TableColumn id="tcDetailsColumnMotDePasse" fx:id="tvComptesMotDePasse" editable="false" maxWidth="3000.0" minWidth="30.0" prefWidth="100.0" text="Password" />
+                                                      <TableColumn id="tcDetailsColumnDateCreation" fx:id="tvComptesDateCreation" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" text="createTime" />
                                                   </columns>
                                                    <columnResizePolicy>
                                                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

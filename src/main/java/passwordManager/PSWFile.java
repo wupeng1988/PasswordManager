@@ -63,7 +63,7 @@ public class PSWFile {
         return idDansDrive;
     }
     public String getNomFichier() {
-        if (!exists()) return "Nouveau fichier";
+        if (!exists()) return "New File";
         else if (isDepuisDrive()) return "gdrive://" + getNomDansDrive();
 
         String[] p = Utils.toLocalPath(getFichier().getAbsolutePath()).split(File.separator + File.separator);

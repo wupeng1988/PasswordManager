@@ -64,7 +64,7 @@ public class Confirmation implements Initializable {
         wrapper = app.getDonneesActives();
         type = 0;
 
-        lObjetType.setText("Domaine");
+        lObjetType.setText("Field");
         lNom.setText(d.getNom());
 
         root.requestFocus();
@@ -74,7 +74,7 @@ public class Confirmation implements Initializable {
         wrapper = d;
         type = 1;
 
-        lObjetType.setText("Compte");
+        lObjetType.setText("Account");
         lNom.setText(c.getUtilisateur());
 
         root.requestFocus();

@@ -23,7 +23,7 @@
             </ButtonBar>
          </bottom>
          <top>
-            <Label styleClass="lTitre" text="A Propos" BorderPane.alignment="CENTER" />
+            <Label styleClass="lTitre" text="About" BorderPane.alignment="CENTER" />
          </top>
          <center>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" style="-fx-font-size: 20;" BorderPane.alignment="CENTER">
@@ -33,20 +33,20 @@
                <children>
                   <TextFlow textAlignment="CENTER">
                      <children>
-                        <Label text="Développé par " />
+                        <Label text="Developped by" />
                         <Label styleClass="lBold" text="Nicolas Huchet" />
                      </children>
                   </TextFlow>
                   <TextFlow textAlignment="CENTER">
                      <children>
-                        <Label text="Icônes fournis par " />
+                        <Label text="Icons provided by" />
                         <Label styleClass="lBold" text="Dave Gandy " />
-                        <Label text="(depuis la collection FontAwesome)" />
+                        <Label text="(from the FontAwesome collection)" />
                      </children>
                   </TextFlow>
                   <TextFlow textAlignment="CENTER">
                      <children>
-                        <Label text="Librarie ControlsFX par " />
+                        <Label text="Libraries ControlsFX by " />
                         <Label styleClass="lBold" text="Jonathan Giles" />
                      </children>
                   </TextFlow>

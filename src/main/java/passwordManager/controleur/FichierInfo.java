@@ -54,7 +54,7 @@ public class FichierInfo implements Initializable {
                     && cbEncryptionLevel.getSelectionModel().getSelectedItem() > 0
                     && s.length() < 6;
 
-            return ValidationResult.fromMessageIf(control, "mot de passe < 6", Severity.ERROR, condition);
+            return ValidationResult.fromMessageIf(control, "password < 6", Severity.ERROR, condition);
         };
         bOk.disableProperty().bind(validationSupport.invalidProperty());
     }
@@ -81,7 +81,7 @@ public class FichierInfo implements Initializable {
     }
 
     void initData(Donnees donnees) {
-        lAutorise.setText((donnees.isAutorise() ? "Oui" : "Non"));
+        lAutorise.setText((donnees.isAutorise() ? "Yes" : "No"));
         cbEncryptionLevel.getSelectionModel().select((Integer)donnees.getEncrytionLevel());
         cbEncryptionLevel.setDisable(!donnees.isAutorise());
         tfMotDePasse.setText(donnees.getMotDePasse());

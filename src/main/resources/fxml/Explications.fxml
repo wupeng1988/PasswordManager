@@ -24,7 +24,7 @@
             </ButtonBar>
          </bottom>
          <top>
-            <Label styleClass="lTitre" text="Explications" BorderPane.alignment="CENTER" />
+            <Label styleClass="lTitre" text="explanations" BorderPane.alignment="CENTER" />
          </top>
          <center>
             <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
@@ -35,24 +35,24 @@
                            <children>
                               <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                  <children>
-                                    <Label text="Cette application permet de gérer différents comptes répartis sur plusieurs &quot;Domaines&quot;, ou &quot;Sites&quot;." wrapText="true" />
-                                    <Label text="Les détails sur l'utilisation et ces notions sont disponibles en changeant de section en haut de ce texte." wrapText="true" />
+                                    <Label text="This application allows to manage different accounts spread over several 'domains', or 'Sites'.." wrapText="true" />
+                                    <Label text="Details about the use and these notions are available by changing section at the top of this text." wrapText="true" />
                                  </children>
                               </VBox>
                            </children>
                         </AnchorPane>
                     </content>
                   </Tab>
-                <Tab text="Domaine">
+                <Tab text="Field">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <VBox layoutX="59.0" layoutY="-37.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                  <children>
-                                    <Label text="Un domaine, ou &quot;site&quot;, est une dossier dans lequel ranger plusieurs comptes." />
-                                    <Label text="Chaque domaine peut posséder plusieurs comptes, qui lui sont alors associés." />
-                                    <Label text="Un domaine possède un nom (e.g. &quot;Amazon&quot;), un nom de domaine (e.g. &quot;www.amazon.fr&quot;), une catégorie (e.g. &quot;Achats&quot;), des notes personnelles concernant ce domaine et une icône." wrapText="true" />
-                                    <Label text="Le nom de domaine peut être résolu automatiquement, mais attention, car il n'est pas toujours juste. Il sert notamment à retrouver ce domaine plus facilement via la recherche, et aussi à l'accès facile grâce au bouton d'accès dans son édition qui ouvre le navigateur directement à l'adresse indiquée." wrapText="true" />
+                                    <Label text="A domain, or 'site', is a folder in which to store multiple accounts." />
+                                    <Label text="Each domain can have multiple accounts, which are then associated with it." />
+                                    <Label text="A domain has a name (e.g. &quot; Amazon &quot;), a domain name (e.g. &quot; www.amazon.com &quot;), a category (e.g. &quot; Purchases &quot;), personal notes about this domain and an icon." wrapText="true" />
+                                    <Label text="The domain name can be solved automatically, but be careful because it is not always right. It is used in particular to find this area more easily via the search, and also to the easy access through the access button in its edition which opens the browser directly to the address indicated." wrapText="true" />
                                     <Label text="Uniquement le nom est obligatoire; le reste est optionnel, bien que le maximum d'informations aide pour l'organisation." wrapText="true" />
                                  </children>
                               </VBox>

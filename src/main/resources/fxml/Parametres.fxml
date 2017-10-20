@@ -23,7 +23,7 @@
             <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <buttons>
                 <Button fx:id="bOk" mnemonicParsing="false" onAction="#ok" text="Ok" />
-                  <Button fx:id="bAnnuler" mnemonicParsing="false" onAction="#annuler" text="Annuler" />
+                  <Button fx:id="bAnnuler" mnemonicParsing="false" onAction="#annuler" text="Cancel" />
               </buttons>
             </ButtonBar>
          </bottom>
@@ -45,20 +45,20 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label styleClass="lBold" text="Largeur de la fenêtre" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                  <Label styleClass="lBold" text="Hauteur de la fenêtre" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                  <Label styleClass="lBold" text="Ouvrir le dernier fichier utilisé au démarrage" textAlignment="RIGHT" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                  <Label styleClass="lBold" text="Backup automatique (X actions)" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                  <Label styleClass="lBold" text="Emplacement du dossier où placer les backup" textAlignment="RIGHT" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                  <Label layoutX="68.0" layoutY="187.0" styleClass="lBold" text="Limite de l'historique d'actions" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+                  <Label styleClass="lBold" text="Width of the window" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                  <Label styleClass="lBold" text="Height of the window" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                  <Label styleClass="lBold" text="Open the last file used at startup" textAlignment="RIGHT" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                  <Label styleClass="lBold" text="Automatic backup (X actions)" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                  <Label styleClass="lBold" text="Location of the folder where to place backups" textAlignment="RIGHT" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                  <Label layoutX="68.0" layoutY="187.0" styleClass="lBold" text="Limit of action history" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
                   <CheckBox fx:id="cbChargerDernierFichier" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
                   <Slider fx:id="sBackupAuto" max="20.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Slider fx:id="sLimiteHistorique" max="20.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                  <Label text="Valeur" GridPane.columnIndex="2" />
-                  <Label text="Défaut" GridPane.columnIndex="3" />
+                  <Label text="Value" GridPane.columnIndex="2" />
+                  <Label text="fault" GridPane.columnIndex="3" />
                   <Label fx:id="lDefautLargeurDefaut" styleClass="lItalic" text="1000" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                   <Label fx:id="lDefautHauteurDefaut" styleClass="lItalic" text="500" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <Label fx:id="lDefautChargerDernierFichier" styleClass="lItalic" text="Oui" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <Label fx:id="lDefautChargerDernierFichier" styleClass="lItalic" text="Yes" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                   <Label fx:id="lDefautBackupAuto" styleClass="lItalic" text="5" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                   <Label fx:id="lDefautDossierBackup" styleClass="lItalic" text="backup" GridPane.columnIndex="3" GridPane.rowIndex="5" />
                   <Label fx:id="lDefautLimiteHistorique" styleClass="lItalic" text="15" GridPane.columnIndex="3" GridPane.rowIndex="6" />
@@ -73,7 +73,7 @@
             </GridPane>
          </center>
          <top>
-            <Label styleClass="lTitre" text="Paramètres" BorderPane.alignment="CENTER" />
+            <Label styleClass="lTitre" text="Settings" BorderPane.alignment="CENTER" />
          </top>
       </BorderPane>
    </children>

@@ -60,8 +60,8 @@ public class Compte implements Externalizable, Applicable {
         this(utilisateur, motDePasse, "", LocalDate.now());
     }
     public Compte(String utilisateur, String motDePasse, String notes, LocalDate dateCreation) {
-        this.utilisateur = new SimpleStringProperty(this.utilisateur, "utilisateur", utilisateur);
-        this.motDePasse = new SimpleStringProperty(this.motDePasse, "motDePasse", motDePasse);
+        this.utilisateur = new SimpleStringProperty(this.utilisateur, "user", utilisateur);
+        this.motDePasse = new SimpleStringProperty(this.motDePasse, "password", motDePasse);
         this.notes = new SimpleStringProperty(this.notes, "notes", notes);
         this.dateCreation = new SimpleObjectProperty<>(this.dateCreation, "dateCreation", dateCreation);
     }

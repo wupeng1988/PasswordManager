@@ -19,7 +19,7 @@
    <children>
       <BorderPane layoutX="127.0" layoutY="143.0" prefHeight="200.0" prefWidth="200.0" styleClass="editionBox" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <top>
-            <Label styleClass="lTitre" text="Schémas Aléatoires" BorderPane.alignment="CENTER_LEFT" />
+            <Label styleClass="lTitre" text="Random Schemas" BorderPane.alignment="CENTER_LEFT" />
          </top>
          <bottom>
             <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -66,14 +66,14 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label styleClass="lBold" text="Nom" />
+                  <Label styleClass="lBold" text="Name" />
                   <Label styleClass="lBold" text="Type" GridPane.rowIndex="1" />
-                  <Label styleClass="lBold" text="Longueur mini" GridPane.rowIndex="2" />
-                  <Label styleClass="lBold" text="Longueur maxi" GridPane.rowIndex="3" />
-                  <Label styleClass="lBold" text="Nombre de majuscules mini" GridPane.rowIndex="4" />
-                  <Label styleClass="lBold" text="Nombre de minuscules mini" GridPane.rowIndex="5" />
-                  <Label styleClass="lBold" text="Nombre de chiffres mini" GridPane.rowIndex="6" />
-                  <Label styleClass="lBold" text="Nombre de caractères spéciaux mini" GridPane.rowIndex="7" />
+                  <Label styleClass="lBold" text="Min length" GridPane.rowIndex="2" />
+                  <Label styleClass="lBold" text="Max length" GridPane.rowIndex="3" />
+                  <Label styleClass="lBold" text="Number of capital letters" GridPane.rowIndex="4" />
+                  <Label styleClass="lBold" text="Number of tiny minis" GridPane.rowIndex="5" />
+                  <Label styleClass="lBold" text="Number of digits" GridPane.rowIndex="6" />
+                  <Label styleClass="lBold" text="Number of special characters mini" GridPane.rowIndex="7" />
                   <Label styleClass="lBold" text="Alphabet" GridPane.rowIndex="8" />
                   <TextField fx:id="tfNom" GridPane.columnIndex="1" />
                   <ComboBox fx:id="cbType" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -81,7 +81,7 @@
                   <ListView fx:id="lvGenerated" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="7" />
                   <HBox fx:id="hbGen" spacing="4.0" GridPane.columnIndex="2">
                      <children>
-                        <Button fx:id="bGenerate" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#genererTest" text="Générer..." HBox.hgrow="SOMETIMES" />
+                        <Button fx:id="bGenerate" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#genererTest" text="Generate..." HBox.hgrow="SOMETIMES" />
                      </children>
                   </HBox>
                </children>

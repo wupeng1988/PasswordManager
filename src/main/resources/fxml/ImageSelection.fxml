@@ -19,7 +19,7 @@
             <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <buttons>
                 <Button fx:id="bOk" mnemonicParsing="false" onAction="#ok" text="Ok" />
-                  <Button fx:id="bAnnuler" mnemonicParsing="false" onAction="#annuler" text="Annuler" />
+                  <Button fx:id="bAnnuler" mnemonicParsing="false" onAction="#annuler" text="Cancel" />
               </buttons>
                <BorderPane.margin>
                   <Insets top="10.0" />
@@ -42,7 +42,7 @@
                <center>
                   <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="bAjout" mnemonicParsing="false" onAction="#selectionIcone" text="Ordi" />
+                        <Button fx:id="bAjout" mnemonicParsing="false" onAction="#selectionIcone" text="Computer" />
                         <Button fx:id="bSuppression" mnemonicParsing="false" onAction="#suppressionIcone" text="Del" />
                      </children>
                   </VBox>
@@ -50,7 +50,7 @@
             </BorderPane>
          </right>
          <top>
-            <Label styleClass="lTitre" text="Choix de l'icone" BorderPane.alignment="CENTER_LEFT" />
+            <Label styleClass="lTitre" text="Choice of the icon" BorderPane.alignment="CENTER_LEFT" />
          </top>
       </BorderPane>
    </children>

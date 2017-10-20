@@ -111,8 +111,8 @@ public class TableViewRow extends TableRow<Compte> {
             setContextMenu(null);
             setOnMouseClicked(null);
         } else {
-            modifierItem.setText("Modifier " + getItem().getUtilisateur());
-            supprimerItem.setText("Supprimer " + getItem().getUtilisateur());
+            modifierItem.setText("Edit " + getItem().getUtilisateur());
+            supprimerItem.setText("Remove " + getItem().getUtilisateur());
             setContextMenu(contextMenu);
             setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2)
